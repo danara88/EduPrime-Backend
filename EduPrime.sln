@@ -5,6 +5,10 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPrime.API", "EduPrime.API\EduPrime.API.csproj", "{1890BC2F-5944-4F34-9044-A137395DCE31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPrime.Core", "EduPrime.Core\EduPrime.Core.csproj", "{163A83EE-3867-4086-988F-2BD095836BAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPrime.Infrastructure", "EduPrime.Infrastructure\EduPrime.Infrastructure.csproj", "{3E1A1296-9E95-4B8C-890E-A0485F26617E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{1890BC2F-5944-4F34-9044-A137395DCE31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1890BC2F-5944-4F34-9044-A137395DCE31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1890BC2F-5944-4F34-9044-A137395DCE31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{163A83EE-3867-4086-988F-2BD095836BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{163A83EE-3867-4086-988F-2BD095836BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{163A83EE-3867-4086-988F-2BD095836BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{163A83EE-3867-4086-988F-2BD095836BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E1A1296-9E95-4B8C-890E-A0485F26617E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E1A1296-9E95-4B8C-890E-A0485F26617E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E1A1296-9E95-4B8C-890E-A0485F26617E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E1A1296-9E95-4B8C-890E-A0485F26617E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
