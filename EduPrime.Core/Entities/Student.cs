@@ -5,10 +5,8 @@ namespace EduPrime.Core.Entities
     /// <summary>
     /// Student Entity
     /// </summary>
-    public class Student
+    public class Student : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Surname { get; set; }
@@ -22,8 +20,6 @@ namespace EduPrime.Core.Entities
         public string EmergencyContact { get; set; }
 
         public SemesterTypeEnum CurrentSemester { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

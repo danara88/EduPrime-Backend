@@ -8,5 +8,9 @@
         public int AreaId { get; set; }
 
         public int EmployeeId { get; set; }
+
+        public Area Area { get; set; }
+
+        public Employee Employee { get; set; }
     }
 }

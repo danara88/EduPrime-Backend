@@ -16,7 +16,6 @@ namespace EduPrime.Infrastructure.Data.Configurations
                .IsRequired();
 
             builder.Property(prop => prop.CreatedOn)
-               .HasDefaultValue(DateTime.Now)
                .IsRequired();
         }
     }

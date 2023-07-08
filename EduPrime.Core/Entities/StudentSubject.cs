@@ -22,5 +22,9 @@ namespace EduPrime.Core.Entities
         public DateTime CreatedOn { get; set; }
 
         public DateTime? UpdatedOn { get; set; }
+
+        public Student Student { get; set; }
+
+        public Subject Subject { get; set; }
     }
 }

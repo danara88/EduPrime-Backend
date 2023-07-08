@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPrime.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230705032334_Initial")]
-    partial class Initial
+    [Migration("20230708020447_UpdateBaseEntities")]
+    partial class UpdateBaseEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,9 +34,7 @@ namespace EduPrime.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 731, DateTimeKind.Local).AddTicks(9639));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
@@ -87,9 +85,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 732, DateTimeKind.Local).AddTicks(8356));
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -147,6 +143,11 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<int>("Satisfaction")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
@@ -192,7 +193,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 733, DateTimeKind.Local).AddTicks(9350));
+                        .HasDefaultValue(new DateTime(2023, 7, 7, 20, 4, 47, 97, DateTimeKind.Local).AddTicks(1609));
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -224,9 +225,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 734, DateTimeKind.Local).AddTicks(2775));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("CurrentSemester")
                         .HasColumnType("int");
@@ -279,25 +278,20 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 734, DateTimeKind.Local).AddTicks(9474));
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("FinalGrade")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
                     b.Property<int>("FirstGrade")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
                     b.Property<int>("SecondGrade")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(100)
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
@@ -328,9 +322,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedOn")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 735, DateTimeKind.Local).AddTicks(2384));
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -361,7 +353,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 4, 21, 23, 34, 735, DateTimeKind.Local).AddTicks(5453));
+                        .HasDefaultValue(new DateTime(2023, 7, 7, 20, 4, 47, 98, DateTimeKind.Local).AddTicks(5284));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -398,17 +390,21 @@ namespace EduPrime.Infrastructure.Migrations
 
             modelBuilder.Entity("EduPrime.Core.Entities.AreaEmployee", b =>
                 {
-                    b.HasOne("EduPrime.Core.Entities.Area", null)
+                    b.HasOne("EduPrime.Core.Entities.Area", "Area")
                         .WithMany("AreasEmployees")
                         .HasForeignKey("AreaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduPrime.Core.Entities.Employee", null)
+                    b.HasOne("EduPrime.Core.Entities.Employee", "Employee")
                         .WithMany("AreasEmployees")
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Professor", b =>
@@ -422,32 +418,40 @@ namespace EduPrime.Infrastructure.Migrations
 
             modelBuilder.Entity("EduPrime.Core.Entities.ProfessorSubject", b =>
                 {
-                    b.HasOne("EduPrime.Core.Entities.Professor", null)
+                    b.HasOne("EduPrime.Core.Entities.Professor", "Professor")
                         .WithMany("ProfessorsSubjects")
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduPrime.Core.Entities.Subject", null)
+                    b.HasOne("EduPrime.Core.Entities.Subject", "Subject")
                         .WithMany("ProfessorsSubjects")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.StudentSubject", b =>
                 {
-                    b.HasOne("EduPrime.Core.Entities.Student", null)
+                    b.HasOne("EduPrime.Core.Entities.Student", "Student")
                         .WithMany("StudentsSubjects")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduPrime.Core.Entities.Subject", null)
+                    b.HasOne("EduPrime.Core.Entities.Subject", "Subject")
                         .WithMany("StudentsSubjects")
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.User", b =>

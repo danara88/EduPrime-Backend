@@ -20,7 +20,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 731, DateTimeKind.Local).AddTicks(9639)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -42,7 +42,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Picture = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     RfcDocument = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 732, DateTimeKind.Local).AddTicks(8356)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -58,7 +58,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 733, DateTimeKind.Local).AddTicks(9350)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 7, 19, 23, 20, 812, DateTimeKind.Local).AddTicks(3603)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -80,7 +80,7 @@ namespace EduPrime.Infrastructure.Migrations
                     EmergencyContact = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     CurrentSemester = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 734, DateTimeKind.Local).AddTicks(2775)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -97,7 +97,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AvailableSemester = table.Column<int>(type: "int", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 735, DateTimeKind.Local).AddTicks(2384)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -161,7 +161,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 735, DateTimeKind.Local).AddTicks(5453)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 7, 19, 23, 20, 815, DateTimeKind.Local).AddTicks(5841)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -181,11 +181,11 @@ namespace EduPrime.Infrastructure.Migrations
                 {
                     StudentId = table.Column<int>(type: "int", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false),
-                    FirstGrade = table.Column<int>(type: "int", maxLength: 100, nullable: false, defaultValue: 0),
-                    SecondGrade = table.Column<int>(type: "int", maxLength: 100, nullable: false, defaultValue: 0),
-                    FinalGrade = table.Column<int>(type: "int", maxLength: 100, nullable: false, defaultValue: 0),
+                    FirstGrade = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    SecondGrade = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    FinalGrade = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 4, 21, 23, 34, 734, DateTimeKind.Local).AddTicks(9474)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>

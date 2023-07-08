@@ -3,10 +3,8 @@
     /// <summary>
     /// Employee Entity
     /// </summary>
-    public class Employee
+    public class Employee : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public string Surname { get; set; }
@@ -20,8 +18,6 @@
         public string? Picture { get; set; }
 
         public string? RfcDocument { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         public DateTime CreatedOn { get; set; }
 

@@ -12,6 +12,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasMaxLength(100)
                 .HasDefaultValue(0);
 
+            builder.Property(prop => prop.IsDeleted)
+              .HasDefaultValue(false)
+              .IsRequired();
+
             builder.Property(prop => prop.YearsOnDuty)
                 .HasDefaultValue(0);
         }

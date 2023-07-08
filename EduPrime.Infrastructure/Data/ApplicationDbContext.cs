@@ -1,4 +1,5 @@
 ﻿using EduPrime.Core.Entities;
+using EduPrime.Infrastructure.Data.Seeding;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -14,6 +15,11 @@ namespace EduPrime.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            /*
+             * Comment this piece of code to avoid executing seeding
+             */
+            // DataSeedModule.Seed(modelBuilder);
         }
 
         public DbSet<Area> Areas { get; set; }

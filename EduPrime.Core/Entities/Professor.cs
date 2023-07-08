@@ -3,10 +3,8 @@
     /// <summary>
     /// Professor Entity
     /// </summary>
-    public class Professor
+    public class Professor : BaseEntity
     {
-        public int Id { get; set; }
-
         public int EmployeeId { get; set; }
 
         public int Satisfaction { get; set; }

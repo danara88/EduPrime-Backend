@@ -1,3 +1,4 @@
+using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.API.Controllers
@@ -12,10 +13,12 @@ namespace EduPrime.API.Controllers
     };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
@@ -28,6 +31,13 @@ namespace EduPrime.API.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("getAreas")]
+        public async Task<IActionResult> GetAreas()
+        {
+            var areas = await _unitOfWork.AreaRepository.GetAllAsync();
+            return Ok(areas);
         }
     }
 }

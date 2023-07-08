@@ -5,15 +5,11 @@ namespace EduPrime.Core.Entities
     /// <summary>
     /// Subject Entity
     /// </summary>
-    public class Subject
+    public class Subject : BaseEntity
     {
-        public int Id { get; set; }
-
         public string Name { get; set; }
 
         public SemesterTypeEnum AvailableSemester { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
