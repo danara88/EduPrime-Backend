@@ -12,6 +12,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
+            builder.HasIndex(prop => prop.Name)
+                .HasFilter("isDeleted = 'false'")
+                .IsUnique();
+
             builder.Property(prop => prop.Description)
                 .HasMaxLength(200)
                 .IsRequired(false);
@@ -20,7 +24,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasDefaultValue(false)
                 .IsRequired();
 
+            builder.HasQueryFilter(prop => !prop.IsDeleted);
+
             builder.Property(prop => prop.CreatedOn)
+                .HasDefaultValue(DateTime.Now)
                .IsRequired();
         }
     }

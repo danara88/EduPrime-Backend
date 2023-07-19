@@ -1,6 +1,4 @@
-﻿using EduPrime.Core.Entities;
-
-namespace EduPrime.Core.Entities
+﻿namespace EduPrime.Core.Entities
 {
     /// <summary>
     /// Area Entity

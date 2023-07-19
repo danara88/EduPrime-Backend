@@ -19,7 +19,7 @@ namespace EduPrime.Infrastructure.Data
             /*
              * Comment this piece of code to avoid executing seeding
              */
-            // DataSeedModule.Seed(modelBuilder);
+            DataSeedModule.Seed(modelBuilder);
         }
 
         public DbSet<Area> Areas { get; set; }

@@ -9,7 +9,7 @@ namespace EduPrime.Infrastructure.Repository
     /// <typeparam name="T"></typeparam>
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        Task<List<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllAsync();
 
         Task<T> GetByIdAsync(int id);
 

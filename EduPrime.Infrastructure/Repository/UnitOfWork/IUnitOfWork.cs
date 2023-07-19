@@ -7,7 +7,7 @@ namespace EduPrime.Infrastructure.Repository
     /// </summary>
     public interface IUnitOfWork
     {
-        IBaseRepository<Area> AreaRepository { get; }
+        IAreaRepository AreaRepository { get; }
 
         IBaseRepository<Employee> EmployeeRepository { get; }
 

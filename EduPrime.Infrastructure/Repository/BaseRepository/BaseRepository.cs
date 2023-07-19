@@ -49,7 +49,7 @@ namespace EduPrime.Infrastructure.Repository
         /// Get all entities asynchronous
         /// </summary>
         /// <returns></returns>
-        public async Task<List<T>> GetAllAsync()
+        public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _entity.ToListAsync();
         }
