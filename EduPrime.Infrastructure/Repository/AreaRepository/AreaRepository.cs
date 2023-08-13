@@ -37,8 +37,7 @@ namespace EduPrime.Infrastructure.Repository
         public async Task<List<Area>> GetAreasWithEmployeesAsync() 
         {
             return await _entity
-                .Include(area => area.AreasEmployees)
-                    .ThenInclude(areaEmployee => areaEmployee.Employee)
+                .Include(area => area.Employees)
                 .ToListAsync();
         }
     }

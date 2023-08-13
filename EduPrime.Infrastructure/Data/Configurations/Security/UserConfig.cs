@@ -6,6 +6,9 @@ namespace EduPrime.Infrastructure.Data.Configurations
 {
     public class UserConfig : IEntityTypeConfiguration<User>
     {
+        /// <summary>
+        /// User Entity Framework Configuration
+        /// </summary>
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(prop => prop.Email)
@@ -18,10 +21,6 @@ namespace EduPrime.Infrastructure.Data.Configurations
 
             builder.Property(prop => prop.LastLogin)
                 .IsRequired(false);
-
-            builder.Property(prop => prop.IsDeleted)
-               .HasDefaultValue(false)
-               .IsRequired();
 
             builder.Property(prop => prop.CreatedOn)
                .HasDefaultValue(DateTime.Now)

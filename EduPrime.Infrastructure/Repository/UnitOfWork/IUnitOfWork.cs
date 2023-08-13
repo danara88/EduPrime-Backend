@@ -9,7 +9,7 @@ namespace EduPrime.Infrastructure.Repository
     {
         IAreaRepository AreaRepository { get; }
 
-        IBaseRepository<Employee> EmployeeRepository { get; }
+        IEmployeeRepository EmployeeRepository { get; }
 
         IBaseRepository<Professor> ProfessorRepository { get; }
 

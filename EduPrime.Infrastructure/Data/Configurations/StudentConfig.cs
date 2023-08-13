@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EduPrime.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Student Entity Framework Configuration
+    /// </summary>
     public class StudentConfig : IEntityTypeConfiguration<Student>
     {
         public void Configure(EntityTypeBuilder<Student> builder)
@@ -31,10 +34,6 @@ namespace EduPrime.Infrastructure.Data.Configurations
             builder.Property(prop => prop.EmergencyContact)
                .HasMaxLength(10)
                .IsUnicode(false);
-
-            builder.Property(prop => prop.IsDeleted)
-               .HasDefaultValue(false)
-               .IsRequired();
 
             builder.Property(prop => prop.CreatedOn)
                .IsRequired();

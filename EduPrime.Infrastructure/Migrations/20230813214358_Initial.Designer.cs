@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPrime.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230719045103_Initial")]
+    [Migration("20230813214358_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -25,6 +25,21 @@ namespace EduPrime.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("AreaEmployee", b =>
+                {
+                    b.Property<int>("AreasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AreasId", "EmployeesId");
+
+                    b.HasIndex("EmployeesId");
+
+                    b.ToTable("AreaEmployee");
+                });
+
             modelBuilder.Entity("EduPrime.Core.Entities.Area", b =>
                 {
                     b.Property<int>("Id")
@@ -36,16 +51,11 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 3, 342, DateTimeKind.Local).AddTicks(3342));
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(3938));
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -57,26 +67,7 @@ namespace EduPrime.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("isDeleted = 'false'");
-
                     b.ToTable("Areas");
-                });
-
-            modelBuilder.Entity("EduPrime.Core.Entities.AreaEmployee", b =>
-                {
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AreaId", "EmployeeId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("AreasEmployees");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Employee", b =>
@@ -91,18 +82,15 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(7542));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -149,11 +137,6 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<int>("Satisfaction")
                         .ValueGeneratedOnAdd()
                         .HasMaxLength(100)
@@ -199,12 +182,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 3, 344, DateTimeKind.Local).AddTicks(845));
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 43, 58, 334, DateTimeKind.Local).AddTicks(1453));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -241,11 +219,6 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasMaxLength(10)
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -330,11 +303,6 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -359,18 +327,13 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 3, 345, DateTimeKind.Local).AddTicks(4467));
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 43, 58, 335, DateTimeKind.Local).AddTicks(6034));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
@@ -394,23 +357,19 @@ namespace EduPrime.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EduPrime.Core.Entities.AreaEmployee", b =>
+            modelBuilder.Entity("AreaEmployee", b =>
                 {
-                    b.HasOne("EduPrime.Core.Entities.Area", "Area")
-                        .WithMany("AreasEmployees")
-                        .HasForeignKey("AreaId")
+                    b.HasOne("EduPrime.Core.Entities.Area", null)
+                        .WithMany()
+                        .HasForeignKey("AreasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduPrime.Core.Entities.Employee", "Employee")
-                        .WithMany("AreasEmployees")
-                        .HasForeignKey("EmployeeId")
+                    b.HasOne("EduPrime.Core.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Area");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Professor", b =>
@@ -471,15 +430,8 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("EduPrime.Core.Entities.Area", b =>
-                {
-                    b.Navigation("AreasEmployees");
-                });
-
             modelBuilder.Entity("EduPrime.Core.Entities.Employee", b =>
                 {
-                    b.Navigation("AreasEmployees");
-
                     b.Navigation("Professor")
                         .IsRequired();
                 });

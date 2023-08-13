@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EduPrime.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSeed : Migration
+    public partial class AddSeeding : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,40 +18,50 @@ namespace EduPrime.Infrastructure.Migrations
                 table: "Users",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(5660),
+                defaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(3659),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 345, DateTimeKind.Local).AddTicks(4467));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 335, DateTimeKind.Local).AddTicks(6034));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
                 table: "Roles",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 624, DateTimeKind.Local).AddTicks(242),
+                defaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 376, DateTimeKind.Local).AddTicks(3328),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 344, DateTimeKind.Local).AddTicks(845));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 334, DateTimeKind.Local).AddTicks(1453));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Employees",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 375, DateTimeKind.Local).AddTicks(2592),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(7542));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
                 table: "Areas",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 622, DateTimeKind.Local).AddTicks(1416),
+                defaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 374, DateTimeKind.Local).AddTicks(9218),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 342, DateTimeKind.Local).AddTicks(3342));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(3938));
 
             migrationBuilder.InsertData(
                 table: "Areas",
                 columns: new[] { "Id", "CreatedOn", "Description", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6003), "Only those who teach a subject", "Professor", null },
-                    { 2, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6006), "Office administrative area", "Office administrative", null },
-                    { 3, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6007), "School clean service", "Clean service", null },
-                    { 4, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6008), "School security guard", "Security guard", null }
+                    { 1, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4246), "Only those who teach a subject", "Professor", null },
+                    { 2, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4305), "Office administrative area", "Office administrative", null },
+                    { 3, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4307), "School clean service", "Clean service", null },
+                    { 4, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4308), "School security guard", "Security guard", null }
                 });
 
             migrationBuilder.InsertData(
@@ -59,11 +69,11 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "CreatedOn", "Email", "Name", "PhoneNumber", "Picture", "RfcDocument", "Surname", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6435), "BrendaLopez@school.com", "Brenda", "8445678787", null, null, "Lopez Reyes", null },
-                    { 2, new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6439), "AlmaRosa@school.com", "Alma Rosa", "8445567556", null, null, "Aguilar Tejada", null },
-                    { 3, new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6442), "LorenaSuarez@school.com", "Lorena", "8445552552", null, null, "Suarez Treviño", null },
-                    { 4, new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6444), "ReginaGonzales@school.com", "Regina", "8446787575", null, null, "Gonzales Perreira", null },
-                    { 5, new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6446), "LuisCarranza@school.com", "Luis", "8445678787", null, null, "Carranza Allende", null }
+                    { 1, new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4494), "BrendaLopez@school.com", "Brenda", "8445678787", null, null, "Lopez Reyes", null },
+                    { 2, new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4497), "AlmaRosa@school.com", "Alma Rosa", "8445567556", null, null, "Aguilar Tejada", null },
+                    { 3, new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4500), "LorenaSuarez@school.com", "Lorena", "8445552552", null, null, "Suarez Treviño", null },
+                    { 4, new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4502), "ReginaGonzales@school.com", "Regina", "8446787575", null, null, "Gonzales Perreira", null },
+                    { 5, new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4504), "LuisCarranza@school.com", "Luis", "8445678787", null, null, "Carranza Allende", null }
                 });
 
             migrationBuilder.InsertData(
@@ -71,9 +81,9 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedOn", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6682), "PrimaryRole", null },
-                    { 2, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6683), "AdminRole", null },
-                    { 3, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6684), "StandardRole", null }
+                    { 1, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4749), "PrimaryRole", null },
+                    { 2, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4751), "AdminRole", null },
+                    { 3, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4752), "StandardRole", null }
                 });
 
             migrationBuilder.InsertData(
@@ -81,12 +91,12 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "CreatedOn", "CurrentSemester", "EmergencyContact", "Name", "PhoneNumber", "Picture", "Surname", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2000, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6609), 1, "8445677676", "Emiliano", "8445556767", null, "Salinas", null },
-                    { 2, new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6612), 1, "8445677676", "Omar", "8445556767", null, "Reyes", null },
-                    { 3, new DateTime(2000, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6614), 2, "8445677676", "Jimena", "8442225656", null, "Trejo", null },
-                    { 4, new DateTime(2000, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6616), 2, "8445677676", "Daniel", "8442225656", null, "Aranda", null },
-                    { 5, new DateTime(2000, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6618), 3, "8445677676", "Julian", "8445676767", null, "Torres", null },
-                    { 6, new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6620), 1, "8445677676", "Verónica", "8446789900", null, "Sánchez", null }
+                    { 1, new DateTime(2000, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4681), 1, "8445677676", "Emiliano", "8445556767", null, "Salinas", null },
+                    { 2, new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4684), 1, "8445677676", "Omar", "8445556767", null, "Reyes", null },
+                    { 3, new DateTime(2000, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4686), 2, "8445677676", "Jimena", "8442225656", null, "Trejo", null },
+                    { 4, new DateTime(2000, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4688), 2, "8445677676", "Daniel", "8442225656", null, "Aranda", null },
+                    { 5, new DateTime(2000, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4690), 3, "8445677676", "Julian", "8445676767", null, "Torres", null },
+                    { 6, new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4692), 1, "8445677676", "Verónica", "8446789900", null, "Sánchez", null }
                 });
 
             migrationBuilder.InsertData(
@@ -94,16 +104,16 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "AvailableSemester", "CreatedOn", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6551), "Matemáticas I", null },
-                    { 2, 2, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6553), "Matemáticas II", null },
-                    { 3, 3, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6554), "Matemáticas III", null },
-                    { 4, 3, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6555), "Física I", null },
-                    { 5, 4, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6557), "Física II", null }
+                    { 1, 1, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4623), "Matemáticas I", null },
+                    { 2, 2, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4625), "Matemáticas II", null },
+                    { 3, 3, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4626), "Matemáticas III", null },
+                    { 4, 3, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4628), "Física I", null },
+                    { 5, 4, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4629), "Física II", null }
                 });
 
             migrationBuilder.InsertData(
-                table: "AreasEmployees",
-                columns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                columns: new[] { "AreasId", "EmployeesId" },
                 values: new object[,]
                 {
                     { 1, 1 },
@@ -130,8 +140,8 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "StudentId", "SubjectId", "CreatedOn", "FinalGrade", "FirstGrade", "SecondGrade", "Status", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6649), 91, 91, 92, 1, null },
-                    { 2, 1, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6651), 58, 71, 45, 2, null }
+                    { 1, 1, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4715), 91, 91, 92, 1, null },
+                    { 2, 1, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4717), 58, 71, 45, 2, null }
                 });
 
             migrationBuilder.InsertData(
@@ -139,8 +149,8 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "StudentId", "SubjectId", "CreatedOn", "FirstGrade", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 3, 2, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6653), 90, null },
-                    { 4, 2, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6655), 100, null }
+                    { 3, 2, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4719), 90, null },
+                    { 4, 2, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4721), 100, null }
                 });
 
             migrationBuilder.InsertData(
@@ -148,14 +158,14 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "StudentId", "SubjectId", "CreatedOn", "FinalGrade", "FirstGrade", "SecondGrade", "Status", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 5, 3, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6657), 90, 90, 90, 1, null },
-                    { 5, 4, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6659), 45, 50, 40, 2, null }
+                    { 5, 3, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4723), 90, 90, 90, 1, null },
+                    { 5, 4, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4725), 45, 50, 40, 2, null }
                 });
 
             migrationBuilder.InsertData(
                 table: "StudentsSubjects",
                 columns: new[] { "StudentId", "SubjectId", "CreatedOn", "FirstGrade", "SecondGrade", "UpdatedOn" },
-                values: new object[] { 6, 5, new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6660), 80, 80, null });
+                values: new object[] { 6, 5, new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4727), 80, 80, null });
 
             migrationBuilder.InsertData(
                 table: "ProfessorsSubjects",
@@ -175,38 +185,38 @@ namespace EduPrime.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 1, 1 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 1, 2 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 1, 3 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 2, 2 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 2, 3 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 3, 4 });
 
             migrationBuilder.DeleteData(
-                table: "AreasEmployees",
-                keyColumns: new[] { "AreaId", "EmployeeId" },
+                table: "AreaEmployee",
+                keyColumns: new[] { "AreasId", "EmployeesId" },
                 keyValues: new object[] { 4, 5 });
 
             migrationBuilder.DeleteData(
@@ -409,30 +419,40 @@ namespace EduPrime.Infrastructure.Migrations
                 table: "Users",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 345, DateTimeKind.Local).AddTicks(4467),
+                defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 335, DateTimeKind.Local).AddTicks(6034),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(5660));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(3659));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
                 table: "Roles",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 344, DateTimeKind.Local).AddTicks(845),
+                defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 334, DateTimeKind.Local).AddTicks(1453),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 624, DateTimeKind.Local).AddTicks(242));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 376, DateTimeKind.Local).AddTicks(3328));
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "CreatedOn",
+                table: "Employees",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(7542),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 375, DateTimeKind.Local).AddTicks(2592));
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "CreatedOn",
                 table: "Areas",
                 type: "datetime2",
                 nullable: false,
-                defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 342, DateTimeKind.Local).AddTicks(3342),
+                defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(3938),
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2",
-                oldDefaultValue: new DateTime(2023, 7, 18, 22, 51, 54, 622, DateTimeKind.Local).AddTicks(1416));
+                oldDefaultValue: new DateTime(2023, 8, 13, 15, 45, 9, 374, DateTimeKind.Local).AddTicks(9218));
         }
     }
 }

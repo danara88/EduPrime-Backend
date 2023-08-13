@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPrime.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230719045154_AddSeed")]
-    partial class AddSeed
+    [Migration("20230813214509_AddSeeding")]
+    partial class AddSeeding
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,58 @@ namespace EduPrime.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AreaEmployee", b =>
+                {
+                    b.Property<int>("AreasId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EmployeesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AreasId", "EmployeesId");
+
+                    b.HasIndex("EmployeesId");
+
+                    b.ToTable("AreaEmployee");
+
+                    b.HasData(
+                        new
+                        {
+                            AreasId = 1,
+                            EmployeesId = 1
+                        },
+                        new
+                        {
+                            AreasId = 1,
+                            EmployeesId = 2
+                        },
+                        new
+                        {
+                            AreasId = 2,
+                            EmployeesId = 2
+                        },
+                        new
+                        {
+                            AreasId = 2,
+                            EmployeesId = 3
+                        },
+                        new
+                        {
+                            AreasId = 1,
+                            EmployeesId = 3
+                        },
+                        new
+                        {
+                            AreasId = 3,
+                            EmployeesId = 4
+                        },
+                        new
+                        {
+                            AreasId = 4,
+                            EmployeesId = 5
+                        });
+                });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Area", b =>
                 {
@@ -36,16 +88,11 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 54, 622, DateTimeKind.Local).AddTicks(1416));
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 45, 9, 374, DateTimeKind.Local).AddTicks(9218));
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -57,96 +104,36 @@ namespace EduPrime.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("isDeleted = 'false'");
-
                     b.ToTable("Areas");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6003),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4246),
                             Description = "Only those who teach a subject",
-                            IsDeleted = false,
                             Name = "Professor"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6006),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4305),
                             Description = "Office administrative area",
-                            IsDeleted = false,
                             Name = "Office administrative"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6007),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4307),
                             Description = "School clean service",
-                            IsDeleted = false,
                             Name = "Clean service"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6008),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4308),
                             Description = "School security guard",
-                            IsDeleted = false,
                             Name = "Security guard"
-                        });
-                });
-
-            modelBuilder.Entity("EduPrime.Core.Entities.AreaEmployee", b =>
-                {
-                    b.Property<int>("AreaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AreaId", "EmployeeId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.ToTable("AreasEmployees");
-
-                    b.HasData(
-                        new
-                        {
-                            AreaId = 1,
-                            EmployeeId = 1
-                        },
-                        new
-                        {
-                            AreaId = 1,
-                            EmployeeId = 2
-                        },
-                        new
-                        {
-                            AreaId = 2,
-                            EmployeeId = 2
-                        },
-                        new
-                        {
-                            AreaId = 2,
-                            EmployeeId = 3
-                        },
-                        new
-                        {
-                            AreaId = 1,
-                            EmployeeId = 3
-                        },
-                        new
-                        {
-                            AreaId = 3,
-                            EmployeeId = 4
-                        },
-                        new
-                        {
-                            AreaId = 4,
-                            EmployeeId = 5
                         });
                 });
 
@@ -162,18 +149,15 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasColumnType("date");
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 45, 9, 375, DateTimeKind.Local).AddTicks(2592));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -213,9 +197,8 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             BirthDate = new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6435),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4494),
                             Email = "BrendaLopez@school.com",
-                            IsDeleted = false,
                             Name = "Brenda",
                             PhoneNumber = "8445678787",
                             Surname = "Lopez Reyes"
@@ -224,9 +207,8 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 2,
                             BirthDate = new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6439),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4497),
                             Email = "AlmaRosa@school.com",
-                            IsDeleted = false,
                             Name = "Alma Rosa",
                             PhoneNumber = "8445567556",
                             Surname = "Aguilar Tejada"
@@ -235,9 +217,8 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 3,
                             BirthDate = new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6442),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4500),
                             Email = "LorenaSuarez@school.com",
-                            IsDeleted = false,
                             Name = "Lorena",
                             PhoneNumber = "8445552552",
                             Surname = "Suarez Treviño"
@@ -246,9 +227,8 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 4,
                             BirthDate = new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6444),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4502),
                             Email = "ReginaGonzales@school.com",
-                            IsDeleted = false,
                             Name = "Regina",
                             PhoneNumber = "8446787575",
                             Surname = "Gonzales Perreira"
@@ -257,9 +237,8 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 5,
                             BirthDate = new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6446),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4504),
                             Email = "LuisCarranza@school.com",
-                            IsDeleted = false,
                             Name = "Luis",
                             PhoneNumber = "8445678787",
                             Surname = "Carranza Allende"
@@ -276,11 +255,6 @@ namespace EduPrime.Infrastructure.Migrations
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<int>("Satisfaction")
                         .ValueGeneratedOnAdd()
@@ -305,7 +279,6 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             EmployeeId = 1,
-                            IsDeleted = false,
                             Satisfaction = 85,
                             YearsOnDuty = 5
                         },
@@ -313,7 +286,6 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 2,
                             EmployeeId = 2,
-                            IsDeleted = false,
                             Satisfaction = 90,
                             YearsOnDuty = 30
                         },
@@ -321,7 +293,6 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 3,
                             EmployeeId = 3,
-                            IsDeleted = false,
                             Satisfaction = 90,
                             YearsOnDuty = 15
                         });
@@ -385,12 +356,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 54, 624, DateTimeKind.Local).AddTicks(242));
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 45, 9, 376, DateTimeKind.Local).AddTicks(3328));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -408,22 +374,19 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6682),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4749),
                             Name = "PrimaryRole"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6683),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4751),
                             Name = "AdminRole"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6684),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4752),
                             Name = "StandardRole"
                         });
                 });
@@ -450,11 +413,6 @@ namespace EduPrime.Infrastructure.Migrations
                         .HasMaxLength(10)
                         .IsUnicode(false)
                         .HasColumnType("varchar(10)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -488,10 +446,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             BirthDate = new DateTime(2000, 6, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6609),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4681),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Emiliano",
                             PhoneNumber = "8445556767",
                             Surname = "Salinas"
@@ -500,10 +457,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 2,
                             BirthDate = new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6612),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4684),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Omar",
                             PhoneNumber = "8445556767",
                             Surname = "Reyes"
@@ -512,10 +468,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 3,
                             BirthDate = new DateTime(2000, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6614),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4686),
                             CurrentSemester = 2,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Jimena",
                             PhoneNumber = "8442225656",
                             Surname = "Trejo"
@@ -524,10 +479,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 4,
                             BirthDate = new DateTime(2000, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6616),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4688),
                             CurrentSemester = 2,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Daniel",
                             PhoneNumber = "8442225656",
                             Surname = "Aranda"
@@ -536,10 +490,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 5,
                             BirthDate = new DateTime(2000, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6618),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4690),
                             CurrentSemester = 3,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Julian",
                             PhoneNumber = "8445676767",
                             Surname = "Torres"
@@ -548,10 +501,9 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 6,
                             BirthDate = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6620),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4692),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
-                            IsDeleted = false,
                             Name = "Verónica",
                             PhoneNumber = "8446789900",
                             Surname = "Sánchez"
@@ -603,7 +555,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 1,
                             SubjectId = 1,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6649),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4715),
                             FinalGrade = 91,
                             FirstGrade = 91,
                             SecondGrade = 92,
@@ -613,7 +565,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 2,
                             SubjectId = 1,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6651),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4717),
                             FinalGrade = 58,
                             FirstGrade = 71,
                             SecondGrade = 45,
@@ -623,7 +575,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 3,
                             SubjectId = 2,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6653),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4719),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -633,7 +585,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 4,
                             SubjectId = 2,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6655),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4721),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -643,7 +595,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 5,
                             SubjectId = 3,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6657),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4723),
                             FinalGrade = 90,
                             FirstGrade = 90,
                             SecondGrade = 90,
@@ -653,7 +605,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 5,
                             SubjectId = 4,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6659),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4725),
                             FinalGrade = 45,
                             FirstGrade = 50,
                             SecondGrade = 40,
@@ -663,7 +615,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 6,
                             SubjectId = 5,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6660),
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4727),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 80,
@@ -685,11 +637,6 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -707,40 +654,35 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             AvailableSemester = 1,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6551),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4623),
                             Name = "Matemáticas I"
                         },
                         new
                         {
                             Id = 2,
                             AvailableSemester = 2,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6553),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4625),
                             Name = "Matemáticas II"
                         },
                         new
                         {
                             Id = 3,
                             AvailableSemester = 3,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6554),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4626),
                             Name = "Matemáticas III"
                         },
                         new
                         {
                             Id = 4,
                             AvailableSemester = 3,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6555),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4628),
                             Name = "Física I"
                         },
                         new
                         {
                             Id = 5,
                             AvailableSemester = 4,
-                            CreatedOn = new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(6557),
-                            IsDeleted = false,
+                            CreatedOn = new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(4629),
                             Name = "Física II"
                         });
                 });
@@ -756,18 +698,13 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2023, 7, 18, 22, 51, 54, 625, DateTimeKind.Local).AddTicks(5660));
+                        .HasDefaultValue(new DateTime(2023, 8, 13, 15, 45, 9, 378, DateTimeKind.Local).AddTicks(3659));
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastLogin")
                         .HasColumnType("datetime2");
@@ -791,23 +728,19 @@ namespace EduPrime.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("EduPrime.Core.Entities.AreaEmployee", b =>
+            modelBuilder.Entity("AreaEmployee", b =>
                 {
-                    b.HasOne("EduPrime.Core.Entities.Area", "Area")
-                        .WithMany("AreasEmployees")
-                        .HasForeignKey("AreaId")
+                    b.HasOne("EduPrime.Core.Entities.Area", null)
+                        .WithMany()
+                        .HasForeignKey("AreasId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EduPrime.Core.Entities.Employee", "Employee")
-                        .WithMany("AreasEmployees")
-                        .HasForeignKey("EmployeeId")
+                    b.HasOne("EduPrime.Core.Entities.Employee", null)
+                        .WithMany()
+                        .HasForeignKey("EmployeesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Area");
-
-                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Professor", b =>
@@ -868,15 +801,8 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("EduPrime.Core.Entities.Area", b =>
-                {
-                    b.Navigation("AreasEmployees");
-                });
-
             modelBuilder.Entity("EduPrime.Core.Entities.Employee", b =>
                 {
-                    b.Navigation("AreasEmployees");
-
                     b.Navigation("Professor")
                         .IsRequired();
                 });

@@ -13,6 +13,6 @@
 
         public DateTime? UpdatedOn { get; set; }
 
-        public List<AreaEmployee> AreasEmployees { get; set; }
+        public List<Employee> Employees { get; set; }
     }
 }

@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EduPrime.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Area Entity Framework Configuration
+    /// </summary>
     public class AreaConfig : IEntityTypeConfiguration<Area>
     {
         public void Configure(EntityTypeBuilder<Area> builder)
@@ -12,19 +15,9 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasMaxLength(50)
                 .IsRequired();
 
-            builder.HasIndex(prop => prop.Name)
-                .HasFilter("isDeleted = 'false'")
-                .IsUnique();
-
             builder.Property(prop => prop.Description)
                 .HasMaxLength(200)
                 .IsRequired(false);
-
-            builder.Property(prop => prop.IsDeleted)
-                .HasDefaultValue(false)
-                .IsRequired();
-
-            builder.HasQueryFilter(prop => !prop.IsDeleted);
 
             builder.Property(prop => prop.CreatedOn)
                 .HasDefaultValue(DateTime.Now)

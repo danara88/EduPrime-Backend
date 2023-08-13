@@ -11,9 +11,9 @@ namespace EduPrime.Infrastructure.Data.Seeding
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-            /*
-            * Areas
-            */
+            /**
+             * Areas
+             */
             var professorArea = new Area { Id = 1, Name = "Professor", Description = "Only those who teach a subject", CreatedOn = DateTime.Now };
             var administrativeArea = new Area { Id = 2, Name = "Office administrative", Description = "Office administrative area", CreatedOn = DateTime.Now };
             var cleaningArea = new Area { Id = 3, Name = "Clean service", Description = "School clean service", CreatedOn = DateTime.Now };
@@ -82,52 +82,21 @@ namespace EduPrime.Infrastructure.Data.Seeding
             modelBuilder.Entity<Employee>().HasData(BrendaLopezEmployee, AlmaRosaEmployee, LorenaSuarezEmployee, ReginaGonzalesEmployee, LuisCarranzaEmployee);
 
             /**
-             * EmployeesRoles
+             * AreaEmployee
              */
-            var BrendaProfessorArea = new AreaEmployee
-            {
-                EmployeeId = BrendaLopezEmployee.Id,
-                AreaId = professorArea.Id
-            };
+            var areaEmployeeEntity = "AreaEmployee";
+            var areaId = "AreasId";
+            var employeeId = "EmployeesId";
 
-            var AlmaRosaProfessorArea = new AreaEmployee
-            {
-                EmployeeId = AlmaRosaEmployee.Id,
-                AreaId = professorArea.Id
-            };
-
-            var AlmaRosaAdministrativeArea = new AreaEmployee
-            {
-                EmployeeId = AlmaRosaEmployee.Id,
-                AreaId = administrativeArea.Id
-            };
-
-            var LorenaAdministrativeArea = new AreaEmployee
-            {
-                EmployeeId = LorenaSuarezEmployee.Id,
-                AreaId = administrativeArea.Id
-            };
-
-            var LorenaProfessorArea = new AreaEmployee
-            {
-                EmployeeId = LorenaSuarezEmployee.Id,
-                AreaId = professorArea.Id
-            };
-
-            var ReginaCleanerArea = new AreaEmployee
-            {
-                EmployeeId = ReginaGonzalesEmployee.Id,
-                AreaId = cleaningArea.Id
-            };
-
-            var LuisSecurityGuardArea = new AreaEmployee
-            {
-                EmployeeId = LuisCarranzaEmployee.Id,
-                AreaId = securityGuardArea.Id
-            };
-
-            modelBuilder.Entity<AreaEmployee>()
-                .HasData(BrendaProfessorArea, AlmaRosaProfessorArea, AlmaRosaAdministrativeArea, LorenaAdministrativeArea, LorenaProfessorArea, ReginaCleanerArea, LuisSecurityGuardArea);
+            modelBuilder.Entity(areaEmployeeEntity).HasData(
+                new Dictionary<string, object> { [areaId] = professorArea.Id, [employeeId] = BrendaLopezEmployee.Id },
+                new Dictionary<string, object> { [areaId] = professorArea.Id, [employeeId] = AlmaRosaEmployee.Id },
+                new Dictionary<string, object> { [areaId] = administrativeArea.Id, [employeeId] = AlmaRosaEmployee.Id },
+                new Dictionary<string, object> { [areaId] = administrativeArea.Id, [employeeId] = LorenaSuarezEmployee.Id },
+                new Dictionary<string, object> { [areaId] = professorArea.Id, [employeeId] = LorenaSuarezEmployee.Id },
+                new Dictionary<string, object> { [areaId] = cleaningArea.Id, [employeeId] = ReginaGonzalesEmployee.Id },
+                new Dictionary<string, object> { [areaId] = securityGuardArea.Id, [employeeId] = LuisCarranzaEmployee.Id }
+            );
 
             /**
              * Professors

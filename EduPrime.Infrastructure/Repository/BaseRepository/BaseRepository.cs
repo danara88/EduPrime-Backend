@@ -10,8 +10,8 @@ namespace EduPrime.Infrastructure.Repository
     /// <typeparam name="T"></typeparam>
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        private readonly ApplicationDbContext _context;
-        protected readonly DbSet<T> _entity;
+        private ApplicationDbContext _context;
+        protected DbSet<T> _entity;
 
         public BaseRepository(ApplicationDbContext context)
         {
@@ -34,15 +34,10 @@ namespace EduPrime.Infrastructure.Repository
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Delete(int id)
+        public async Task Delete(int id)
         {
-            var entity = _entity.FirstOrDefault(e => e.Id == id);
-            if (entity is not null)
-            {
-                entity.IsDeleted = true;
-                return true;
-            }
-            return false;
+            T entity = await GetByIdAsync(id);
+            _entity.Remove(entity);
         }
 
         /// <summary>
@@ -51,7 +46,7 @@ namespace EduPrime.Infrastructure.Repository
         /// <returns></returns>
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _entity.ToListAsync();
+            return await _entity.AsNoTracking().ToListAsync();
         }
 
         /// <summary>

@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EduPrime.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// Employee Entity Framework Configuration
+    /// </summary>
     public class EmployeeConfig : IEntityTypeConfiguration<Employee>
     {
         public void Configure(EntityTypeBuilder<Employee> builder)
@@ -37,12 +40,12 @@ namespace EduPrime.Infrastructure.Data.Configurations
                .HasMaxLength(500)
                .IsUnicode(false);
 
-            builder.Property(prop => prop.IsDeleted)
-                .HasDefaultValue(false)
+            builder.Property(prop => prop.CreatedOn)
+                .HasDefaultValue(DateTime.Now)
                 .IsRequired();
 
-            builder.Property(prop => prop.CreatedOn)
-                .IsRequired();
+            builder.HasOne(prop => prop.Professor)
+                .WithOne();
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace EduPrime.Infrastructure.Data
 {
+    /// <summary>
+    /// Application DB Context
+    /// </summary>
     public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options): base(options)
@@ -17,14 +20,13 @@ namespace EduPrime.Infrastructure.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             /*
-             * Comment this piece of code to avoid executing seeding
+             * Comment this line to avoid executing seeding
              */
             DataSeedModule.Seed(modelBuilder);
         }
 
         public DbSet<Area> Areas { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<AreaEmployee> AreasEmployees { get; set; }
         public DbSet<Professor> Professors { get; set; }
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<ProfessorSubject> ProfessorsSubjects { get; set; }

@@ -17,6 +17,6 @@ namespace EduPrime.Infrastructure.Repository
 
         void Update(T entity);
 
-        bool Delete(int id);
+        Task Delete(int id);
     }
 }

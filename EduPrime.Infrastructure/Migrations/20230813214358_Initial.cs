@@ -19,9 +19,8 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 342, DateTimeKind.Local).AddTicks(3342)),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(3938)),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,9 +40,8 @@ namespace EduPrime.Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     Picture = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     RfcDocument = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 332, DateTimeKind.Local).AddTicks(7542)),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -57,9 +55,8 @@ namespace EduPrime.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 344, DateTimeKind.Local).AddTicks(845)),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 334, DateTimeKind.Local).AddTicks(1453)),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,8 +77,7 @@ namespace EduPrime.Infrastructure.Migrations
                     EmergencyContact = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     CurrentSemester = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -97,8 +93,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AvailableSemester = table.Column<int>(type: "int", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -106,24 +101,24 @@ namespace EduPrime.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AreasEmployees",
+                name: "AreaEmployee",
                 columns: table => new
                 {
-                    AreaId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<int>(type: "int", nullable: false)
+                    AreasId = table.Column<int>(type: "int", nullable: false),
+                    EmployeesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AreasEmployees", x => new { x.AreaId, x.EmployeeId });
+                    table.PrimaryKey("PK_AreaEmployee", x => new { x.AreasId, x.EmployeesId });
                     table.ForeignKey(
-                        name: "FK_AreasEmployees_Areas_AreaId",
-                        column: x => x.AreaId,
+                        name: "FK_AreaEmployee_Areas_AreasId",
+                        column: x => x.AreasId,
                         principalTable: "Areas",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AreasEmployees_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
+                        name: "FK_AreaEmployee_Employees_EmployeesId",
+                        column: x => x.EmployeesId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -137,8 +132,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Satisfaction = table.Column<int>(type: "int", maxLength: 100, nullable: false, defaultValue: 0),
-                    YearsOnDuty = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    YearsOnDuty = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
                 },
                 constraints: table =>
                 {
@@ -161,9 +155,8 @@ namespace EduPrime.Infrastructure.Migrations
                     Email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     Password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 7, 18, 22, 51, 3, 345, DateTimeKind.Local).AddTicks(4467)),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 8, 13, 15, 43, 58, 335, DateTimeKind.Local).AddTicks(6034)),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -231,16 +224,9 @@ namespace EduPrime.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Areas_Name",
-                table: "Areas",
-                column: "Name",
-                unique: true,
-                filter: "isDeleted = 'false'");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AreasEmployees_EmployeeId",
-                table: "AreasEmployees",
-                column: "EmployeeId");
+                name: "IX_AreaEmployee_EmployeesId",
+                table: "AreaEmployee",
+                column: "EmployeesId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Professors_EmployeeId",
@@ -268,7 +254,7 @@ namespace EduPrime.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AreasEmployees");
+                name: "AreaEmployee");
 
             migrationBuilder.DropTable(
                 name: "ProfessorsSubjects");

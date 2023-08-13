@@ -12,12 +12,12 @@ namespace EduPrime.API.Controllers
     [ApiController]
     public class AreasController : ControllerBase
     {
-        private readonly IUnitOfWork _UnitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public AreasController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _UnitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -31,14 +31,14 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAreas()
         {
-            var areas = await _UnitOfWork.AreaRepository.GetAllAsync();
+            var areas = await _unitOfWork.AreaRepository.GetAllAsync();
             var areasDTO = _mapper.Map<List<AreaDTO>>(areas);
 
             return Ok(new ApiResponse<List<AreaDTO>>(areasDTO));
         }
 
         /// <summary>
-        /// End point to get an Area by ID
+        /// End point to get an area by id
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -47,7 +47,7 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAreaById(int id)
         {
-            var area = await _UnitOfWork.AreaRepository.GetByIdAsync(id);
+            var area = await _unitOfWork.AreaRepository.GetByIdAsync(id);
             if (area is null)
             {
                 return NotFound();
@@ -59,7 +59,7 @@ namespace EduPrime.API.Controllers
         }
 
         /// <summary>
-        /// End point to create an Area
+        /// End point to create an area
         /// </summary>
         /// <param name="createAreaDTO"></param>
         /// <returns></returns>
@@ -75,7 +75,7 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The inserted values are not valid.");
             }
 
-            if (await _UnitOfWork.AreaRepository.ExistsAnyArea(createAreaDTO.Name))
+            if (await _unitOfWork.AreaRepository.ExistsAnyArea(createAreaDTO.Name))
             {
                 throw new BadRequestException($"The area with name {createAreaDTO.Name} already exists.");
             }
@@ -83,8 +83,8 @@ namespace EduPrime.API.Controllers
             var area = _mapper.Map<Area>(createAreaDTO);
             try
             {
-                await _UnitOfWork.AreaRepository.AddAsync(area);
-                await _UnitOfWork.SaveChangesAsync();
+                await _unitOfWork.AreaRepository.AddAsync(area);
+                await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -118,7 +118,7 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The inserted values are not valid.");
             }
 
-            var areaDB = await _UnitOfWork.AreaRepository.GetByIdAsync(updateAreaDTO.Id);
+            var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(updateAreaDTO.Id);
             if (areaDB is null)
             {
                 throw new BadRequestException($"The area with id {updateAreaDTO.Id} does not exist.");
@@ -128,7 +128,7 @@ namespace EduPrime.API.Controllers
             areaDB.UpdatedOn = DateTime.Now;
             try
             {
-                await _UnitOfWork.SaveChangesAsync();
+                await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -153,16 +153,16 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteArea(int id)
         {
-            var areaDB = await _UnitOfWork.AreaRepository.GetByIdAsync(id);
+            var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(id);
             if (areaDB is null)
             {
                 throw new BadRequestException($"The area with id {id} does not exist.");
             }
 
-            areaDB.IsDeleted = true;
             try
             {
-                await _UnitOfWork.SaveChangesAsync();
+                _unitOfWork.AreaRepository.Delete(id);
+                await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -182,15 +182,7 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetAreasWithEmployees()
         {
-            var areasWithEmployees = new List<Area>();
-            try
-            {
-                areasWithEmployees = await _UnitOfWork.AreaRepository.GetAreasWithEmployeesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while fetching the resources.");
-            }
+            var areasWithEmployees = await _unitOfWork.AreaRepository.GetAreasWithEmployeesAsync();
             var areasWithEmployeesDTO = _mapper.Map<List<AreaWithEmployeesDTO>>(areasWithEmployees);
             var response = new ApiResponse<List<AreaWithEmployeesDTO>>(areasWithEmployeesDTO);
 

@@ -1,30 +1,28 @@
-﻿namespace EduPrime.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EduPrime.Core.DTOs.Employee
 {
-    /// <summary>
-    /// Employee Entity
-    /// </summary>
-    public class Employee : BaseEntity
+    public class UpdateEmployeeDTO
     {
+        [Required]
+        public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Surname { get; set; }
 
         public DateTime? BirthDate { get; set; }
 
+        [Required]
         public string Email { get; set; }
 
+        [Required]
         public string PhoneNumber { get; set; }
 
         public string? Picture { get; set; }
 
         public string? RfcDocument { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? UpdatedOn { get; set; }
-
-        public Professor Professor { get; set; }
-
-        public List<Area> Areas { get; set; }
     }
 }

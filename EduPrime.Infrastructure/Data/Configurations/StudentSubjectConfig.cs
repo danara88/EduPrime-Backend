@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EduPrime.Infrastructure.Data.Configurations
 {
+    /// <summary>
+    /// StudentSubject Entity Framework Configuration
+    /// </summary>
     public class StudentSubjectConfig : IEntityTypeConfiguration<StudentSubject>
     {
         public void Configure(EntityTypeBuilder<StudentSubject> builder)

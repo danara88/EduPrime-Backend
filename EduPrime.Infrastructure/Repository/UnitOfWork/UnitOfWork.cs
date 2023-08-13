@@ -10,7 +10,7 @@ namespace EduPrime.Infrastructure.Repository
     {
         private readonly ApplicationDbContext _context;
         private readonly IAreaRepository _areaRepository;
-        private readonly IBaseRepository<Employee> _employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly IBaseRepository<Professor> _professorRepository;
         private readonly IBaseRepository<Student> _studentRepository;
         private readonly IBaseRepository<Subject> _subjectRepository;
@@ -24,7 +24,7 @@ namespace EduPrime.Infrastructure.Repository
 
         public IAreaRepository AreaRepository => _areaRepository ?? new AreaRepository(_context);
 
-        public IBaseRepository<Employee> EmployeeRepository => _employeeRepository ?? new BaseRepository<Employee>(_context);
+        public IEmployeeRepository EmployeeRepository => _employeeRepository ?? new EmployeeRepository(_context);
 
         public IBaseRepository<Professor> ProfessorRepository => _professorRepository ?? new BaseRepository<Professor>(_context);
 
