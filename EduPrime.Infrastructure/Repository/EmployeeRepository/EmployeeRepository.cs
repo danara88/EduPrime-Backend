@@ -31,5 +31,25 @@ namespace EduPrime.Infrastructure.Repository
                 .Where(e => e.Professor.Id > 0)
                 .ToListAsync();
         }
+
+        /// <summary>
+        /// Gets an employee with professor data by professor id
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Employee> GetEmployeeWithProfessor(int professorId)
+        {
+            return await _entity
+                .Include(e => e.Professor)
+                .FirstOrDefaultAsync(e => e.Professor.Id == professorId);
+        }
+
+        /// <summary>
+        /// Gets an employee
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Employee> GetEmployeeAsync(int id)
+        {
+            return await _entity.Include(e => e.Areas).FirstOrDefaultAsync(e => e.Id == id);
+        }
     }
 }

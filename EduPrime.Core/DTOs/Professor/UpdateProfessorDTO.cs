@@ -1,8 +1,8 @@
 ﻿namespace EduPrime.Core.DTOs.Professor
 {
-    public class CreateProfessorDTO
+    public class UpdateProfessorDTO
     {
-        public int EmployeeId { get; set; }
+        public int Id { get; set; }
 
         public int Satisfaction { get; set; }
 

@@ -10,5 +10,9 @@ namespace EduPrime.Infrastructure.Repository
         Task<bool> ExistsAnyEmployee(int id);
 
         Task<List<Employee>> GetEmployeesWithProfessor();
+
+        Task<Employee> GetEmployeeWithProfessor(int professorId);
+
+        Task<Employee> GetEmployeeAsync(int id);
     }
 }

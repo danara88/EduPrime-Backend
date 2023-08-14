@@ -29,6 +29,7 @@ namespace EduPrime.Infrastructure.Mapper
             CreateMap<Employee, EmployeeAsProfessorDTO>();
             CreateMap<Professor, ProfessorDTO>();
             CreateMap<CreateProfessorDTO, Professor>();
+            CreateMap<UpdateProfessorDTO, Professor>();
             #endregion
         }
     }
