@@ -1,6 +1,4 @@
-﻿using EduPrime.Core.DTOs.Employee;
-
-namespace EduPrime.Core.DTOs.Professor
+﻿namespace EduPrime.Core.DTOs.Professor
 {
     public class ProfessorDTO
     {

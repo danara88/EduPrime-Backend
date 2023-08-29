@@ -21,7 +21,7 @@ namespace EduPrime.Core.DTOs.Employee
         [Required]
         public string PhoneNumber { get; set; }
 
-        public string? Picture { get; set; }
+        public string? PictureURL { get; set; }
 
         public string? RfcDocument { get; set; }
     }

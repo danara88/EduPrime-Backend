@@ -230,7 +230,7 @@ namespace EduPrime.API.Controllers
                 if (!string.IsNullOrEmpty(uploadEmployeeFileDTO.fileBase64))
                 {
                     var pictureFileName = GeneratePictureFileName($"picture.{IsValidBase64Image(uploadEmployeeFileDTO.fileBase64).Item2}", employee);
-                    employee.Picture = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadEmployeeFileDTO.fileBase64, containerName);
+                    employee.PictureURL = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadEmployeeFileDTO.fileBase64, containerName);
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else

@@ -32,7 +32,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .IsUnicode(false)
                 .IsRequired();
 
-            builder.Property(prop => prop.Picture)
+            builder.Property(prop => prop.PictureURL)
                 .HasMaxLength(500)
                 .IsUnicode(false);
 
