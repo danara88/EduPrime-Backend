@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using EduPrime.Infrastructure.Filters;
 using EduPrime.Infrastructure.Services;
+using EduPrime.Infrastructure.AzureServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
+builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
+builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

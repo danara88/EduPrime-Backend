@@ -3,9 +3,11 @@ using EduPrime.API.Response;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
+using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EduPrime.API.Controllers
 {
@@ -15,13 +17,22 @@ namespace EduPrime.API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepositoryService _employeeRepositoryService;
+        private readonly IBlobStorageService _blobStorageService;
+        private readonly AzureSettings _azureSettings;
         private readonly IMapper _mapper;
 
-        public EmployeesController(IUnitOfWork unitOfWork, IMapper mapper, IEmployeeRepositoryService employeeService)
+        public EmployeesController(
+            IUnitOfWork unitOfWork, 
+            IMapper mapper, 
+            IEmployeeRepositoryService employeeService, 
+            IBlobStorageService blobStorageService,
+            IOptions<AzureSettings> azureSettings)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _employeeRepositoryService = employeeService;
+            _blobStorageService = blobStorageService;
+            _azureSettings = azureSettings.Value;
         }
 
         /// <summary>
@@ -76,6 +87,7 @@ namespace EduPrime.API.Controllers
             {
                 throw new BadRequestException("The inserted values are not valid.");
             }
+
             createEmployeeDTO.Areas = createEmployeeDTO.Areas?.Distinct().ToList();
             var employee = _mapper.Map<Employee>(createEmployeeDTO);
 
@@ -124,6 +136,154 @@ namespace EduPrime.API.Controllers
             };
 
             return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to upload a RFC document to an employee
+        /// </summary>
+        /// <param name="uploadEmployeeFileDTO"></param>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPost("upload-employee-rfc/{employeeId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> UploadRFCDocument([FromBody] UploadEmployeeFileDTO uploadEmployeeFileDTO, int employeeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new BadRequestException("The inserted values are not valid.");
+            }
+
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
+            if (employee is null)
+            {
+                throw new BadRequestException($"The employee with id {employeeId} does not exist.");
+            }
+
+            if (!IsValidBase64Pdf(uploadEmployeeFileDTO.fileBase64))
+            {
+                throw new BadRequestException("The file must be a PDF file.");
+            }
+
+            var containerName = _azureSettings.EmployeesRfcsContainer;
+            try
+            {
+                if (!string.IsNullOrEmpty(uploadEmployeeFileDTO.fileBase64))
+                {
+                    string newFileName = GenerateFileName("rfc.pdf", employee);
+                    employee.RfcDocument = newFileName;
+                    await _blobStorageService.UploadFileBlobAsync(newFileName, uploadEmployeeFileDTO.fileBase64, containerName);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+                var employeeDTO = _mapper.Map<EmployeeDTO>(employee);
+                var response = new ApiResponse<EmployeeDTO>(employeeDTO);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while uploading the resource.");
+            }
+        }
+
+        /// <summary>
+        /// End point to upload a picture for an employee
+        /// </summary>
+        /// <param name="uploadEmployeeFileDTO"></param>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPost("upload-employee-picture/{employeeId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> UploadEmployeePicture([FromBody] UploadEmployeeFileDTO uploadEmployeeFileDTO, int employeeId)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new BadRequestException("The inserted values are not valid.");
+            }
+
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
+            if (employee is null)
+            {
+                throw new BadRequestException($"The employee with id {employeeId} does not exist.");
+            }
+
+            if (!IsValidBase64Image(uploadEmployeeFileDTO.fileBase64).Item1)
+            {
+                throw new BadRequestException("The file must be a png or jpg image.");
+            }
+
+            var containerName = _azureSettings.EmployeesPicturesContainer;
+            try
+            {
+                if (!string.IsNullOrEmpty(uploadEmployeeFileDTO.fileBase64))
+                {
+                    var pictureFileName = GeneratePictureFileName($"picture.{IsValidBase64Image(uploadEmployeeFileDTO.fileBase64).Item2}", employee);
+                    employee.Picture = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadEmployeeFileDTO.fileBase64, containerName);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+                var employeeDTO = _mapper.Map<EmployeeDTO>(employee);
+                var response = new ApiResponse<EmployeeDTO>(employeeDTO);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while uploading the resource.");
+            }
+        }
+
+        /// <summary>
+        /// Downloads the RFC document from an employee 
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpGet("download-employee-rfc/{employeeId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> DownloadRFCFile(int employeeId)
+        {
+            var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
+            if (employee is null)
+            {
+                throw new BadRequestException($"The employee with id {employeeId} does not exist.");
+            }
+
+            if (employee.RfcDocument is null)
+            {
+                throw new BadRequestException($"The employee doesn't have any RFC document.");
+            }
+
+            try
+            {
+                Stream blobStream = await _blobStorageService.DownloadBlobInBrowserAsync(_azureSettings.EmployeesRfcsContainer, employee.RfcDocument);
+                Response.Headers.Add("Content-Disposition", "attachment; filename=" + employee.RfcDocument);
+                return File(blobStream, "application/octet-stream");
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while uploading the resource.");
+            }
+           
         }
 
         /// <summary>
@@ -198,6 +358,67 @@ namespace EduPrime.API.Controllers
 
             var response = new ApiResponse<object>("");
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Generates a unique file name
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="employeeDTO"></param>
+        /// <returns></returns>
+        private string GenerateFileName(string fileName, Employee employeeDTO)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string documentName = $"{guid}{employeeDTO.Name}{employeeDTO.Surname}{fileName}";
+            return documentName.Replace(" ", "");
+        }
+
+        /// <summary>
+        /// Generates a unique file picture name.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="employeeDTO"></param>
+        /// <returns></returns>
+        private string GeneratePictureFileName(string fileName, Employee employeeDTO)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string documentName = $"{guid}{employeeDTO.Name}{employeeDTO.Surname}{fileName}";
+            return documentName.Replace(" ", "");
+        }
+
+        /// <summary>
+        /// Validates if the base64 string is PDF
+        /// </summary>
+        /// <param name="base64String"></param>
+        /// <returns></returns>
+        private bool IsValidBase64Pdf(string base64String)
+        {
+            var data = base64String.Substring(0, 5).ToLower();
+            return data == "jvber" ? true : false;
+        }
+
+        /// <summary>
+        /// Valdiates if the base64 string is an acceptable image
+        /// </summary>
+        /// <param name="base64String"></param>
+        /// <returns></returns>
+        private (bool, string) IsValidBase64Image(string base64String)
+        {
+            var data = base64String.Substring(0, 5).ToLower();
+            var validTerms = new string[] { "ivbor", "/9j/4" };
+            var isValidImage = false;
+            var fileExtension = "";
+            if (validTerms.Contains(data))
+            {
+                fileExtension = data switch
+                {
+                    "ivbor" => "png",
+                    "/9j/4" => "jpg",
+                    _ => "jpg"
+                };
+                isValidImage = true;
+            }
+            return (isValidImage, fileExtension);
         }
     }
 }
