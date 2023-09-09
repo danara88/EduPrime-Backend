@@ -19,6 +19,7 @@ namespace EduPrime.Infrastructure.Repository
             return await _entity
                 .Include(s => s.ProfessorsSubjects)
                 .ThenInclude(ps => ps.Professor)
+                .ThenInclude(p => p.Employee)
                 .ToListAsync();
         }
 
@@ -32,6 +33,7 @@ namespace EduPrime.Infrastructure.Repository
             return await _entity
                 .Include(s => s.ProfessorsSubjects)
                 .ThenInclude(ps => ps.Professor)
+                .ThenInclude(p => p.Employee)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 

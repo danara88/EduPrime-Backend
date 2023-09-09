@@ -44,9 +44,9 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasDefaultValue(DateTime.Now)
                 .IsRequired();
 
-            builder.HasOne(prop => prop.Professor)
-                .WithOne()
-                .HasForeignKey<Professor>(p => p.EmployeeId);
+            builder.HasOne(employee => employee.Professor)
+                .WithOne(professor => professor.Employee)
+                .HasForeignKey<Professor>(professor => professor.EmployeeId);
         }
     }
 }

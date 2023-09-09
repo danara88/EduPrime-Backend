@@ -30,10 +30,10 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetProfessors()
         {
-            var employeesWithProfessor = await _unitOfWork.EmployeeRepository.GetEmployeesWithProfessor();
-            var employeesWithProfessorDTO = _mapper.Map<List<EmployeeAsProfessorDTO>>(employeesWithProfessor);
+            var professors = await _unitOfWork.ProfessorRepository.GetProfessorsWithEmployeeAsync();
+            var professorsDTO = _mapper.Map<List<ProfessorDTO>>(professors);
 
-            return Ok(new ApiResponse<List<EmployeeAsProfessorDTO>>(employeesWithProfessorDTO));
+            return Ok(new ApiResponse<List<ProfessorDTO>>(professorsDTO));
         }
 
 
@@ -47,13 +47,13 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProfessorById(int id)
         {
-            var employeeWithProfessor = await _unitOfWork.EmployeeRepository.GetEmployeeWithProfessor(id);
-            if (employeeWithProfessor is null)
+            var professor = await _unitOfWork.ProfessorRepository.GetProfessorWithEmployeeAsync(id);
+            if (professor is null)
             {
                 return NotFound();
             }
-            var employeeDTO = _mapper.Map<EmployeeAsProfessorDTO>(employeeWithProfessor);
-            var response = new ApiResponse<EmployeeAsProfessorDTO>(employeeDTO);
+            var professorDTO = _mapper.Map<ProfessorDTO>(professor);
+            var response = new ApiResponse<ProfessorDTO>(professorDTO);
 
             return Ok(response);
         }

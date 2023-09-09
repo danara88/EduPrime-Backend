@@ -11,6 +11,8 @@
 
         public int YearsOnDuty { get; set; }
 
+        public Employee Employee { get; set; }
+
         public List<ProfessorSubject> ProfessorsSubjects { get; set; }
     }
 }

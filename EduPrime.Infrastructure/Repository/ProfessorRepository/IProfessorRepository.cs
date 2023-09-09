@@ -8,5 +8,9 @@ namespace EduPrime.Infrastructure.Repository
     public interface IProfessorRepository : IBaseRepository<Professor>
     {
         Task<bool> ExistsAnyProfessor(int id);
+
+        Task<List<Professor>> GetProfessorsWithEmployeeAsync();
+
+        Task<Professor> GetProfessorWithEmployeeAsync(int id);
     }
 }
