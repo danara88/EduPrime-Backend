@@ -12,6 +12,8 @@ namespace EduPrime.Infrastructure.Data.Configurations
         public void Configure(EntityTypeBuilder<ProfessorSubject> builder)
         {
             builder.HasKey(prop => new { prop.ProfessorId, prop.SubjectId });
+
+            builder.Ignore(ps => ps.Id);
         }
     }
 }

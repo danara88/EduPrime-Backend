@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using EduPrime.API.Response;
-using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
@@ -178,7 +177,7 @@ namespace EduPrime.API.Controllers
 
             try
             {
-                _unitOfWork.ProfessorRepository.Delete(id);
+                await _unitOfWork.ProfessorRepository.Delete(professorDB.Id);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)

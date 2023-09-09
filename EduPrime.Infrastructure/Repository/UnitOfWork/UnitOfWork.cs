@@ -11,9 +11,10 @@ namespace EduPrime.Infrastructure.Repository
         private readonly ApplicationDbContext _context;
         private readonly IAreaRepository _areaRepository;
         private readonly IEmployeeRepository _employeeRepository;
-        private readonly IBaseRepository<Professor> _professorRepository;
+        private readonly IProfessorRepository _professorRepository;
         private readonly IBaseRepository<Student> _studentRepository;
-        private readonly IBaseRepository<Subject> _subjectRepository;
+        private readonly IBaseRepository<ProfessorSubject> _professorSubjectRepository;
+        private readonly ISubjectRepository _subjectRepository;
         private readonly IBaseRepository<User> _userRepository;
         private readonly IBaseRepository<Role> _roleRepository;
 
@@ -26,11 +27,13 @@ namespace EduPrime.Infrastructure.Repository
 
         public IEmployeeRepository EmployeeRepository => _employeeRepository ?? new EmployeeRepository(_context);
 
-        public IBaseRepository<Professor> ProfessorRepository => _professorRepository ?? new BaseRepository<Professor>(_context);
+        public IProfessorRepository ProfessorRepository => _professorRepository ?? new ProfessorRepository(_context);
+
+        public IBaseRepository<ProfessorSubject> ProfessorSubjectRepository => _professorSubjectRepository ?? new BaseRepository<ProfessorSubject>(_context);
 
         public IBaseRepository<Student> StudentRepository => _studentRepository ?? new BaseRepository<Student>(_context);
 
-        public IBaseRepository<Subject> SubjectRepository => _subjectRepository ?? new BaseRepository<Subject>(_context);
+        public ISubjectRepository SubjectRepository => _subjectRepository ?? new SubjectRepository(_context);
 
         public IBaseRepository<User> UserRepository => _userRepository ?? new BaseRepository<User>(_context);
 

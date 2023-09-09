@@ -348,7 +348,7 @@ namespace EduPrime.API.Controllers
 
             try
             {
-                _unitOfWork.EmployeeRepository.Delete(id);
+                await _unitOfWork.EmployeeRepository.Delete(employeeDB.Id);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)

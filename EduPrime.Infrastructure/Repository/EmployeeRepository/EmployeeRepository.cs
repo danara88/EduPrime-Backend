@@ -9,6 +9,7 @@ namespace EduPrime.Infrastructure.Repository
         public EmployeeRepository(ApplicationDbContext context) : base(context)
         {
         }
+
         /// <summary>
         /// Verifies if an employee exists by id
         /// </summary>

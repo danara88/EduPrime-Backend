@@ -30,7 +30,7 @@ namespace EduPrime.Infrastructure.Repository
         }
 
         /// <summary>
-        /// Delete entity (soft delete)
+        /// Delete entity
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

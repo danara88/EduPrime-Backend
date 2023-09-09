@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using EduPrime.Infrastructure.Filters;
 using EduPrime.Infrastructure.Services;
 using EduPrime.Infrastructure.AzureServices;
+using EduPrime.API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,10 @@ builder.Services.AddControllers(options =>
     options.CacheProfiles.Add("OneMinuteCache", new CacheProfile
     {
         Duration = 60
+    });
+    options.CacheProfiles.Add("HalfMinuteCache", new CacheProfile 
+    { 
+        Duration = 30 
     });
     options.Filters.Add<GlobalExceptionFilter>();
 });
@@ -26,6 +31,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+builder.Services.AddTransient<ISubjectService, SubjectService>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();

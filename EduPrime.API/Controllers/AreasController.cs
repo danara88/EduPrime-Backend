@@ -161,7 +161,7 @@ namespace EduPrime.API.Controllers
 
             try
             {
-                _unitOfWork.AreaRepository.Delete(id);
+                await _unitOfWork.AreaRepository.Delete(areaDB.Id);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)

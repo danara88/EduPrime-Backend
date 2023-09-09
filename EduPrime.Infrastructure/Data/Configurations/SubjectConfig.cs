@@ -15,7 +15,8 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasMaxLength(100);
 
             builder.Property(prop => prop.CreatedOn)
-               .IsRequired();
+              .HasDefaultValue(DateTime.Now)
+              .IsRequired();
         }
     }
 }
