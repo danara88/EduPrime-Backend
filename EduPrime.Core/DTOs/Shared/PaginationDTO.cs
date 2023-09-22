@@ -1,6 +1,6 @@
-﻿namespace EduPrime.Core.DTOs.Subject
+﻿namespace EduPrime.Core.DTOs.Shared
 {
-    public class SubjectPaginationDTO
+    public class PaginationDTO
     {
         public int CurrentPage { get; set; } = 1;
 

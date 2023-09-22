@@ -36,7 +36,8 @@ namespace EduPrime.Infrastructure.Data.Configurations
                .IsUnicode(false);
 
             builder.Property(prop => prop.CreatedOn)
-               .IsRequired();
+                .HasDefaultValue(DateTime.Now)
+                .IsRequired();
         }
     }
 }

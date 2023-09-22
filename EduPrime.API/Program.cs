@@ -15,12 +15,13 @@ builder.Services.AddControllers(options =>
     {
         Duration = 60
     });
-    options.CacheProfiles.Add("HalfMinuteCache", new CacheProfile 
-    { 
-        Duration = 30 
+    options.CacheProfiles.Add("HalfMinuteCache", new CacheProfile
+    {
+        Duration = 30
     });
     options.Filters.Add<GlobalExceptionFilter>();
-});
+}).AddNewtonsoftJson(options => 
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -7,6 +7,7 @@ using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Core.Enums.Subject;
 using Microsoft.AspNetCore.Mvc;
+using EduPrime.Core.DTOs.Shared;
 
 namespace EduPrime.API.Controllers
 {
@@ -28,17 +29,17 @@ namespace EduPrime.API.Controllers
         /// <summary>
         /// End point to return subjects paginated
         /// </summary>
-        /// <param name="subjectPaginationDTO"></param>
+        /// <param name="paginationDTO"></param>
         /// <returns></returns>
         [HttpGet("get-subjects")]
         [ResponseCache(CacheProfileName = "HalfMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<IActionResult> GetSubjects([FromQuery] SubjectPaginationDTO subjectPaginationDTO)
+        public async Task<IActionResult> GetSubjects([FromQuery] PaginationDTO paginationDTO)
         {
             var subjects = (await _unitOfWork.SubjectRepository.GetSubjectsWithProfessorsAsync())
-                .Skip((subjectPaginationDTO.CurrentPage - 1) * subjectPaginationDTO.QuantityPerPage)
-                .Take(subjectPaginationDTO.QuantityPerPage)
+                .Skip((paginationDTO.CurrentPage - 1) * paginationDTO.QuantityPerPage)
+                .Take(paginationDTO.QuantityPerPage)
                 .ToList();
             var subjectsDTO = _mapper.Map<List<SubjectDTO>>(subjects);
              

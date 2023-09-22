@@ -13,7 +13,7 @@ namespace EduPrime.Infrastructure.Repository
 
         IProfessorRepository ProfessorRepository { get; }
 
-        IBaseRepository<Student> StudentRepository { get; }
+        IStudentRepository StudentRepository { get; }
 
         IBaseRepository<ProfessorSubject> ProfessorSubjectRepository { get; }
 

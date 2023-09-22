@@ -2,6 +2,7 @@
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
+using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
 
@@ -37,6 +38,17 @@ namespace EduPrime.Infrastructure.Mapper
                 .ForMember(dto => dto.Professors, ent => ent.MapFrom(prop => prop.ProfessorsSubjects.Select(ps => ps.Professor)));
             CreateMap<CreateSubjectDTO, Subject>();
             CreateMap<UpdateSubjectDTO, Subject>();
+            #endregion
+
+            #region Student
+            CreateMap<Student, StudentDTO>()
+                .ForMember(dto => dto.Assignments, ent => ent.MapFrom(prop => prop.StudentsSubjects));
+            CreateMap<UpdateStudentDTO, Student>();
+            CreateMap<CreateStudentDTO, Student>();
+            #endregion
+
+            #region StudentSubject
+            CreateMap<StudentSubject, StudentSubjectDTO>();
             #endregion
         }
     }
