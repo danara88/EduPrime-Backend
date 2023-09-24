@@ -19,9 +19,6 @@ namespace EduPrime.Infrastructure.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            /*
-             * Comment this line to avoid executing seeding
-             */
             DataSeedModule.Seed(modelBuilder);
         }
 
