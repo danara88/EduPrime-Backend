@@ -227,6 +227,66 @@ namespace EduPrime.API.Controllers
         }
 
         /// <summary>
+        /// End point to update student assignment notes
+        /// </summary>
+        /// <param name="updateStudentAssignmentDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPut("update-student-assignment")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateStudentAssignment([FromBody] UpdateStudentAssignmentDTO updateStudentAssignmentDTO)
+        {
+            var studentDB = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(updateStudentAssignmentDTO.StudentId);
+            var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(updateStudentAssignmentDTO.SubjectId);
+
+            // Validate that the student exists
+            if (studentDB is null)
+            {
+                throw new BadRequestException($"The student with id {updateStudentAssignmentDTO.StudentId} does not exist.");
+            }
+
+            // Validate that the subject exists
+            if (subjectDB is null)
+            {
+                throw new BadRequestException($"The subject with id {updateStudentAssignmentDTO.SubjectId} does not exist.");
+            }
+
+            // Validate that the student is currently assigned to the subject
+            var assignedSubjects = new List<Subject>();
+            foreach (var studentSubject in studentDB.StudentsSubjects)
+            {
+                assignedSubjects.Add(studentSubject.Subject);
+            }
+
+            if (!assignedSubjects.Contains(subjectDB))
+            {
+                throw new BadRequestException($"The student with id {updateStudentAssignmentDTO.StudentId} is not assigned to the subject with id {subjectDB.Id}");
+            }
+
+            var studentSubjectToUpdate = studentDB.StudentsSubjects.First(ss => ss.SubjectId == subjectDB.Id);
+            studentSubjectToUpdate.FirstGrade = updateStudentAssignmentDTO.FirstGrade;
+            studentSubjectToUpdate.SecondGrade = updateStudentAssignmentDTO.SecondGrade;
+            studentSubjectToUpdate.FinalGrade = updateStudentAssignmentDTO.FinalGrade;
+            studentSubjectToUpdate.Status = updateStudentAssignmentDTO.Status;
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while updating the resource.");
+            }
+
+            var response = new ApiResponse<object>("");
+            return Ok(response);
+        }
+
+        /// <summary>
         /// End point to update a student
         /// </summary>
         /// <param name="updateStudentDTO"></param>
