@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EduPrime.API.Response;
+using EduPrime.API.Services;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
+using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
@@ -14,12 +16,14 @@ namespace EduPrime.API.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
 
-        public StudentsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public StudentsController(IUnitOfWork unitOfWork, IMapper mapper, IStudentService studentService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _studentService = studentService;
         }
 
         /// <summary>
@@ -102,32 +106,56 @@ namespace EduPrime.API.Controllers
         }
 
         /// <summary>
-        /// End point to delete a student by id
+        /// End point to assign subjects to a student
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="assignSubjectsDTO"></param>
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
-        [HttpDelete("delete-student/{id:int}")]
+        [HttpPost("assign-subjects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteStudent(int id)
+        public async Task<IActionResult> AssignSubjects([FromBody] AssignSubjectsDTO assignSubjectsDTO)
         {
-            var studentDB = await _unitOfWork.StudentRepository.GetByIdAsync(id);
-            if (studentDB is null)
+            if (!(await _unitOfWork.StudentRepository.ExistsAnyStudent(assignSubjectsDTO.StudentId)))
             {
-                throw new BadRequestException($"The student with id {id} does not exist.");
+                throw new BadRequestException($"The student with id {assignSubjectsDTO.StudentId} does not exist.");
+            }
+
+            if (assignSubjectsDTO.SubjectIds.Count() == 0)
+            {
+                throw new BadRequestException("Please assign at least 1 subject.");
+            }
+
+            assignSubjectsDTO.SubjectIds = assignSubjectsDTO.SubjectIds.Distinct().ToList();
+
+            var student = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(assignSubjectsDTO.StudentId);
+
+            var isValidSubjectIds = await _studentService.ValidateSubjectIds(assignSubjectsDTO.SubjectIds, student);
+            if (!isValidSubjectIds.Item1)
+            {
+                throw new BadRequestException(isValidSubjectIds.Item2);
+            }
+
+            foreach (var subjectId in assignSubjectsDTO.SubjectIds)
+            {
+                var studentSubject = new StudentSubject
+                {
+                    StudentId = student.Id,
+                    SubjectId = subjectId
+                };
+
+                student.StudentsSubjects.Add(studentSubject);
             }
 
             try
             {
-                await _unitOfWork.StudentRepository.Delete(studentDB.Id);
                 await _unitOfWork.SaveChangesAsync();
             }
             catch (Exception)
             {
-                throw new InternalServerException("Something went wrong while deleting the resource.");
+                throw new InternalServerException("Something went wrong while creating the resource.");
             }
 
             var response = new ApiResponse<object>("");
@@ -167,6 +195,39 @@ namespace EduPrime.API.Controllers
             catch (Exception)
             {
                 throw new InternalServerException("Something went wrong while updating the resource.");
+            }
+
+            var response = new ApiResponse<object>("");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to delete a student by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpDelete("delete-student/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+            var studentDB = await _unitOfWork.StudentRepository.GetByIdAsync(id);
+            if (studentDB is null)
+            {
+                throw new BadRequestException($"The student with id {id} does not exist.");
+            }
+
+            try
+            {
+                await _unitOfWork.StudentRepository.Delete(studentDB.Id);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while deleting the resource.");
             }
 
             var response = new ApiResponse<object>("");

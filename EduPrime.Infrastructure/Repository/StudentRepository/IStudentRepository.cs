@@ -11,5 +11,7 @@ namespace EduPrime.Infrastructure.Repository
         Task<List<Student>> GetStudentsWithAssignmentsAsync();
 
         Task<Student> GetStudentWithAssignmentsAsync(int id);
+
+        Task<bool> ExistsAnyStudent(int id);
     }
 }

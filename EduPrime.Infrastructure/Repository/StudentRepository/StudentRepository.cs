@@ -38,5 +38,15 @@ namespace EduPrime.Infrastructure.Repository
 
             return studentWithAssignments;
         }
+
+        /// <summary>
+        /// Verifies if there is an existing student by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> ExistsAnyStudent(int id)
+        {
+            return await _entity.AnyAsync(x => x.Id == id);
+        }
     }
 }

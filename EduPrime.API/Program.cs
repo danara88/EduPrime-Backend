@@ -33,6 +33,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<ISubjectService, SubjectService>();
+builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
