@@ -3,8 +3,8 @@ using EduPrime.API.Response;
 using EduPrime.API.Services;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
-using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -156,6 +156,70 @@ namespace EduPrime.API.Controllers
             catch (Exception)
             {
                 throw new InternalServerException("Something went wrong while creating the resource.");
+            }
+
+            var response = new ApiResponse<object>("");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to unassign subjects from a student
+        /// </summary>
+        /// <param name="unassignSubjectsDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPut("unassign-subjects")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UnassignSubjects([FromBody] UnassignSubjectsDTO unassignSubjectsDTO)
+        {
+            if (!(await _unitOfWork.StudentRepository.ExistsAnyStudent(unassignSubjectsDTO.StudentId)))
+            {
+                throw new BadRequestException($"The student with id {unassignSubjectsDTO.StudentId} does not exist.");
+            }
+
+            var student = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(unassignSubjectsDTO.StudentId);
+
+            // Unassign all subjects from the student
+            if (unassignSubjectsDTO.UnassignAction == UnassignSubjectsActionEnum.All)
+            {
+                student.StudentsSubjects.Clear();
+            }
+
+            // Unassign certain subjects from the student
+            if (unassignSubjectsDTO.UnassignAction == UnassignSubjectsActionEnum.NotAll)
+            {
+                if (unassignSubjectsDTO.SubjectIds.Any())
+                {
+                    unassignSubjectsDTO.SubjectIds = unassignSubjectsDTO.SubjectIds.Distinct().ToList();
+
+                    var isValidSubjectsIds = await _studentService.ValidateSubjectIds(unassignSubjectsDTO.SubjectIds, student);
+                    if (!isValidSubjectsIds.Item1)
+                    {
+                        throw new BadRequestException(isValidSubjectsIds.Item2);
+                    }
+
+                    foreach (var subjectId in unassignSubjectsDTO.SubjectIds)
+                    {
+                        var studentSubject = student.StudentsSubjects.FirstOrDefault(ss => ss.SubjectId == subjectId);
+                        if (studentSubject is not null)
+                        {
+                            student.StudentsSubjects.Remove(studentSubject);
+                        }
+                    }
+                }
+            }
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while updating the resource.");
             }
 
             var response = new ApiResponse<object>("");
