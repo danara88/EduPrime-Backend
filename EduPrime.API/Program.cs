@@ -6,6 +6,7 @@ using EduPrime.Infrastructure.Filters;
 using EduPrime.Infrastructure.Services;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.API.Services;
+using EduPrime.API.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<ISubjectService, SubjectService>();
 builder.Services.AddTransient<IStudentService, StudentService>();
+builder.Services.AddTransient<IFileHelper, FileHelper>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
+
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 

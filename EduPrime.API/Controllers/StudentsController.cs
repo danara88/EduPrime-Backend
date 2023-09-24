@@ -1,13 +1,17 @@
 ﻿using AutoMapper;
+using EduPrime.API.Helpers;
 using EduPrime.API.Response;
 using EduPrime.API.Services;
+using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
+using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace EduPrime.API.Controllers
 {
@@ -17,13 +21,25 @@ namespace EduPrime.API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStudentService _studentService;
+        private readonly IBlobStorageService _blobStorageService;
+        private readonly IFileHelper _fileHelper;
         private readonly IMapper _mapper;
+        private readonly AzureSettings _azureSettings;
 
-        public StudentsController(IUnitOfWork unitOfWork, IMapper mapper, IStudentService studentService)
+        public StudentsController(
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IStudentService studentService,
+            IFileHelper fileHelper,
+            IOptions<AzureSettings> azureSettings,
+            IBlobStorageService blobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _studentService = studentService;
+            _fileHelper = fileHelper;
+            _azureSettings = azureSettings.Value;
+            _blobStorageService = blobStorageService;
         }
 
         /// <summary>
@@ -160,6 +176,62 @@ namespace EduPrime.API.Controllers
 
             var response = new ApiResponse<object>("");
             return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to upload a picture for a student
+        /// </summary>
+        /// <param name="uploadStudentFileDTO"></param>
+        /// <param name="studentId"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPost("upload-student-picture/{studentId:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<IActionResult> UploadStudentPicture([FromBody] UploadStudentFileDTO uploadStudentFileDTO, int studentId)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new BadRequestException("The inserted values are not valid.");
+            }
+
+            var student = await _unitOfWork.StudentRepository.GetByIdAsync(studentId);
+            if (student is null)
+            {
+                throw new BadRequestException($"The student with id {studentId} does not exist.");
+            }
+
+            var validBase64Image = _fileHelper.IsValidBase64Image(uploadStudentFileDTO.fileBase64); ;
+            if (!validBase64Image.Item1)
+            {
+                throw new BadRequestException("The file must be a png or jpg image.");
+            }
+
+            var containerName = _azureSettings.StudentsPicturesContainer;
+            try
+            {
+                if (!string.IsNullOrEmpty(uploadStudentFileDTO.fileBase64))
+                {
+                    var pictureFileName = GeneratePictureFileName($"picture.{validBase64Image.Item2}", student);
+                    student.PictureURL = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadStudentFileDTO.fileBase64, containerName);
+                    await _unitOfWork.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+
+                var studentDTO = _mapper.Map<StudentDTO>(student);
+                var response = new ApiResponse<StudentDTO>(studentDTO);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while uploading the resource.");
+            }
         }
 
         /// <summary>
@@ -356,6 +428,19 @@ namespace EduPrime.API.Controllers
 
             var response = new ApiResponse<object>("");
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Generates a unique file picture name.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        private string GeneratePictureFileName(string fileName, Student student)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string documentName = $"{guid}{student.Name}{student.Surname}{fileName}";
+            return documentName.Replace(" ", "");
         }
     }
 }

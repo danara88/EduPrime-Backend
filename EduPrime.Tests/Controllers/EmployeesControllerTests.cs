@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.API.Controllers;
+using EduPrime.API.Helpers;
 using EduPrime.API.Response;
-using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;
@@ -15,7 +15,6 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using System.Security.Cryptography.X509Certificates;
 
 namespace EduPrime.Tests.Controllers
 {
@@ -25,6 +24,7 @@ namespace EduPrime.Tests.Controllers
         private readonly IEmployeeRepositoryService _employeeRepositoryService;
         private readonly IMapper _mapper;
         private readonly IBlobStorageService _blobStorageService;
+        private readonly IFileHelper _fileHelper;
         private readonly IOptions<AzureSettings> _azureSettings;
 
         public EmployeesControllerTests()
@@ -34,6 +34,7 @@ namespace EduPrime.Tests.Controllers
             _mapper = A.Fake<IMapper>();
             _blobStorageService = A.Fake<IBlobStorageService>();
             _azureSettings = A.Fake<IOptions<AzureSettings>>();
+            _fileHelper = A.Fake<IFileHelper>();
         }
 
         #region GetEmployees
@@ -41,7 +42,7 @@ namespace EduPrime.Tests.Controllers
         public async void EmployeesController_GetEmployees_ReturnOK()
         {
             // Arrange
-            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings);
+            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings, _fileHelper);
             A.CallTo(() => _unitOfWork.EmployeeRepository.GetAllAsync()).Returns(EmployeeMocks.employeesMock);
             A.CallTo(() => _mapper.Map<List<EmployeeDTO>>(EmployeeMocks.employeesMock)).Returns(EmployeeMocks.employeesDtoMock);
             // Act
@@ -59,7 +60,7 @@ namespace EduPrime.Tests.Controllers
         public async void EmployeesController_GetEmployeeById_ReturnOK()
         {
             // Arrange
-            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings);
+            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings, _fileHelper);
             A.CallTo(() => _unitOfWork.EmployeeRepository.GetByIdAsync(1)).Returns(EmployeeMocks.employeeMock);
             A.CallTo(() => _mapper.Map<EmployeeDTO>(EmployeeMocks.employeeMock)).Returns(EmployeeMocks.employeeDtoMock);
             // Act
@@ -75,7 +76,7 @@ namespace EduPrime.Tests.Controllers
         public async void EmployeesController_GetEmployeeById_ReturnNotFound()
         {
             // Arrange
-            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings);
+            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings, _fileHelper);
             Employee employeeNull = null!;
             A.CallTo(() => _unitOfWork.EmployeeRepository.GetByIdAsync(999)).Returns(employeeNull);
             // Act
@@ -89,7 +90,7 @@ namespace EduPrime.Tests.Controllers
         public async void EmployeesController_CreateEmployee_ReturnOK()
         {
             // Arrange
-            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings);
+            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings, _fileHelper);
             var createEmployeeDTO = new CreateEmployeeDTO
             {
                 Name = "Test",
@@ -124,7 +125,7 @@ namespace EduPrime.Tests.Controllers
         public async void EmployeesController_CreateEmployee_NotProfessorAreaAssigned_ThrowsInternalServerException()
         {
             // Arrange
-            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings);
+            var controller = new EmployeesController(_unitOfWork, _mapper, _employeeRepositoryService, _blobStorageService, _azureSettings, _fileHelper);
             var createEmployeeDTO = new CreateEmployeeDTO
             {
                 Name = "Test",

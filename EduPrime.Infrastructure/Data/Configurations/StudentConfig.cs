@@ -21,7 +21,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasColumnType("date")
                 .IsRequired(false);
 
-            builder.Property(prop => prop.Picture)
+            builder.Property(prop => prop.PictureURL)
                 .HasMaxLength(500)
                 .IsUnicode(false)
                 .IsRequired(false);

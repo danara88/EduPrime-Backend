@@ -13,7 +13,7 @@ namespace EduPrime.Core.DTOs.Student
 
         public DateTime BirthDate { get; set; }
 
-        public string Picture { get; set; }
+        public string PictureURL { get; set; }
 
         public string PhoneNumber { get; set; }
 

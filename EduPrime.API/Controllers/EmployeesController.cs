@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EduPrime.API.Helpers;
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
@@ -18,21 +19,24 @@ namespace EduPrime.API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmployeeRepositoryService _employeeRepositoryService;
         private readonly IBlobStorageService _blobStorageService;
+        private readonly IFileHelper _fileHelper;
         private readonly AzureSettings _azureSettings;
         private readonly IMapper _mapper;
 
         public EmployeesController(
-            IUnitOfWork unitOfWork, 
-            IMapper mapper, 
-            IEmployeeRepositoryService employeeService, 
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IEmployeeRepositoryService employeeService,
             IBlobStorageService blobStorageService,
-            IOptions<AzureSettings> azureSettings)
+            IOptions<AzureSettings> azureSettings,
+            IFileHelper fileHelper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _employeeRepositoryService = employeeService;
             _blobStorageService = blobStorageService;
             _azureSettings = azureSettings.Value;
+            _fileHelper = fileHelper;
         }
 
         /// <summary>
@@ -163,7 +167,7 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException($"The employee with id {employeeId} does not exist.");
             }
 
-            if (!IsValidBase64Pdf(uploadEmployeeFileDTO.fileBase64))
+            if (!_fileHelper.IsValidBase64Pdf(uploadEmployeeFileDTO.fileBase64))
             {
                 throw new BadRequestException("The file must be a PDF file.");
             }
@@ -219,7 +223,8 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException($"The employee with id {employeeId} does not exist.");
             }
 
-            if (!IsValidBase64Image(uploadEmployeeFileDTO.fileBase64).Item1)
+            var validBase64Image = _fileHelper.IsValidBase64Image(uploadEmployeeFileDTO.fileBase64);
+            if (!validBase64Image.Item1)
             {
                 throw new BadRequestException("The file must be a png or jpg image.");
             }
@@ -229,7 +234,7 @@ namespace EduPrime.API.Controllers
             {
                 if (!string.IsNullOrEmpty(uploadEmployeeFileDTO.fileBase64))
                 {
-                    var pictureFileName = GeneratePictureFileName($"picture.{IsValidBase64Image(uploadEmployeeFileDTO.fileBase64).Item2}", employee);
+                    var pictureFileName = GeneratePictureFileName($"picture.{validBase64Image.Item2}", employee);
                     employee.PictureURL = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadEmployeeFileDTO.fileBase64, containerName);
                     await _unitOfWork.SaveChangesAsync();
                 }
@@ -384,41 +389,6 @@ namespace EduPrime.API.Controllers
             string guid = Guid.NewGuid().ToString();
             string documentName = $"{guid}{employeeDTO.Name}{employeeDTO.Surname}{fileName}";
             return documentName.Replace(" ", "");
-        }
-
-        /// <summary>
-        /// Validates if the base64 string is PDF
-        /// </summary>
-        /// <param name="base64String"></param>
-        /// <returns></returns>
-        private bool IsValidBase64Pdf(string base64String)
-        {
-            var data = base64String.Substring(0, 5).ToLower();
-            return data == "jvber" ? true : false;
-        }
-
-        /// <summary>
-        /// Valdiates if the base64 string is an acceptable image
-        /// </summary>
-        /// <param name="base64String"></param>
-        /// <returns></returns>
-        private (bool, string) IsValidBase64Image(string base64String)
-        {
-            var data = base64String.Substring(0, 5).ToLower();
-            var validTerms = new string[] { "ivbor", "/9j/4" };
-            var isValidImage = false;
-            var fileExtension = "";
-            if (validTerms.Contains(data))
-            {
-                fileExtension = data switch
-                {
-                    "ivbor" => "png",
-                    "/9j/4" => "jpg",
-                    _ => "jpg"
-                };
-                isValidImage = true;
-            }
-            return (isValidImage, fileExtension);
         }
     }
 }

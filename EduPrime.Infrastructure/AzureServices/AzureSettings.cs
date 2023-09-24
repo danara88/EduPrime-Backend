@@ -19,5 +19,10 @@
         /// Employees pictures storage container name
         /// </summary>
         public string EmployeesPicturesContainer { get; set; }
+
+        /// <summary>
+        /// Students pictures storage container name
+        /// </summary>
+        public string StudentsPicturesContainer { get; set; }
     }
 }
