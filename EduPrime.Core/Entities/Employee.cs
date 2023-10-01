@@ -19,10 +19,6 @@
 
         public string? RfcDocument { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? UpdatedOn { get; set; }
-
         public Professor Professor { get; set; }
 
         public List<Area> Areas { get; set; }

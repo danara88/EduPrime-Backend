@@ -28,6 +28,9 @@ namespace EduPrime.Infrastructure.Data.Configurations
 
             builder.Property(prop => prop.CreatedOn)
              .IsRequired();
+
+            // Ignoring fields
+            builder.Ignore(ss => ss.Id);
         }
     }
 }

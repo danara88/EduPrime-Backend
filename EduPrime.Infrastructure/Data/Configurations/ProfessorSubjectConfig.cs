@@ -13,7 +13,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
         {
             builder.HasKey(prop => new { prop.ProfessorId, prop.SubjectId });
 
+            // Ignoring fields
             builder.Ignore(ps => ps.Id);
+            builder.Ignore(ps => ps.CreatedOn);
+            builder.Ignore(ps => ps.UpdatedOn);
         }
     }
 }

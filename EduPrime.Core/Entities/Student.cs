@@ -21,10 +21,6 @@ namespace EduPrime.Core.Entities
 
         public SemesterTypeEnum CurrentSemester { get; set; }
 
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? UpdatedOn { get; set; }
-
         public List<StudentSubject> StudentsSubjects { get; set; }
     }
 }

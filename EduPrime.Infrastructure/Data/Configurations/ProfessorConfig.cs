@@ -18,6 +18,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
             builder.Property(prop => prop.YearsOnDuty)
                 .HasDefaultValue(0);
 
+            builder.Property(prop => prop.CreatedOn)
+                .HasDefaultValue(DateTime.Now)
+                .IsRequired();
+
             builder.HasOne(professor => professor.Employee)
                 .WithOne(employee => employee.Professor);
         }

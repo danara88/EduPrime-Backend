@@ -5,7 +5,7 @@ namespace EduPrime.Core.Entities
     /// <summary>
     /// StudentSubject Entity
     /// </summary>
-    public class StudentSubject
+    public class StudentSubject : BaseEntity
     {
         public int StudentId { get; set; }
 
@@ -18,10 +18,6 @@ namespace EduPrime.Core.Entities
         public int FinalGrade { get; set; }
 
         public SubjectGradeStatus Status { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        public DateTime? UpdatedOn { get; set; }
 
         public Student Student { get; set; }
 

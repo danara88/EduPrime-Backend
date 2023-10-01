@@ -176,7 +176,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 1,
                 EmployeeId = BrendaLopezEmployee.Id,
                 Satisfaction = 85,
-                YearsOnDuty = 5
+                YearsOnDuty = 5,
+                CreatedOn = DateTime.Now
             };
 
             var AlmaRosaProfessor = new Professor
@@ -184,7 +185,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 2,
                 EmployeeId = AlmaRosaEmployee.Id,
                 Satisfaction = 90,
-                YearsOnDuty = 30
+                YearsOnDuty = 30,
+                CreatedOn = DateTime.Now
             };
 
             var LorenaProfessor = new Professor
@@ -192,7 +194,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 3,
                 EmployeeId = LorenaSuarezEmployee.Id,
                 Satisfaction = 90,
-                YearsOnDuty = 15
+                YearsOnDuty = 15,
+                CreatedOn = DateTime.Now
             };
 
             var RamiroProfessor = new Professor
@@ -200,7 +203,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 4,
                 EmployeeId = RamiroTorreroEmployee.Id,
                 Satisfaction = 100,
-                YearsOnDuty = 10
+                YearsOnDuty = 10,
+                CreatedOn = DateTime.Now
             };
 
             var MarisolTorresProfessor = new Professor
@@ -208,7 +212,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 5,
                 EmployeeId = MarisolTorresEmployee.Id,
                 Satisfaction = 45,
-                YearsOnDuty = 3
+                YearsOnDuty = 3,
+                CreatedOn = DateTime.Now
             };
 
             var SofiaCardenasProfessor = new Professor
@@ -216,7 +221,8 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 6,
                 EmployeeId = SofiaCardenasEmployee.Id,
                 Satisfaction = 100,
-                YearsOnDuty = 10
+                YearsOnDuty = 10,
+                CreatedOn = DateTime.Now
             };
 
             modelBuilder.Entity<Professor>().HasData(
