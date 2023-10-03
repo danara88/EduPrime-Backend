@@ -7,6 +7,9 @@ using EduPrime.Infrastructure.Services;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.API.Services;
 using EduPrime.API.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,10 +41,48 @@ builder.Services.AddTransient<IStudentService, StudentService>();
 builder.Services.AddTransient<IFileHelper, FileHelper>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
 
+// Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
 
+// AutoMapper settings
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// JWT Authentication settings
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(jwt =>
+{
+    byte[] secretKey = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:Secret").Value);
+
+    jwt.SaveToken = true;
+    jwt.TokenValidationParameters = new TokenValidationParameters()
+    {
+        // Always validate the secret key that is on the token
+        ValidateIssuerSigningKey = true,
+
+        // The key that we get must be equal to the key that we have created in the issuer
+        IssuerSigningKey = new SymmetricSecurityKey(secretKey),
+
+        // Change to true in production envs.
+        // It validates that the ORIGINAL issuer is the one that emit the token.
+        // Ensures that there is not another source that emit the token.
+        ValidateIssuer = false,
+
+        // Change to true in production envs.
+        // If the client (audience) receive the token, that client can not re-use it in any other place.
+        ValidateAudience = false,
+
+        // Sets token expiration time
+        RequireExpirationTime = false,
+
+        // Validates the life time of the token
+        ValidateLifetime = true
+    };
+});
 
 builder.Services.AddCors(options => options.AddPolicy("AppCorsPolicy", build =>
 {
@@ -59,6 +100,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AppCorsPolicy");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
