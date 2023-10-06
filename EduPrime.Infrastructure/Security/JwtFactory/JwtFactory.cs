@@ -1,4 +1,5 @@
 ﻿using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -33,8 +34,11 @@ namespace EduPrime.Infrastructure.Security
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Name, user.Name),
+                    new Claim("surname", user.Surname),
+                    new Claim("role", ((RoleEnum)user.RoleId).ToString()),
 
                     // Include Iat (Issued at) identify the date and time when this token was emitted.
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
@@ -43,6 +47,8 @@ namespace EduPrime.Infrastructure.Security
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(int.Parse(_jwtSettings.ValidTimeMinutes)),
+                Issuer = _jwtSettings.Issuer,
+                Audience = _jwtSettings.Audience,
 
                 // Verified that the secret key is issued by the ORIGINAL source.
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)

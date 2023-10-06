@@ -78,10 +78,12 @@ builder.Services.AddAuthentication(options =>
         // It validates that the ORIGINAL issuer is the one that emit the token.
         // Ensures that there is not another source that emit the token.
         ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
 
         // Change to true in production envs.
         // If the client (audience) receive the token, that client can not re-use it in any other place.
         ValidateAudience = true,
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
 
         // Sets token expiration time
         RequireExpirationTime = false,
