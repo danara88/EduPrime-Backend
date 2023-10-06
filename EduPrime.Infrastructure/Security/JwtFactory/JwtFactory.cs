@@ -45,7 +45,7 @@ namespace EduPrime.Infrastructure.Security
                 Expires = DateTime.UtcNow.AddMinutes(int.Parse(_jwtSettings.ValidTimeMinutes)),
 
                 // Verified that the secret key is issued by the ORIGINAL source.
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.Sha256)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKey), SecurityAlgorithms.HmacSha256)
             };
 
             SecurityToken token = jwtTokenHandler.CreateToken(tokenDescriptor);

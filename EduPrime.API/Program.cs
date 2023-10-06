@@ -43,6 +43,10 @@ builder.Services.AddTransient<IFileHelper, FileHelper>();
 builder.Services.AddTransient<IJwtFactory, JwtFactory>();
 builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
 
+// Password service settings
+builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
+builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+
 // Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();

@@ -19,7 +19,7 @@ namespace EduPrime.Infrastructure.Repository
 
         ISubjectRepository SubjectRepository { get; }
 
-        IBaseRepository<User> UserRepository { get; }
+        IUserRepository UserRepository { get; }
 
         IBaseRepository<Role> RoleRepository { get; }
 
