@@ -142,7 +142,6 @@ namespace EduPrime.API.Controllers
             }
 
             areaDB = _mapper.Map(updateAreaDTO, areaDB);
-            areaDB.UpdatedOn = DateTime.Now;
             try
             {
                 await _unitOfWork.SaveChangesAsync();

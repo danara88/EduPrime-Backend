@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EduPrime.API.Attributes;
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
@@ -19,7 +21,11 @@ namespace EduPrime.API.Controllers
         private readonly IJwtFactory _jwtFactory;
         private readonly IMapper _mapper;
 
-        public UsersController(IUnitOfWork unitOfWork, IPasswordHasher passwordHasher, IMapper mapper, IJwtFactory jwtFactory)
+        public UsersController(
+            IUnitOfWork unitOfWork, 
+            IPasswordHasher passwordHasher, 
+            IMapper mapper, 
+            IJwtFactory jwtFactory)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
@@ -126,6 +132,123 @@ namespace EduPrime.API.Controllers
             };
 
             var response = new ApiResponse<AuthTokenDTO>(authTokenDTO);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to get all users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("get-users")]
+        [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GetUsers()
+        {
+            var users = await _unitOfWork.UserRepository.GetAllAsync();
+            var usersDTO = _mapper.Map<List<UserDTO>>(users);
+
+            return Ok(new ApiResponse<List<UserDTO>>(usersDTO));
+        }
+
+        /// <summary>
+        /// End point to get a user by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
+        [HttpGet("get-user/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _unitOfWork.UserRepository.GetByIdWithAssignedRoleAsync(id);
+            if (user is null)
+            {
+                return NotFound();
+            }
+            var userDTO = _mapper.Map<UserDTO>(user);
+            var response = new ApiResponse<UserDTO>(userDTO);
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to update a user
+        /// </summary>
+        /// <param name="updateUserDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
+        [HttpPut("update-user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO updateUserDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new BadRequestException("The inserted values are not valid.");
+            }
+
+            var userDB = await _unitOfWork.UserRepository.GetByIdAsync(updateUserDTO.Id);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The user with id {updateUserDTO.Id} does not exist.");
+            }
+
+            userDB = _mapper.Map(updateUserDTO, userDB);
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while updating the resource.");
+            }
+
+            var response = new ApiResponse<object>("");
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to delete a user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
+        [HttpDelete("delete-user/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var userDB = await _unitOfWork.UserRepository.GetByIdAsync(id);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The user with id {id} does not exist.");
+            }
+
+            try
+            {
+                await _unitOfWork.UserRepository.Delete(userDB.Id);
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while deleting the resource.");
+            }
+
+            var response = new ApiResponse<object>("");
             return Ok(response);
         }
 

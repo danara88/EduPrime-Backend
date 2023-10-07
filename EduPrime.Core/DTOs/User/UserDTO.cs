@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EduPrime.Core.DTOs.Role;
 
 namespace EduPrime.Core.DTOs.User
 {
@@ -9,5 +9,7 @@ namespace EduPrime.Core.DTOs.User
         public string Surname { get; set; }
 
         public string Email { get; set; }
+
+        public RoleDTO Role { get; set; }
     }
 }

@@ -14,7 +14,19 @@ namespace EduPrime.Infrastructure.Repository
         }
 
         /// <summary>
-        /// Methos to get a user by email
+        /// Method to get a user by id with assigned role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<User> GetByIdWithAssignedRoleAsync(int id)
+        {
+            return await _entity
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+
+        /// <summary>
+        /// Method to get a user by email
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
