@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using EduPrime.API.Attributes;
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.API.Controllers
@@ -25,10 +28,11 @@ namespace EduPrime.API.Controllers
         /// End point to return all areas
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-areas")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAreas()
         {
             var areas = await _unitOfWork.AreaRepository.GetAllAsync();
@@ -42,8 +46,10 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAreaById(int id)
         {
@@ -63,9 +69,14 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="createAreaDTO"></param>
         /// <returns></returns>
+        [AuthorizeRoles(
+            nameof(RoleTypeEnum.Primary), 
+            nameof(RoleTypeEnum.Admin), 
+            nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-area")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateArea([FromBody] CreateAreaDTO createAreaDTO)
@@ -106,9 +117,15 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        /// [Authorize(Roles = nameof(RoleTypeEnum.Primary))]
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-area")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateArea([FromBody] UpdateAreaDTO updateAreaDTO)
@@ -146,9 +163,14 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteArea(int id)
@@ -177,9 +199,10 @@ namespace EduPrime.API.Controllers
         /// End point to get areas with employees
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-areas-with-employees")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAreasWithEmployees()
         {
             var areasWithEmployees = await _unitOfWork.AreaRepository.GetAreasWithEmployeesAsync();

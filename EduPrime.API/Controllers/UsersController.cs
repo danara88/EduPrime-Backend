@@ -2,7 +2,6 @@
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Entities;
-using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
@@ -59,9 +58,9 @@ namespace EduPrime.API.Controllers
 
             var user = _mapper.Map<User>(registerUserDTO);
 
-            // Hashing the password and assign lower permissions
+            // Hashing the password and assign lowest permissions
             user.Password = _passwordHasher.Hash(user.Password);
-            user.RoleId = (int)RoleEnum.StandardRole;
+            user.RoleId = (await _unitOfWork.RoleRepository.GetGuestRole()).Id;
 
             await _unitOfWork.UserRepository.AddAsync(user);
 

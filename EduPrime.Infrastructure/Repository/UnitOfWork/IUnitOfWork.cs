@@ -21,7 +21,7 @@ namespace EduPrime.Infrastructure.Repository
 
         IUserRepository UserRepository { get; }
 
-        IBaseRepository<Role> RoleRepository { get; }
+        IRoleRepository RoleRepository { get; }
 
         Task SaveChangesAsync();
     }

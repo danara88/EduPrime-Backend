@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using EduPrime.API.Attributes;
 using EduPrime.API.Helpers;
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -43,6 +46,7 @@ namespace EduPrime.API.Controllers
         /// End point to return all employees
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-employees")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -59,6 +63,7 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-employee/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -80,6 +85,10 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="createEmployeeDTO"></param>
         /// <returns></returns>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-employee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -150,6 +159,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("upload-employee-rfc/{employeeId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -206,6 +219,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("upload-employee-picture/{employeeId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -261,6 +278,7 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [Authorize]
         [HttpGet("download-employee-rfc/{employeeId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -298,6 +316,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-employee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -338,6 +360,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-employee/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using EduPrime.API.Attributes;
 using EduPrime.API.Response;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.API.Controllers
@@ -25,6 +28,7 @@ namespace EduPrime.API.Controllers
         /// End point to return all professors
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -42,6 +46,7 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -65,6 +70,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-professor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -124,6 +133,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-professor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -163,6 +176,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

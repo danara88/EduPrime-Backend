@@ -16,7 +16,7 @@ namespace EduPrime.Infrastructure.Repository
         private readonly IBaseRepository<ProfessorSubject> _professorSubjectRepository;
         private readonly ISubjectRepository _subjectRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IBaseRepository<Role> _roleRepository;
+        private readonly IRoleRepository _roleRepository;
 
         public UnitOfWork(ApplicationDbContext context)
         {
@@ -37,7 +37,7 @@ namespace EduPrime.Infrastructure.Repository
 
         public IUserRepository UserRepository => _userRepository ?? new UserRepository(_context);
 
-        public IBaseRepository<Role> RoleRepository => _roleRepository ?? new BaseRepository<Role>(_context);
+        public IRoleRepository RoleRepository => _roleRepository ?? new RoleRepository(_context);
 
         public async Task SaveChangesAsync()
         {

@@ -953,25 +953,32 @@ namespace EduPrime.Infrastructure.Data.Seeding
             var primaryRole = new Role
             {
                 Id = 1,
-                Name = "PrimaryRole",
+                Name = "Primary",
                 CreatedOn = DateTime.Now
             };
 
             var adminRole = new Role
             {
                 Id = 2,
-                Name = "AdminRole",
+                Name = "Admim",
                 CreatedOn = DateTime.Now
             };
 
             var standardRole = new Role
             {
                 Id = 3,
-                Name = "StandardRole",
+                Name = "Standard",
                 CreatedOn = DateTime.Now
             };
 
-            modelBuilder.Entity<Role>().HasData(primaryRole, adminRole, standardRole);
+            var guestRole = new Role
+            {
+                Id = 4,
+                Name = "Guest",
+                CreatedOn = DateTime.Now
+            };
+
+            modelBuilder.Entity<Role>().HasData(primaryRole, adminRole, standardRole, guestRole);
         }
     }
 }

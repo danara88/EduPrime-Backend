@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EduPrime.API.Attributes;
 using EduPrime.API.Helpers;
 using EduPrime.API.Response;
 using EduPrime.API.Services;
@@ -6,10 +7,12 @@ using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Enums;
 using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -46,6 +49,7 @@ namespace EduPrime.API.Controllers
         /// End point to return all students
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-students")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -65,6 +69,7 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-student/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -89,6 +94,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-student")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -127,6 +136,10 @@ namespace EduPrime.API.Controllers
         /// <param name="assignSubjectsDTO"></param>
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("assign-subjects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -186,6 +199,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("upload-student-picture/{studentId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -241,6 +258,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("unassign-subjects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -305,6 +326,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-student-assignment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -365,6 +390,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-student")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -404,6 +433,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-student/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

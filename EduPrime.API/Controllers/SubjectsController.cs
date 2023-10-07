@@ -8,6 +8,9 @@ using EduPrime.Infrastructure.Repository;
 using EduPrime.Core.Enums.Subject;
 using Microsoft.AspNetCore.Mvc;
 using EduPrime.Core.DTOs.Shared;
+using Microsoft.AspNetCore.Authorization;
+using EduPrime.API.Attributes;
+using EduPrime.Core.Enums;
 
 namespace EduPrime.API.Controllers
 {
@@ -31,6 +34,7 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="paginationDTO"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-subjects")]
         [ResponseCache(CacheProfileName = "HalfMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,6 +55,7 @@ namespace EduPrime.API.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
+        [Authorize]
         [HttpGet("get-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -74,6 +79,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-subject")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -149,6 +158,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("update-subject")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -188,6 +201,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPut("unassign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -256,6 +273,10 @@ namespace EduPrime.API.Controllers
         /// <param name="assignProfessorsDTO"></param>
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpPost("assign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -330,6 +351,10 @@ namespace EduPrime.API.Controllers
         /// <returns></returns>
         /// <exception cref="BadRequestException"></exception>
         /// <exception cref="InternalServerException"></exception>
+        [AuthorizeRoles(
+           nameof(RoleTypeEnum.Primary),
+           nameof(RoleTypeEnum.Admin),
+           nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]

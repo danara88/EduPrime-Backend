@@ -20,7 +20,9 @@ namespace EduPrime.Infrastructure.Repository
         /// <returns></returns>
         public async Task<User> GetUserByEmail(string email)
         {
-            return await _entity.FirstOrDefaultAsync(u => u.Email == email);
+            return await _entity
+                .Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         /// <summary>

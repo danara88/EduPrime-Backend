@@ -38,7 +38,7 @@ namespace EduPrime.Infrastructure.Security
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Name, user.Name),
                     new Claim("surname", user.Surname),
-                    new Claim("role", ((RoleEnum)user.RoleId).ToString()),
+                    new Claim("role", user.Role.Name),
 
                     // Include Iat (Issued at) identify the date and time when this token was emitted.
                     new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
