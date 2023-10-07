@@ -8,6 +8,6 @@ namespace EduPrime.Core.DTOs.Role
 
         public string Name { get; set; }
 
-        public List<UserDTO> Users { get; set; }
+        public List<UserForRoleDTO> Users { get; set; }
     }
 }

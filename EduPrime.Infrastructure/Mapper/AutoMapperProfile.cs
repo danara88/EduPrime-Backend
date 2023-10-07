@@ -56,6 +56,7 @@ namespace EduPrime.Infrastructure.Mapper
             #region User
             CreateMap<RegisterUserDTO, User>();
             CreateMap<User, UserDTO>();
+            CreateMap<User, UserForRoleDTO>();
             CreateMap<UpdateUserDTO, User>();
             #endregion
 
