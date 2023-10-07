@@ -109,6 +109,17 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The email or password are invalid.");
             }
 
+            user.LastLogin = DateTime.Now;
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while log in user.");
+            }
+
             AuthTokenDTO authTokenDTO = new()
             {
                 AccessToken = _jwtFactory.GenerateJwtToken(user)
