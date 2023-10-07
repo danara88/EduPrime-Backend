@@ -22,6 +22,10 @@ namespace EduPrime.Infrastructure.Data.Configurations
             builder.Property(prop => prop.LastLogin)
                 .IsRequired(false);
 
+            builder.HasOne(u => u.Role)
+                .WithMany(r => r.Users)
+                .HasForeignKey(u => u.RoleId);
+
             builder.Property(prop => prop.CreatedOn)
                .HasDefaultValue(DateTime.Now)
                .IsRequired();

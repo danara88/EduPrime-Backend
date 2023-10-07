@@ -14,5 +14,11 @@ namespace EduPrime.Infrastructure.Repository
         Task<Role> GetStandardRole();
 
         Task<Role> GetGuestRole();
+
+        Task<Role> GetByIdWithUsersAsync(int id);
+
+        Task<bool> ExistsAnyRoleAsync(string name);
+
+        Task<bool> ExistsAnyRoleAsync(int id);
     }
 }

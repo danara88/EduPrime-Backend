@@ -38,7 +38,7 @@ namespace EduPrime.API.Controllers
         [HttpGet("get-subjects")]
         [ResponseCache(CacheProfileName = "HalfMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetSubjects([FromQuery] PaginationDTO paginationDTO)
         {
             var subjects = (await _unitOfWork.SubjectRepository.GetSubjectsWithProfessorsAsync())
@@ -58,6 +58,7 @@ namespace EduPrime.API.Controllers
         [Authorize]
         [HttpGet("get-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetSubjectById(int id)
         {
@@ -86,6 +87,7 @@ namespace EduPrime.API.Controllers
         [HttpPost("create-subject")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDTO createSubjectDTO)
@@ -165,6 +167,7 @@ namespace EduPrime.API.Controllers
         [HttpPut("update-subject")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateSubject([FromBody] UpdateSubjectDTO updateSubjectDTO)
@@ -208,6 +211,7 @@ namespace EduPrime.API.Controllers
         [HttpPut("unassign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UnassignProfessors([FromBody] UnassignProfessorsDTO unassignProfessorsDTO)
@@ -280,6 +284,7 @@ namespace EduPrime.API.Controllers
         [HttpPost("assign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AssignProfessors([FromBody] AssignProfessorsDTO assignProfessorsDTO)
@@ -357,6 +362,7 @@ namespace EduPrime.API.Controllers
            nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteSubject(int id)

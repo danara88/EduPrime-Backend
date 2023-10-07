@@ -31,7 +31,7 @@ namespace EduPrime.API.Controllers
         [Authorize]
         [HttpGet("get-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetProfessors()
         {
             var professors = await _unitOfWork.ProfessorRepository.GetProfessorsWithEmployeeAsync();
@@ -49,6 +49,7 @@ namespace EduPrime.API.Controllers
         [Authorize]
         [HttpGet("get-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProfessorById(int id)
         {
@@ -77,6 +78,7 @@ namespace EduPrime.API.Controllers
         [HttpPost("create-professor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateProfessor([FromBody] CreateProfessorDTO createProfessorDTO)
@@ -140,6 +142,7 @@ namespace EduPrime.API.Controllers
         [HttpPut("update-professor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateProfessorDTO updateProfessorDTO)
@@ -182,6 +185,7 @@ namespace EduPrime.API.Controllers
            nameof(RoleTypeEnum.Standard))]
         [HttpDelete("delete-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteProfessor(int id) 

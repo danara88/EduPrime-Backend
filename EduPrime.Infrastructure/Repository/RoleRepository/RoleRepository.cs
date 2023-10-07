@@ -41,5 +41,35 @@ namespace EduPrime.Infrastructure.Repository
         /// </summary>
         /// <returns></returns>
         public async Task<Role> GetGuestRole() => await _entity.FirstOrDefaultAsync(r => r.Name.ToLower() == guestRoleName.ToLower());
+
+        /// <summary>
+        /// Gets a role by id with all the users assigned to the role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Role> GetByIdWithUsersAsync(int id)
+        {
+            return await _entity.Include(r => r.Users).FirstOrDefaultAsync(r => r.Id == id);
+        }
+
+        /// <summary>
+        /// Checks if there is an existing role by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<bool> ExistsAnyRoleAsync(string name)
+        {
+            return await _entity.AnyAsync(r => r.Name.ToLower() == name.ToLower());
+        }
+
+        /// <summary>
+        /// Checks if there is an existing role by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> ExistsAnyRoleAsync(int id)
+        {
+            return await _entity.AnyAsync(r => r.Id == id);
+        }
     }
 }

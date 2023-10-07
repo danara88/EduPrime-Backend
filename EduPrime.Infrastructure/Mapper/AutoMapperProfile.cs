@@ -2,6 +2,7 @@
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
+using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.DTOs.User;
@@ -55,6 +56,12 @@ namespace EduPrime.Infrastructure.Mapper
             #region User
             CreateMap<RegisterUserDTO, User>();
             CreateMap<User, UserDTO>();
+            #endregion
+
+            #region Role
+            CreateMap<Role, RoleDTO>();
+            CreateMap<Role, RoleWithUsersDTO>();
+            CreateMap<CreateRoleDTO, Role>();
             #endregion
         }
     }
