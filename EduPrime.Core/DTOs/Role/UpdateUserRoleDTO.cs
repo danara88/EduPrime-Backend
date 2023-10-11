@@ -5,10 +5,10 @@ namespace EduPrime.Core.DTOs.Role
 {
     public class UpdateUserRoleDTO
     {
-        [Required]
+        [Required, Range(0, int.MaxValue)]
         public int RoleId { get; set; }
 
-        [Required]
+        [Required, Range(0, int.MaxValue)]
         public int UserId { get; set; }
     }
 }

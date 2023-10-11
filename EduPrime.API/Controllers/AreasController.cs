@@ -81,11 +81,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateArea([FromBody] CreateAreaDTO createAreaDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             if (await _unitOfWork.AreaRepository.ExistsAnyArea(createAreaDTO.Name))
             {
                 throw new BadRequestException($"The area with name {createAreaDTO.Name} already exists.");
@@ -130,11 +125,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateArea([FromBody] UpdateAreaDTO updateAreaDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(updateAreaDTO.Id);
             if (areaDB is null)
             {

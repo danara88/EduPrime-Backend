@@ -1,4 +1,6 @@
-﻿namespace EduPrime.Core.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EduPrime.Core.Entities
 {
     /// <summary>
     /// Employee Entity

@@ -92,11 +92,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDTO createSubjectDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             if (await _unitOfWork.SubjectRepository.ExistsAnySubject(createSubjectDTO.Name))
             {
                 throw new BadRequestException($"The subject with name {createSubjectDTO.Name} already exists.");
@@ -172,11 +167,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateSubject([FromBody] UpdateSubjectDTO updateSubjectDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(updateSubjectDTO.Id);
             if (subjectDB is null)
             {

@@ -46,11 +46,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register(RegisterUserDTO registerUserDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             if (await _unitOfWork.UserRepository.UserEmailExistsAsync(registerUserDTO.Email))
             {
                 throw new BadRequestException($"The email {registerUserDTO.Email} is already registered.");
@@ -96,11 +91,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> LogIn(LogInUserDTO logInUserDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var emailExists = await _unitOfWork.UserRepository.UserEmailExistsAsync(logInUserDTO.Email);
             if (!emailExists)
             {
@@ -191,11 +181,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDTO updateUserDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var userDB = await _unitOfWork.UserRepository.GetByIdAsync(updateUserDTO.Id);
             if (userDB is null)
             {

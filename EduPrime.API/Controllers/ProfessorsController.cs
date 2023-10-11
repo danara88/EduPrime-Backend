@@ -83,11 +83,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateProfessor([FromBody] CreateProfessorDTO createProfessorDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             if (!(await _unitOfWork.EmployeeRepository.ExistsAnyEmployee(createProfessorDTO.EmployeeId)))
             {
                 throw new BadRequestException($"The employee with id {createProfessorDTO.EmployeeId} does not exist.");
@@ -147,11 +142,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateProfessorDTO updateProfessorDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var professorDB = await _unitOfWork.ProfessorRepository.GetByIdAsync(updateProfessorDTO.Id);
             if (professorDB is null)
             {

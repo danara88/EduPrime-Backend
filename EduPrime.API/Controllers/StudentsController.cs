@@ -3,7 +3,6 @@ using EduPrime.API.Attributes;
 using EduPrime.API.Helpers;
 using EduPrime.API.Response;
 using EduPrime.API.Services;
-using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
@@ -106,11 +105,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateStudent([FromBody] CreateStudentDTO createStudentDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var student = _mapper.Map<Student>(createStudentDTO);
 
             try
@@ -212,11 +206,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UploadStudentPicture([FromBody] UploadStudentFileDTO uploadStudentFileDTO, int studentId)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var student = await _unitOfWork.StudentRepository.GetByIdAsync(studentId);
             if (student is null)
             {
@@ -407,11 +396,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateStudent([FromBody] UpdateStudentDTO updateStudentDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var studentDB = await _unitOfWork.StudentRepository.GetByIdAsync(updateStudentDTO.Id);
             if (studentDB is null)
             {

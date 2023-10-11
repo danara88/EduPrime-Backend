@@ -98,11 +98,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateEmployee([FromBody] CreateEmployeeDTO createEmployeeDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             createEmployeeDTO.Areas = createEmployeeDTO.Areas?.Distinct().ToList();
             var employee = _mapper.Map<Employee>(createEmployeeDTO);
 
@@ -172,11 +167,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UploadRFCDocument([FromBody] UploadEmployeeFileDTO uploadEmployeeFileDTO, int employeeId)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
             if (employee is null)
             {
@@ -233,11 +223,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> UploadEmployeePicture([FromBody] UploadEmployeeFileDTO uploadEmployeeFileDTO, int employeeId)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(employeeId);
             if (employee is null)
             {
@@ -333,11 +318,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateEmployee([FromBody] UpdateEmployeeDTO updateEmployeeDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var employeeDB = await _unitOfWork.EmployeeRepository.GetByIdAsync(updateEmployeeDTO.Id);
             if (employeeDB is null)
             {

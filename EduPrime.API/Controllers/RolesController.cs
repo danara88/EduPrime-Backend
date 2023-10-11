@@ -86,11 +86,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO createRoleDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             if (await _unitOfWork.RoleRepository.ExistsAnyRoleAsync(createRoleDTO.Name))
             {
                 throw new BadRequestException($"The role with name {createRoleDTO.Name} already exists.");
@@ -131,11 +126,6 @@ namespace EduPrime.API.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleDTO updateUserRoleDTO)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new BadRequestException("The inserted values are not valid.");
-            }
-
             var user = await _unitOfWork.UserRepository.GetByIdAsync(updateUserRoleDTO.UserId);
             if (user is null)
             {

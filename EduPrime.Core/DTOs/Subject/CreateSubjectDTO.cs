@@ -5,10 +5,10 @@ namespace EduPrime.Core.DTOs.Subject
 {
     public class CreateSubjectDTO
     {
-        [Required]
+        [Required, MinLength(3), MaxLength(100)]
         public string Name { get; set; }
 
-        [Required]
+        [Required, EnumDataType(typeof(SemesterTypeEnum))]
         public SemesterTypeEnum AvailableSemester { get; set; }
 
         public List<int> ProfessorIds { get; set; }
