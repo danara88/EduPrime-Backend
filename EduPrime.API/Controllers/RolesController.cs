@@ -102,7 +102,7 @@ namespace EduPrime.API.Controllers
                 throw new InternalServerException("Something went wrong while creating the resource.");
             }
 
-            var response = new ApiResponse<object>("")
+            var response = new ApiResponse<object>(null)
             {
                 Status = StatusCodes.Status201Created,
             };
@@ -148,7 +148,7 @@ namespace EduPrime.API.Controllers
                 throw new InternalServerException("Something went wrong while creating the resource.");
             }
 
-            var response = new ApiResponse<object>("");
+            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -185,7 +185,7 @@ namespace EduPrime.API.Controllers
                 throw new InternalServerException("Something went wrong while deleting the resource.");
             }
 
-            var response = new ApiResponse<object>("");
+            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
