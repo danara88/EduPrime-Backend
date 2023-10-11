@@ -325,7 +325,6 @@ namespace EduPrime.API.Controllers
             }
 
             employeeDB = _mapper.Map(updateEmployeeDTO, employeeDB);
-            employeeDB.UpdatedOn = DateTime.Now;
             try
             {
                 await _unitOfWork.SaveChangesAsync();

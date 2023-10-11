@@ -27,7 +27,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasForeignKey(u => u.RoleId);
 
             builder.Property(prop => prop.CreatedOn)
-               .HasDefaultValue(DateTime.Now)
+               .HasDefaultValue(DateTime.UtcNow)
                .IsRequired();
         }
     }

@@ -14,10 +14,10 @@ namespace EduPrime.Infrastructure.Data.Seeding
             /**
              * AREAS
              */
-            var professorArea = new Area { Id = 1, Name = "Professor", Description = "Only those who teach a subject", CreatedOn = DateTime.Now };
-            var administrativeArea = new Area { Id = 2, Name = "Office administrative", Description = "Office administrative area", CreatedOn = DateTime.Now };
-            var cleaningArea = new Area { Id = 3, Name = "Clean service", Description = "School clean service", CreatedOn = DateTime.Now };
-            var securityGuardArea = new Area { Id = 4, Name = "Security guard", Description = "School security guard", CreatedOn = DateTime.Now };
+            var professorArea = new Area { Id = 1, Name = "Professor", Description = "Only those who teach a subject", CreatedOn = DateTime.UtcNow };
+            var administrativeArea = new Area { Id = 2, Name = "Office administrative", Description = "Office administrative area", CreatedOn = DateTime.UtcNow };
+            var cleaningArea = new Area { Id = 3, Name = "Clean service", Description = "School clean service", CreatedOn = DateTime.UtcNow };
+            var securityGuardArea = new Area { Id = 4, Name = "Security guard", Description = "School security guard", CreatedOn = DateTime.UtcNow };
 
             modelBuilder.Entity<Area>().HasData(professorArea, administrativeArea, cleaningArea, securityGuardArea);
 
@@ -35,7 +35,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1988, 06, 17),
                 Email = "BrendaLopez@school.com",
                 PhoneNumber = "8445678787",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Professor
@@ -47,7 +47,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1980, 05, 15),
                 Email = "AlmaRosa@school.com",
                 PhoneNumber = "8445567556",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Professor
@@ -59,7 +59,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1990, 02, 15),
                 Email = "LorenaSuarez@school.com",
                 PhoneNumber = "8445552552",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Professor
@@ -71,7 +71,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1985, 02, 10),
                 Email = "RamiroTorrero@school.com",
                 PhoneNumber = "8449883834",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Professor
@@ -83,7 +83,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1990, 05, 11),
                 Email = "MarisolTorres@school.com",
                 PhoneNumber = "8445556781",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Professor
@@ -95,7 +95,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1980, 02, 11),
                 Email = "SofiaCardenas@school.com",
                 PhoneNumber = "8445556781",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Clean service
@@ -107,7 +107,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1981, 08, 10),
                 Email = "ReginaGonzales@school.com",
                 PhoneNumber = "8446787575",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Clean service
@@ -119,7 +119,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1975, 06, 28),
                 Email = "VeronicaZertuche@school.com",
                 PhoneNumber = "8449990023",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Security guard service
@@ -131,7 +131,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 BirthDate = new DateTime(1975, 02, 11),
                 Email = "LuisCarranza@school.com",
                 PhoneNumber = "8445678787",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             modelBuilder.Entity<Employee>().HasData(
@@ -177,7 +177,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = BrendaLopezEmployee.Id,
                 Satisfaction = 85,
                 YearsOnDuty = 5,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var AlmaRosaProfessor = new Professor
@@ -186,7 +186,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = AlmaRosaEmployee.Id,
                 Satisfaction = 90,
                 YearsOnDuty = 30,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var LorenaProfessor = new Professor
@@ -195,7 +195,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = LorenaSuarezEmployee.Id,
                 Satisfaction = 90,
                 YearsOnDuty = 15,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var RamiroProfessor = new Professor
@@ -204,7 +204,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = RamiroTorreroEmployee.Id,
                 Satisfaction = 100,
                 YearsOnDuty = 10,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var MarisolTorresProfessor = new Professor
@@ -213,7 +213,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = MarisolTorresEmployee.Id,
                 Satisfaction = 45,
                 YearsOnDuty = 3,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var SofiaCardenasProfessor = new Professor
@@ -222,7 +222,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 EmployeeId = SofiaCardenasEmployee.Id,
                 Satisfaction = 100,
                 YearsOnDuty = 10,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             modelBuilder.Entity<Professor>().HasData(
@@ -244,21 +244,21 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 1,
                 Name = "Matemáticas I",
                 AvailableSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var physics1 = new Subject
             {
                 Id = 2,
                 Name = "Física I",
                 AvailableSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var history = new Subject
             {
                 Id = 3,
                 Name = "Historia",
                 AvailableSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Second semester subjects
@@ -267,21 +267,21 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 4,
                 Name = "Matemáticas II",
                 AvailableSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var physics2 = new Subject
             {
                 Id = 5,
                 Name = "Física II",
                 AvailableSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var finance = new Subject
             {
                 Id = 6,
                 Name = "Finanzas",
                 AvailableSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Third semester subjects
@@ -290,21 +290,21 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 7,
                 Name = "Matemáticas III",
                 AvailableSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var physics3 = new Subject
             {
                 Id = 8,
                 Name = "Física III",
                 AvailableSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var chemistry = new Subject
             {
                 Id = 9,
                 Name = "Química I",
                 AvailableSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Fourth semester subjects
@@ -313,21 +313,21 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 Id = 10,
                 Name = "Filosofía",
                 AvailableSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var computing = new Subject
             {
                 Id = 11,
                 Name = "Informática",
                 AvailableSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var chemistry2 = new Subject
             {
                 Id = 12,
                 Name = "Química II",
                 AvailableSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             modelBuilder.Entity<Subject>().HasData(math1, math2, math3, physics1, physics2, physics3, history, finance, chemistry, philosophy, computing, chemistry2);
@@ -414,7 +414,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445556767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var omarFirstSemesterStudent = new Student
             {
@@ -425,7 +425,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445556767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var veronicaFirstSemesterStudent = new Student
             {
@@ -436,7 +436,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8446789900",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FirstSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Second semester students
@@ -449,7 +449,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8442225656",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var danielSecondSemesterStudent = new Student
             {
@@ -460,7 +460,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8442225656",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var valeriaSecondSemesterStudent = new Student
             {
@@ -471,7 +471,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445556776",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.SecondSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Third semester students
@@ -484,7 +484,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445676767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var juanThirdSemesterStudent = new Student
             {
@@ -495,7 +495,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445676767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var gabrielaThirdSemesterStudent = new Student
             {
@@ -506,7 +506,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445676767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.ThirdSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Fourth semester students
@@ -519,7 +519,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445676767",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var amandaFourthSemesterStudent = new Student
             {
@@ -530,7 +530,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445582019",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jessicaFourthSemesterStudent = new Student
             {
@@ -541,7 +541,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 PhoneNumber = "8445582019",
                 EmergencyContact = "8445677676",
                 CurrentSemester = SemesterTypeEnum.FourthSemester,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
 
@@ -573,7 +573,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var omarMath1 = new StudentSubject
             {
@@ -583,7 +583,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var veronicaMath1 = new StudentSubject
             {
@@ -593,7 +593,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var emilianoPhysics1 = new StudentSubject
             {
@@ -603,7 +603,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var omarPhysics1 = new StudentSubject
             {
@@ -613,7 +613,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var veronicaPhysics1 = new StudentSubject
             {
@@ -623,7 +623,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var emilianoHistory = new StudentSubject
             {
@@ -633,7 +633,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var omarHistory = new StudentSubject
             {
@@ -643,7 +643,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var veronicaHistory = new StudentSubject
             {
@@ -653,7 +653,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Second semester students with their subjects
@@ -665,7 +665,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var danielMath2 = new StudentSubject
             {
@@ -675,7 +675,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var valeriaMath2 = new StudentSubject
             {
@@ -685,7 +685,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jimenaPhysics2 = new StudentSubject
             {
@@ -695,7 +695,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var danielPhysics2 = new StudentSubject
             {
@@ -705,7 +705,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var valeriaPhysics2 = new StudentSubject
             {
@@ -715,7 +715,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jimenaFinance = new StudentSubject
             {
@@ -725,7 +725,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var danielFinance = new StudentSubject
             {
@@ -735,7 +735,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var valeriaFinance = new StudentSubject
             {
@@ -745,7 +745,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Third semester students with their subjects
@@ -757,7 +757,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var juanMath3 = new StudentSubject
             {
@@ -767,7 +767,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var gabrielaMath3 = new StudentSubject
             {
@@ -777,7 +777,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var julianPhysics3 = new StudentSubject
             {
@@ -787,7 +787,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var juanPhysics3 = new StudentSubject
             {
@@ -797,7 +797,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var gabrielaPhysics3 = new StudentSubject
             {
@@ -807,7 +807,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var julianChemistry = new StudentSubject
             {
@@ -817,7 +817,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var juanChemistry = new StudentSubject
             {
@@ -827,7 +827,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var gabrielaChemistry = new StudentSubject
             {
@@ -837,7 +837,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             // Fourth semester students with their subjects
@@ -849,7 +849,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var amandaPhilosophy = new StudentSubject
             {
@@ -859,7 +859,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jessicaPhilosophy = new StudentSubject
             {
@@ -869,7 +869,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var pedroComputing = new StudentSubject
             {
@@ -879,7 +879,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var amandaComputing = new StudentSubject
             {
@@ -889,7 +889,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jessicaComputing = new StudentSubject
             {
@@ -899,7 +899,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var pedroChemistry2 = new StudentSubject
             {
@@ -909,7 +909,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var amandaChemistry2 = new StudentSubject
             {
@@ -919,7 +919,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
             var jessicaChemistry2 = new StudentSubject
             {
@@ -929,7 +929,7 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SecondGrade = 0,
                 FinalGrade = 0,
                 Status = SubjectGradeStatus.InProgress,
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             modelBuilder.Entity<StudentSubject>().HasData(
@@ -954,28 +954,28 @@ namespace EduPrime.Infrastructure.Data.Seeding
             {
                 Id = 1,
                 Name = "Primary",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var adminRole = new Role
             {
                 Id = 2,
                 Name = "Admim",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var standardRole = new Role
             {
                 Id = 3,
                 Name = "Standard",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             var guestRole = new Role
             {
                 Id = 4,
                 Name = "Guest",
-                CreatedOn = DateTime.Now
+                CreatedOn = DateTime.UtcNow
             };
 
             modelBuilder.Entity<Role>().HasData(primaryRole, adminRole, standardRole, guestRole);

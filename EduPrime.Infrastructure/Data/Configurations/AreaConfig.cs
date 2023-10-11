@@ -20,7 +20,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .IsRequired(false);
 
             builder.Property(prop => prop.CreatedOn)
-                .HasDefaultValue(DateTime.Now)
+                .HasDefaultValue(DateTime.UtcNow)
                .IsRequired();
         }
     }

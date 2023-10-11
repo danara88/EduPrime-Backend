@@ -105,7 +105,7 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The email or password are invalid.");
             }
 
-            user.LastLogin = DateTime.Now;
+            user.LastLogin = DateTime.UtcNow;
 
             try
             {

@@ -19,7 +19,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
                 .HasDefaultValue(0);
 
             builder.Property(prop => prop.CreatedOn)
-                .HasDefaultValue(DateTime.Now)
+                .HasDefaultValue(DateTime.UtcNow)
                 .IsRequired();
 
             builder.HasOne(professor => professor.Employee)

@@ -39,7 +39,7 @@ namespace EduPrime.Infrastructure.Data
             foreach (var entry in modifiedEntities)
             {
                 var resource = (BaseEntity)entry.Entity;
-                resource.UpdatedOn = DateTime.Now;
+                resource.UpdatedOn = DateTime.UtcNow;
             }
 
             return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);

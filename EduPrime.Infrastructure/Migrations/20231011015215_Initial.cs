@@ -21,7 +21,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 389, DateTimeKind.Local).AddTicks(8857)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 364, DateTimeKind.Utc).AddTicks(4675)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -42,7 +42,7 @@ namespace EduPrime.Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
                     PictureURL = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
                     RfcDocument = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 390, DateTimeKind.Local).AddTicks(2183)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 364, DateTimeKind.Utc).AddTicks(8567)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -57,7 +57,7 @@ namespace EduPrime.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 391, DateTimeKind.Local).AddTicks(7164)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 366, DateTimeKind.Utc).AddTicks(5826)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -78,7 +78,7 @@ namespace EduPrime.Infrastructure.Migrations
                     PhoneNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
                     EmergencyContact = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
                     CurrentSemester = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 392, DateTimeKind.Local).AddTicks(1569)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 366, DateTimeKind.Utc).AddTicks(9231)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -94,7 +94,7 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     AvailableSemester = table.Column<int>(type: "int", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 393, DateTimeKind.Local).AddTicks(9266)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(491)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -134,7 +134,9 @@ namespace EduPrime.Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<int>(type: "int", nullable: false),
                     Satisfaction = table.Column<int>(type: "int", maxLength: 100, nullable: false, defaultValue: 0),
-                    YearsOnDuty = table.Column<int>(type: "int", nullable: false, defaultValue: 0)
+                    YearsOnDuty = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 365, DateTimeKind.Utc).AddTicks(4939)),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,10 +156,12 @@ namespace EduPrime.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     Password = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(3587)),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(5290)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -181,7 +185,7 @@ namespace EduPrime.Infrastructure.Migrations
                     SecondGrade = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     FinalGrade = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
                     Status = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValue: new DateTime(2023, 10, 11, 1, 52, 15, 367, DateTimeKind.Utc).AddTicks(6668)),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
@@ -230,10 +234,10 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedOn", "Description", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4250), "Only those who teach a subject", "Professor", null },
-                    { 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4253), "Office administrative area", "Office administrative", null },
-                    { 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4254), "School clean service", "Clean service", null },
-                    { 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4255), "School security guard", "Security guard", null }
+                    { 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(5973), "Only those who teach a subject", "Professor", null },
+                    { 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(5975), "Office administrative area", "Office administrative", null },
+                    { 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(5977), "School clean service", "Clean service", null },
+                    { 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(5978), "School security guard", "Security guard", null }
                 });
 
             migrationBuilder.InsertData(
@@ -241,15 +245,15 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "CreatedOn", "Email", "Name", "PhoneNumber", "PictureURL", "RfcDocument", "Surname", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4481), "BrendaLopez@school.com", "Brenda", "8445678787", null, null, "Lopez Reyes", null },
-                    { 2, new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4485), "AlmaRosa@school.com", "Alma Rosa", "8445567556", null, null, "Aguilar Tejada", null },
-                    { 3, new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4487), "LorenaSuarez@school.com", "Lorena", "8445552552", null, null, "Suarez Treviño", null },
-                    { 4, new DateTime(1985, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4489), "RamiroTorrero@school.com", "Ramiro", "8449883834", null, null, "Torrero Salinas", null },
-                    { 5, new DateTime(1990, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4543), "MarisolTorres@school.com", "Marisol", "8445556781", null, null, "Torres Valdés", null },
-                    { 6, new DateTime(1980, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4545), "SofiaCardenas@school.com", "Sofía", "8445556781", null, null, "Cárdenas Berrendo", null },
-                    { 7, new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4547), "ReginaGonzales@school.com", "Regina", "8446787575", null, null, "Gonzales Perreira", null },
-                    { 8, new DateTime(1975, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4549), "VeronicaZertuche@school.com", "Verónica", "8449990023", null, null, "Zertuche Mora", null },
-                    { 9, new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4550), "LuisCarranza@school.com", "Luis", "8445678787", null, null, "Carranza Allende", null }
+                    { 1, new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6258), "BrendaLopez@school.com", "Brenda", "8445678787", null, null, "Lopez Reyes", null },
+                    { 2, new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6260), "AlmaRosa@school.com", "Alma Rosa", "8445567556", null, null, "Aguilar Tejada", null },
+                    { 3, new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6262), "LorenaSuarez@school.com", "Lorena", "8445552552", null, null, "Suarez Treviño", null },
+                    { 4, new DateTime(1985, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6265), "RamiroTorrero@school.com", "Ramiro", "8449883834", null, null, "Torrero Salinas", null },
+                    { 5, new DateTime(1990, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6268), "MarisolTorres@school.com", "Marisol", "8445556781", null, null, "Torres Valdés", null },
+                    { 6, new DateTime(1980, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6270), "SofiaCardenas@school.com", "Sofía", "8445556781", null, null, "Cárdenas Berrendo", null },
+                    { 7, new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6271), "ReginaGonzales@school.com", "Regina", "8446787575", null, null, "Gonzales Perreira", null },
+                    { 8, new DateTime(1975, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6273), "VeronicaZertuche@school.com", "Verónica", "8449990023", null, null, "Zertuche Mora", null },
+                    { 9, new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6275), "LuisCarranza@school.com", "Luis", "8445678787", null, null, "Carranza Allende", null }
                 });
 
             migrationBuilder.InsertData(
@@ -257,9 +261,10 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatedOn", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(5022), "PrimaryRole", null },
-                    { 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(5024), "AdminRole", null },
-                    { 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(5025), "StandardRole", null }
+                    { 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6746), "Primary", null },
+                    { 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6747), "Admim", null },
+                    { 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6748), "Standard", null },
+                    { 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6749), "Guest", null }
                 });
 
             migrationBuilder.InsertData(
@@ -267,18 +272,18 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "BirthDate", "CreatedOn", "CurrentSemester", "EmergencyContact", "Name", "PhoneNumber", "PictureURL", "Surname", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2000, 8, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4769), 1, "8445677676", "Emiliano", "8445556767", null, "Romero Salínas", null },
-                    { 2, new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4864), 1, "8445677676", "Omar", "8445556767", null, "Martínez Reyes", null },
-                    { 3, new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4866), 1, "8445677676", "Verónica", "8446789900", null, "Sánchez", null },
-                    { 4, new DateTime(1999, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4869), 2, "8445677676", "Jimena", "8442225656", null, "Trejo González", null },
-                    { 5, new DateTime(1999, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4871), 2, "8445677676", "Daniel", "8442225656", null, "Aranda Martín", null },
-                    { 6, new DateTime(1999, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4873), 2, "8445677676", "Valeria", "8445556776", null, "Guzmán Allende", null },
-                    { 7, new DateTime(1998, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4874), 3, "8445677676", "Julian", "8445676767", null, "Torres Cabrera", null },
-                    { 8, new DateTime(1998, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4876), 3, "8445677676", "Juan", "8445676767", null, "Aguilar Cabello", null },
-                    { 9, new DateTime(1998, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4878), 3, "8445677676", "Gabriela", "8445676767", null, "Agustín Neida", null },
-                    { 10, new DateTime(1997, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4880), 4, "8445677676", "Pedro", "8445676767", null, "Ignácio Carranza", null },
-                    { 11, new DateTime(1997, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4883), 4, "8445677676", "Amanda", "8445582019", null, "Treviño Almeda", null },
-                    { 12, new DateTime(1997, 9, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4886), 4, "8445677676", "Jessica", "8445582019", null, "Ramos Irigoyen", null }
+                    { 1, new DateTime(2000, 8, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6546), 1, "8445677676", "Emiliano", "8445556767", null, "Romero Salínas", null },
+                    { 2, new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6548), 1, "8445677676", "Omar", "8445556767", null, "Martínez Reyes", null },
+                    { 3, new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6550), 1, "8445677676", "Verónica", "8446789900", null, "Sánchez", null },
+                    { 4, new DateTime(1999, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6553), 2, "8445677676", "Jimena", "8442225656", null, "Trejo González", null },
+                    { 5, new DateTime(1999, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6555), 2, "8445677676", "Daniel", "8442225656", null, "Aranda Martín", null },
+                    { 6, new DateTime(1999, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6557), 2, "8445677676", "Valeria", "8445556776", null, "Guzmán Allende", null },
+                    { 7, new DateTime(1998, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6559), 3, "8445677676", "Julian", "8445676767", null, "Torres Cabrera", null },
+                    { 8, new DateTime(1998, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6561), 3, "8445677676", "Juan", "8445676767", null, "Aguilar Cabello", null },
+                    { 9, new DateTime(1998, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6563), 3, "8445677676", "Gabriela", "8445676767", null, "Agustín Neida", null },
+                    { 10, new DateTime(1997, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6565), 4, "8445677676", "Pedro", "8445676767", null, "Ignácio Carranza", null },
+                    { 11, new DateTime(1997, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6568), 4, "8445677676", "Amanda", "8445582019", null, "Treviño Almeda", null },
+                    { 12, new DateTime(1997, 9, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6571), 4, "8445677676", "Jessica", "8445582019", null, "Ramos Irigoyen", null }
                 });
 
             migrationBuilder.InsertData(
@@ -286,18 +291,18 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "Id", "AvailableSemester", "CreatedOn", "Name", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4691), "Matemáticas I", null },
-                    { 2, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4693), "Física I", null },
-                    { 3, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4694), "Historia", null },
-                    { 4, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4695), "Matemáticas II", null },
-                    { 5, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4697), "Física II", null },
-                    { 6, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4698), "Finanzas", null },
-                    { 7, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4699), "Matemáticas III", null },
-                    { 8, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4700), "Física III", null },
-                    { 9, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4701), "Química I", null },
-                    { 10, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4703), "Filosofía", null },
-                    { 11, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4704), "Informática", null },
-                    { 12, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4705), "Química II", null }
+                    { 1, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6469), "Matemáticas I", null },
+                    { 2, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6470), "Física I", null },
+                    { 3, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6472), "Historia", null },
+                    { 4, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6473), "Matemáticas II", null },
+                    { 5, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6475), "Física II", null },
+                    { 6, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6476), "Finanzas", null },
+                    { 7, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6477), "Matemáticas III", null },
+                    { 8, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6479), "Física III", null },
+                    { 9, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6480), "Química I", null },
+                    { 10, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6481), "Filosofía", null },
+                    { 11, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6482), "Informática", null },
+                    { 12, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6483), "Química II", null }
                 });
 
             migrationBuilder.InsertData(
@@ -320,15 +325,15 @@ namespace EduPrime.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Professors",
-                columns: new[] { "Id", "EmployeeId", "Satisfaction", "YearsOnDuty" },
+                columns: new[] { "Id", "CreatedOn", "EmployeeId", "Satisfaction", "UpdatedOn", "YearsOnDuty" },
                 values: new object[,]
                 {
-                    { 1, 1, 85, 5 },
-                    { 2, 2, 90, 30 },
-                    { 3, 3, 90, 15 },
-                    { 4, 4, 100, 10 },
-                    { 5, 5, 45, 3 },
-                    { 6, 6, 100, 10 }
+                    { 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6431), 1, 85, null, 5 },
+                    { 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6433), 2, 90, null, 30 },
+                    { 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6434), 3, 90, null, 15 },
+                    { 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6436), 4, 100, null, 10 },
+                    { 5, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6437), 5, 45, null, 3 },
+                    { 6, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6439), 6, 100, null, 10 }
                 });
 
             migrationBuilder.InsertData(
@@ -336,42 +341,42 @@ namespace EduPrime.Infrastructure.Migrations
                 columns: new[] { "StudentId", "SubjectId", "CreatedOn", "FirstGrade", "UpdatedOn" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4917), 91, null },
-                    { 1, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4924), 90, null },
-                    { 1, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4931), 90, null },
-                    { 2, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4920), 71, null },
-                    { 2, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4926), 50, null },
-                    { 2, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4932), 50, null },
-                    { 3, 1, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4922), 80, null },
-                    { 3, 2, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4929), 80, null },
-                    { 3, 3, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4935), 80, null },
-                    { 4, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4937), 90, null },
-                    { 4, 5, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4942), 90, null },
-                    { 4, 6, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4948), 85, null },
-                    { 5, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4938), 50, null },
-                    { 5, 5, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4944), 50, null },
-                    { 5, 6, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4950), 100, null },
-                    { 6, 4, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4940), 80, null },
-                    { 6, 5, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4946), 80, null },
-                    { 6, 6, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4952), 95, null },
-                    { 7, 7, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4954), 85, null },
-                    { 7, 8, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4960), 90, null },
-                    { 7, 9, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4965), 100, null },
-                    { 8, 7, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4956), 100, null },
-                    { 8, 8, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4961), 87, null },
-                    { 8, 9, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4966), 80, null },
-                    { 9, 7, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4958), 95, null },
-                    { 9, 8, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4963), 65, null },
-                    { 9, 9, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4968), 90, null },
-                    { 10, 10, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4970), 50, null },
-                    { 10, 11, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4975), 50, null },
-                    { 10, 12, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4981), 50, null },
-                    { 11, 10, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4972), 70, null },
-                    { 11, 11, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4977), 70, null },
-                    { 11, 12, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4984), 70, null },
-                    { 12, 10, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4973), 100, null },
-                    { 12, 11, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4979), 100, null },
-                    { 12, 12, new DateTime(2023, 9, 23, 22, 54, 5, 394, DateTimeKind.Local).AddTicks(4986), 100, null }
+                    { 1, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6639), 91, null },
+                    { 1, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6646), 90, null },
+                    { 1, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6652), 90, null },
+                    { 2, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6642), 71, null },
+                    { 2, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6648), 50, null },
+                    { 2, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6654), 50, null },
+                    { 3, 1, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6644), 80, null },
+                    { 3, 2, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6650), 80, null },
+                    { 3, 3, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6656), 80, null },
+                    { 4, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6658), 90, null },
+                    { 4, 5, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6664), 90, null },
+                    { 4, 6, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6669), 85, null },
+                    { 5, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6660), 50, null },
+                    { 5, 5, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6666), 50, null },
+                    { 5, 6, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6671), 100, null },
+                    { 6, 4, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6662), 80, null },
+                    { 6, 5, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6668), 80, null },
+                    { 6, 6, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6673), 95, null },
+                    { 7, 7, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6675), 85, null },
+                    { 7, 8, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6680), 90, null },
+                    { 7, 9, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6685), 100, null },
+                    { 8, 7, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6677), 100, null },
+                    { 8, 8, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6682), 87, null },
+                    { 8, 9, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6688), 80, null },
+                    { 9, 7, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6678), 95, null },
+                    { 9, 8, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6684), 65, null },
+                    { 9, 9, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6690), 90, null },
+                    { 10, 10, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6692), 50, null },
+                    { 10, 11, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6698), 50, null },
+                    { 10, 12, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6704), 50, null },
+                    { 11, 10, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6694), 70, null },
+                    { 11, 11, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6699), 70, null },
+                    { 11, 12, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6706), 70, null },
+                    { 12, 10, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6696), 100, null },
+                    { 12, 11, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6702), 100, null },
+                    { 12, 12, new DateTime(2023, 10, 11, 1, 52, 15, 368, DateTimeKind.Utc).AddTicks(6708), 100, null }
                 });
 
             migrationBuilder.InsertData(

@@ -27,6 +27,7 @@ namespace EduPrime.Infrastructure.Data.Configurations
               .HasDefaultValue(SubjectGradeStatus.InProgress);
 
             builder.Property(prop => prop.CreatedOn)
+             .HasDefaultValue(DateTime.UtcNow)
              .IsRequired();
 
             // Ignoring fields
