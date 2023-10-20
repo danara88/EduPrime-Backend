@@ -6,6 +6,10 @@ on:
     branches:
     - develop
 
+env:
+  AZURE_WEBAPP_NAME: eduprime-dev-backend
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -40,6 +44,13 @@ jobs:
           dotnet user-secrets set "PasswordSettings:Iterations" 10000 --project ./EduPrime.API
 
       - name: Publish
-        run: dotnet publish ./EduPrime.sln --configuration Release --no-build
+        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+
+      - name: Deployment
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
 
 
