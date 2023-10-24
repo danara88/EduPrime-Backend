@@ -44,7 +44,7 @@ jobs:
           dotnet user-secrets set "PasswordSettings:Iterations" 10000 --project ./EduPrime.API
 
       - name: Publish .NET Web API
-        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+        run: dotnet publish ./EduPrime.sln -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Deploy .NET Web API
         uses: azure/webapps-deploy@v2
