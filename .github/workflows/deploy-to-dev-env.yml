@@ -3,26 +3,26 @@ name: Publish to develop environment
 on:
   workflow_dispatch:
   push:
-    branches:
-    - develop
+    branches: [ develop ]
 
 env:
   AZURE_WEBAPP_NAME: eduprime-dev-backend
-  AZURE_WEBAPP_PACKAGE_PATH: "./publish"
+  AZURE_WEBAPP_PACKAGE_PATH: './publish'
+  DOTNET_VERSION: '7.0.x'
 
 jobs:
-  publish:
+  Publish:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Setup .NET
+      - name: Setup .NET Web API
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.0.x'
+          dotnet-version: ${{ env.DOTNET_VERSION }}
         
-      - name: Restore
+      - name: Install dependencies
         run: dotnet restore ./EduPrime.sln
 
       - name: Build .NET Web API
@@ -43,10 +43,10 @@ jobs:
           dotnet user-secrets set "PasswordSettings:KeySize" 32 --project ./EduPrime.API
           dotnet user-secrets set "PasswordSettings:Iterations" 10000 --project ./EduPrime.API
 
-      - name: Publish
-        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+      - name: Publish .NET Web API
+        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-      - name: Deployment
+      - name: Deploy .NET Web API
         uses: azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
