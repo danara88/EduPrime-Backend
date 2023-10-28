@@ -67,7 +67,7 @@ jobs:
         run: dotnet build ./EduPrime.sln -c Release --no-restore
 
       - name: dotnet publish
-        run: dotnet publish ./EduPrime.sln -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+        run: dotnet publish ./EduPrime.sln -c Release -o ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   deploy:
     runs-on: ubuntu-latest
