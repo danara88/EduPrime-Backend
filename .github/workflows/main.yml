@@ -1,0 +1,93 @@
+# This workflow will build and push a .NET Core app to an Azure Web App when a commit is pushed to your default branch.
+#
+# This workflow assumes you have already created the target Azure App Service web app.
+# For instructions see https://docs.microsoft.com/en-us/azure/app-service/quickstart-dotnetcore?tabs=net60&pivots=development-environment-vscode
+#
+# To configure this workflow:
+#
+# 1. Download the Publish Profile for your Azure Web App. You can download this file from the Overview page of your Web App in the Azure Portal.
+#    For more information: https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials
+#
+# 2. Create a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE, paste the publish profile contents as the value of the secret.
+#    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
+#
+# 3. Change the value for the AZURE_WEBAPP_NAME. Optionally, change the AZURE_WEBAPP_PACKAGE_PATH and DOTNET_VERSION environment variables below.
+#
+# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
+# For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
+
+name: Build and deploy ASP.Net Core app to an Azure Web App
+
+env:
+  AZURE_WEBAPP_NAME: eduprime-dev-backend # set this to the name of your Azure Web App
+  AZURE_WEBAPP_PACKAGE_PATH: "./publish" # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: "7.0.x" # set this to the .NET Core version to use
+
+on:
+  push:
+    branches: ["develop"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Set User Secrets
+        run: |
+          dotnet user-secrets init
+          dotnet user-secrets set "ConnectionStrings:DefaultConnection" "Server=eduprimerserver.database.windows.net;Database=EduPrimeDevDB;User Id=L3ziU5GaSNTlVPO;Password=HkQ15jdGmMx9EmA" --project ./EduPrime.API
+          dotnet user-secrets set "azureSettings:StorageAccountKey" "DefaultEndpointsProtocol=https;AccountName=eduprimestorage;AccountKey=DuTWfWavGYjWXXZ/FF6EiB02woEvnoyUB5XUsMsy5l+1Omwmj/mYICSIFP4JRtE19USQIg7+TKcc+AStS9kw5A==;EndpointSuffix=core.windows.net" --project ./EduPrime.API
+          dotnet user-secrets set "azureSettings:EmployeesRfcsContainer" "employeesrfcs" --project ./EduPrime.API
+          dotnet user-secrets set "azureSettings:EmployeesPicturesContainer" "employeespictures" --project ./EduPrime.API
+          dotnet user-secrets set "azureSettings:StudentsPicturesContainer" "studentspictures" --project ./EduPrime.API
+          dotnet user-secrets set "JwtSettings:Secret" "qYxJd6i6cqmvOBpoMrij2hBcGf7Gru" --project ./EduPrime.API
+          dotnet user-secrets set "JwtSettings:Issuer" "https://localhost:44392/" --project ./EduPrime.API
+          dotnet user-secrets set "JwtSettings:Audience" "https://localhost:44392/" --project ./EduPrime.API
+          dotnet user-secrets set "JwtSettings:ValidTimeMinutes" "7" --project ./EduPrime.API
+          dotnet user-secrets set "PasswordSettings:SaltSize" 16 --project ./EduPrime.API
+          dotnet user-secrets set "PasswordSettings:KeySize" 32 --project ./EduPrime.API
+          dotnet user-secrets set "PasswordSettings:Iterations" 10000 --project ./EduPrime.API
+
+      - name: dotnet build
+        run: dotnet build ./EduPrime.sln -c Release --no-restore
+
+      - name: dotnet publish
+        run: dotnet publish ./EduPrime.sln -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+
+  deploy:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: "Development"
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
