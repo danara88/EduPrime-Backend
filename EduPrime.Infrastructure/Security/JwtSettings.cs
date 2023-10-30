@@ -13,7 +13,7 @@
         /// <summary>
         /// JWT token valid time in minutes
         /// </summary>
-        public string ValidTimeMinutes { get; set; }
+        public int ValidTimeMinutes { get; set; }
 
         /// <summary>
         /// Source that emits the token

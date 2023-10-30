@@ -46,7 +46,7 @@ namespace EduPrime.Infrastructure.Security
                     // Include Jti (token ID) to avoid client re-use the token again.
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_jwtSettings.ValidTimeMinutes)),
+                Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ValidTimeMinutes),
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,
 
