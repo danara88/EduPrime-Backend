@@ -29,7 +29,7 @@ jobs:
         run: dotnet build ./EduPrime.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+        run: dotnet publish ./EduPrime.sln --configuration Release --no-build --property:PublishDir=${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
       - name: Deployment
         uses: azure/webapps-deploy@v2
