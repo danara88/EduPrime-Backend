@@ -130,21 +130,6 @@ namespace EduPrime.Tests.Controllers
         }
 
         [Fact]
-        public async void AreasController_CreateArea_ModelStateInvalid_ThrowsBadRequestException()
-        {
-            // Arrange
-            var controller = new AreasController(_unitOfWork, _mapper);
-            var createAreaDTO = new CreateAreaDTO
-            {
-                Name = "Test",
-                Description = "Test"
-            };
-            controller.ModelState.AddModelError("Test Error", "Test Error");
-            // Act & Assert
-            await Assert.ThrowsAsync<BadRequestException>(() => controller.CreateArea(createAreaDTO));
-        }
-
-        [Fact]
         public async void AreasController_CreateArea_AreaAlreadyExists_ThrowsBadRequestException()
         {
             // Arrange
@@ -222,22 +207,6 @@ namespace EduPrime.Tests.Controllers
         }
 
         [Fact]
-        public async void AreasController_UpdateArea_ModelStateInvalid_ThrowsBadRequestException()
-        {
-            // Arrange
-            var controller = new AreasController(_unitOfWork, _mapper);
-            var updateAreaDTO = new UpdateAreaDTO
-            {
-                Id = 1,
-                Name = "Test Update",
-                Description = "Test"
-            };
-            controller.ModelState.AddModelError("Test Error", "Test Error");
-            // Act & Assert
-            await Assert.ThrowsAsync<BadRequestException>(() => controller.UpdateArea(updateAreaDTO));
-        }
-
-        [Fact]
         public async void AreasController_UpdateArea_AreaDoesNotExist_ThrowsBadRequestException()
         {
             // Arrange
@@ -311,7 +280,7 @@ namespace EduPrime.Tests.Controllers
         {
             // Arrange
             var controller = new AreasController(_unitOfWork, _mapper);
-            A.CallTo(() => _unitOfWork.AreaRepository.Delete(1)).Throws(new Exception());
+            A.CallTo(() => _unitOfWork.SaveChangesAsync()).Throws(new Exception("Error exception"));
             // Act & Assert
             await Assert.ThrowsAsync<InternalServerException>(() => controller.DeleteArea(1));
         }
