@@ -4,9 +4,9 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - eduprimebackend
 
 on:
-  push:
-    branches:
-      - master
+  release:
+    types:
+      - published
   workflow_dispatch:
 
 jobs:
