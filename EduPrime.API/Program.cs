@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using EduPrime.Infrastructure.Security;
+using EduPrime.Infrastructure.MailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,9 @@ builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryServ
 // Password service settings
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+
+// Mail service settings
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 
 // Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
