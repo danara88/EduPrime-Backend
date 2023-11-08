@@ -26,6 +26,16 @@ namespace EduPrime.Infrastructure.Repository
         }
 
         /// <summary>
+        /// Method to get a user by verification token
+        /// </summary>
+        /// <param name="verificationToken"></param>
+        /// <returns></returns>
+        public async Task<User> GetByVerificationTokenAsync(string verificationToken)
+        {
+            return await _entity.FirstOrDefaultAsync(u => u.VerificationToken == verificationToken);
+        }
+
+        /// <summary>
         /// Method to get a user by email
         /// </summary>
         /// <param name="email"></param>

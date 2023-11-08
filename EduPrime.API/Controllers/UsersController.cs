@@ -7,7 +7,10 @@ using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
 namespace EduPrime.API.Controllers
@@ -20,17 +23,23 @@ namespace EduPrime.API.Controllers
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtFactory _jwtFactory;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public UsersController(
-            IUnitOfWork unitOfWork, 
-            IPasswordHasher passwordHasher, 
-            IMapper mapper, 
-            IJwtFactory jwtFactory)
+            IUnitOfWork unitOfWork,
+            IPasswordHasher passwordHasher,
+            IMapper mapper,
+            IJwtFactory jwtFactory,
+            IEmailSender emailSender,
+            IWebHostEnvironment hostEnvironment)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
+            _emailSender = emailSender;
+            _hostEnvironment = hostEnvironment;
         }
 
         /// <summary>
@@ -58,15 +67,22 @@ namespace EduPrime.API.Controllers
 
             var user = _mapper.Map<User>(registerUserDTO);
 
-            // Hashing the password and assign lowest permissions
+            // Hashing the password
             user.Password = _passwordHasher.Hash(user.Password);
+
+            // Assign lowest permissions
             user.RoleId = (await _unitOfWork.RoleRepository.GetGuestRole()).Id;
+
+            // Set email confirmation to false & generate verification token
+            user.EmailConfirmed = false;
+            user.VerificationToken = GenerateVerificationToken();
 
             await _unitOfWork.UserRepository.AddAsync(user);
 
             try
             {
                 await _unitOfWork.SaveChangesAsync();
+                await SendVerificationEmail(user);
             }
             catch (Exception)
             {
@@ -105,6 +121,11 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The email or password are invalid.");
             }
 
+            if (!user.EmailConfirmed)
+            {
+                throw new BadRequestException("The email needs to be confirmed.");
+            }
+
             user.LastLogin = DateTime.UtcNow;
 
             try
@@ -123,6 +144,47 @@ namespace EduPrime.API.Controllers
 
             var response = new ApiResponse<AuthTokenDTO>(authTokenDTO);
             return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to confirm user's email
+        /// </summary>
+        /// <param name="confirmEmailDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpGet("confirm-email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailDTO confirmEmailDTO)
+        {
+            var userDB = await _unitOfWork.UserRepository.GetByVerificationTokenAsync(confirmEmailDTO.Code);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The verification token is invalid.");
+            }
+
+            if (userDB.EmailConfirmed)
+            {
+                throw new BadRequestException($"The email is already confirmed.");
+            }
+
+            userDB.EmailConfirmed = true;
+            userDB.VerifiedAt = DateTime.UtcNow;
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+                var response = new ApiResponse<object>(null);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while verifying the email.");
+            }
+            
         }
 
         /// <summary>
@@ -256,6 +318,51 @@ namespace EduPrime.API.Controllers
             if (!Regex.IsMatch(password, "[a-zA-Z]") || !Regex.IsMatch(password, "[0-9]")) validPassword = false;
 
             return validPassword;
+        }
+
+        /// <summary>
+        /// Send verification email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task SendVerificationEmail(User user)
+        {
+            // Example: https://localhost:44392/api/users/v1/confirm-email?code=exampleCode
+            var callbackUrl = $@"{Request.Scheme}://{Request.Host}{Url.Action("ConfirmEmail", controller: "Users",
+                new { code = user.VerificationToken })}";
+
+            var pathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
+
+            var htmlBody = "";
+            using (StreamReader streamReader = System.IO.File.OpenText(pathToFile))
+            {
+                htmlBody = streamReader.ReadToEnd();
+            }
+
+            string callbackUrlItem = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style=\"font-size: 1rem;padding: 0.5rem;background-color: #18A3C5;color: white;text-decoration: none;border-radius: 0.4rem;margin: 1rem 0rem;display: inline-block;font-weight: bold;\">Confirm Email Address</a>";
+
+            string messageBody = string.Format(htmlBody, user.Email, callbackUrlItem);
+
+            try
+            {
+                await _emailSender.SendEmailAsync(user.Email, "EduPrime Inc. Confirm your email.", messageBody);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// Generates a random verification token
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateVerificationToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
     }
 }

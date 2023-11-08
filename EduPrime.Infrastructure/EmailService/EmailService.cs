@@ -6,13 +6,13 @@ using MimeKit;
 namespace EduPrime.Infrastructure.MailService
 {
     /// <summary>
-    /// Mail service
+    /// Email service
     /// </summary>
-    public class MailService : IEmailSender
+    public class EmailService : IEmailSender
     {
         private readonly SmtpSettings _smtpSettings;
 
-        public MailService(IOptions<SmtpSettings> smtpSettings)
+        public EmailService(IOptions<SmtpSettings> smtpSettings)
         {
             _smtpSettings = smtpSettings.Value;
         }
@@ -36,7 +36,7 @@ namespace EduPrime.Infrastructure.MailService
                 // To
                 message.To.Add(new MailboxAddress("", email));
                 message.Subject = subject;
-                message.Body = new TextPart(htmlMessage);
+                message.Body = new TextPart("html") { Text = htmlMessage };
 
                 // Open smtp client and send email
                 using (var client = new SmtpClient())
