@@ -73,9 +73,10 @@ namespace EduPrime.API.Controllers
             // Assign lowest permissions
             user.RoleId = (await _unitOfWork.RoleRepository.GetGuestRole()).Id;
 
-            // Set email confirmation to false & generate verification token
+            // Set email confirmation to false & generate verification token & assign expiration time for verification
             user.EmailConfirmed = false;
             user.VerificationToken = GenerateVerificationToken();
+            user.VerificationTokenExpirationTime = DateTime.UtcNow.AddMinutes(10);
 
             await _unitOfWork.UserRepository.AddAsync(user);
 
@@ -168,6 +169,11 @@ namespace EduPrime.API.Controllers
             if (userDB.EmailConfirmed)
             {
                 throw new BadRequestException($"The email is already confirmed.");
+            }
+
+            if (DateTime.UtcNow > userDB.VerificationTokenExpirationTime)
+            {
+                throw new BadRequestException($"The verification token has expired.");
             }
 
             userDB.EmailConfirmed = true;
