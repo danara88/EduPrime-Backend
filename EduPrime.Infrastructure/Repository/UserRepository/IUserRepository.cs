@@ -12,5 +12,7 @@ namespace EduPrime.Infrastructure.Repository
         Task<User> GetUserByEmail(string email);
 
         Task<User> GetByIdWithAssignedRoleAsync(int id);
+
+        Task<User> GetByVerificationTokenAsync(string verificationToken);
     }
 }

@@ -15,6 +15,14 @@
 
         public string Password { get; set; }
 
+        public string VerificationToken { get; set; }
+
+        public DateTime? VerificationTokenExpirationTime { get; set; }
+
+        public DateTime? VerifiedAt { get; set; }
+
+        public bool EmailConfirmed { get; set; }
+
         public DateTime? LastLogin { get; set; }
 
         public Role Role { get; set; }

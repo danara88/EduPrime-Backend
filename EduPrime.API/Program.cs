@@ -1,16 +1,18 @@
-using EduPrime.Infrastructure.Data;
-using EduPrime.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using EduPrime.Infrastructure.Filters;
-using EduPrime.Infrastructure.Services;
-using EduPrime.Infrastructure.AzureServices;
-using EduPrime.API.Services;
 using EduPrime.API.Helpers;
+using EduPrime.API.Services;
+using EduPrime.Infrastructure.AzureServices;
+using EduPrime.Infrastructure.Data;
+using EduPrime.Infrastructure.Filters;
+using EduPrime.Infrastructure.MailService;
+using EduPrime.Infrastructure.Repository;
+using EduPrime.Infrastructure.Security;
+using EduPrime.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using EduPrime.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,10 @@ builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryServ
 // Password service settings
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
+
+// Email service settings
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddScoped<IEmailSender, EmailService>();
 
 // Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
