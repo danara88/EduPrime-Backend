@@ -1,5 +1,4 @@
 ﻿using EduPrime.Core.Entities;
-using EduPrime.Core.Enums;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

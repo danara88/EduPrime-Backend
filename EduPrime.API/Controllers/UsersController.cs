@@ -1,16 +1,21 @@
 ﻿using AutoMapper;
-using EduPrime.API.Attributes;
-using EduPrime.API.Response;
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Response;
+using EduPrime.Application.Helpers.Security;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
+using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/users/v1")]
     [ApiController]
@@ -20,17 +25,29 @@ namespace EduPrime.API.Controllers
         private readonly IPasswordHasher _passwordHasher;
         private readonly IJwtFactory _jwtFactory;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
+        private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IDataProtector _dataProtector;
+        private readonly ISecurityHelper _securityHelper;
 
         public UsersController(
-            IUnitOfWork unitOfWork, 
-            IPasswordHasher passwordHasher, 
-            IMapper mapper, 
-            IJwtFactory jwtFactory)
+            IUnitOfWork unitOfWork,
+            IPasswordHasher passwordHasher,
+            IMapper mapper,
+            IJwtFactory jwtFactory,
+            IEmailSender emailSender,
+            IWebHostEnvironment hostEnvironment,
+            IDataProtectionProvider dataProtectorProvider,
+            ISecurityHelper securityHelper)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
             _mapper = mapper;
             _jwtFactory = jwtFactory;
+            _emailSender = emailSender;
+            _hostEnvironment = hostEnvironment;
+            _dataProtector = dataProtectorProvider.CreateProtector("RecoveryPasswordEmail");
+            _securityHelper = securityHelper;
         }
 
         /// <summary>
@@ -58,15 +75,23 @@ namespace EduPrime.API.Controllers
 
             var user = _mapper.Map<User>(registerUserDTO);
 
-            // Hashing the password and assign lowest permissions
+            // Hashing the password
             user.Password = _passwordHasher.Hash(user.Password);
+
+            // Assign lowest permissions
             user.RoleId = (await _unitOfWork.RoleRepository.GetGuestRole()).Id;
+
+            // Set email confirmation to false & generate verification token & assign expiration time for verification
+            user.EmailConfirmed = false;
+            user.VerificationToken = GenerateVerificationToken();
+            user.VerificationTokenExpirationTime = DateTime.UtcNow.AddMinutes(10);
 
             await _unitOfWork.UserRepository.AddAsync(user);
 
             try
             {
                 await _unitOfWork.SaveChangesAsync();
+                await SendVerificationEmail(user);
             }
             catch (Exception)
             {
@@ -105,6 +130,11 @@ namespace EduPrime.API.Controllers
                 throw new BadRequestException("The email or password are invalid.");
             }
 
+            if (!user.EmailConfirmed)
+            {
+                throw new BadRequestException("The email needs to be confirmed.");
+            }
+
             user.LastLogin = DateTime.UtcNow;
 
             try
@@ -123,6 +153,129 @@ namespace EduPrime.API.Controllers
 
             var response = new ApiResponse<AuthTokenDTO>(authTokenDTO);
             return Ok(response);
+        }
+
+        /// <summary>
+        /// End point to confirm user's email
+        /// </summary>
+        /// <param name="confirmEmailDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpGet("confirm-email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailDTO confirmEmailDTO)
+        {
+            var userDB = await _unitOfWork.UserRepository.GetByVerificationTokenAsync(confirmEmailDTO.Code);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The verification token is invalid.");
+            }
+
+            if (userDB.EmailConfirmed)
+            {
+                throw new BadRequestException($"The email is already confirmed.");
+            }
+
+            if (DateTime.UtcNow > userDB.VerificationTokenExpirationTime)
+            {
+                throw new BadRequestException($"The verification token has expired.");
+            }
+
+            userDB.EmailConfirmed = true;
+            userDB.VerifiedAt = DateTime.UtcNow;
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+                var response = new ApiResponse<object>(null);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while verifying the email.");
+            }
+            
+        }
+
+        /// <summary>
+        /// End point to send recovery password email
+        /// </summary>
+        /// <param name="recoveryPasswordDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPost("recovery-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO recoveryPasswordDTO)
+        {
+            var userDB = await _unitOfWork.UserRepository.GetUserByEmail(recoveryPasswordDTO.Email);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The email {recoveryPasswordDTO.Email} is not registered.");
+            }
+
+            if (!userDB.EmailConfirmed)
+            {
+                throw new BadRequestException("The email needs to be confirmed.");
+            }
+
+            try
+            {
+                await SendRecoveryPasswordEmail(userDB);
+                var response = new ApiResponse<object>(null);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while sending recovery password email.");
+            }
+
+        }
+
+        /// <summary>
+        /// End point to change user password
+        /// </summary>
+        /// <param name="changePasswordDTO"></param>
+        /// <returns></returns>
+        [HttpPut("change-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            changePasswordDTO.Email = _dataProtector.Unprotect(changePasswordDTO.Email);
+
+            var userDB = await _unitOfWork.UserRepository.GetUserByEmail(changePasswordDTO.Email);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The email {changePasswordDTO.Email} is not registered.");
+            }
+
+            // Validate password format
+            if (!IsValidPasword(changePasswordDTO.Password))
+            {
+                throw new BadRequestException("Invalid password.");
+            }
+
+            // Hash new inserted password and assign to the user
+            userDB.Password = _passwordHasher.Hash(changePasswordDTO.Password);
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+                var response = new ApiResponse<object>(null);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while changing the password.");
+            }
         }
 
         /// <summary>
@@ -256,6 +409,88 @@ namespace EduPrime.API.Controllers
             if (!Regex.IsMatch(password, "[a-zA-Z]") || !Regex.IsMatch(password, "[0-9]")) validPassword = false;
 
             return validPassword;
+        }
+
+        /// <summary>
+        /// Send verification email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task SendVerificationEmail(User user)
+        {
+            // Example: https://localhost:44392/api/users/v1/confirm-email?code=exampleCode
+            var callbackUrl = $@"{Request.Scheme}://{Request.Host}{Url.Action("ConfirmEmail", controller: "Users",
+                new { code = user.VerificationToken })}";
+
+            var pathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                + Path.DirectorySeparatorChar.ToString() + "Confirm_Account_Registration.html";
+
+            var htmlBody = "";
+            using (StreamReader streamReader = System.IO.File.OpenText(pathToFile))
+            {
+                htmlBody = streamReader.ReadToEnd();
+            }
+
+            string callbackUrlItem = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style=\"font-size: 1rem;padding: 0.5rem;background-color: #18A3C5;color: white;text-decoration: none;border-radius: 0.4rem;margin: 1rem 0rem;display: inline-block;font-weight: bold;\">Confirm Email Address</a>";
+
+            string messageBody = string.Format(htmlBody, user.Email, callbackUrlItem);
+
+            try
+            {
+                await _emailSender.SendEmailAsync(user.Email, "EduPrime Inc. Confirm your email.", messageBody);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// Send recovery password email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task SendRecoveryPasswordEmail(User user)
+        {
+            var expirationTimeEncrypted = _securityHelper.EncryptString(DateTime.Now.AddHours(1).ToString("yyyy-MM-dd/HH:mm:ss"));
+            var callbackUrl = $@"{Request.Scheme}://{Request.Host}/recover-your-password" +
+                $"?Email={_dataProtector.Protect(user.Email)}" +
+                $"&ExpirationTime={expirationTimeEncrypted}";
+
+            var pathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                + Path.DirectorySeparatorChar.ToString() + "Recovery_Password_Template.html";
+
+            var htmlBody = "";
+            using (StreamReader streamReader = System.IO.File.OpenText(pathToFile))
+            {
+                htmlBody = streamReader.ReadToEnd();
+            }
+
+            string callbackUrlItem = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style=\"font-size: 1rem;padding: 0.5rem;background-color: #18A3C5;color: white;text-decoration: none;border-radius: 0.4rem;margin: 1rem 0rem;display: inline-block;font-weight: bold;\">Update Password</a>";
+
+            string messageBody = string.Format(htmlBody, user.Name, callbackUrlItem);
+
+            try
+            {
+                await _emailSender.SendEmailAsync(user.Email, "EduPrime Inc. Recover password.", messageBody);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// Generates a random verification token
+        /// </summary>
+        /// <returns></returns>
+        private string GenerateVerificationToken()
+        {
+            return Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         }
     }
 }

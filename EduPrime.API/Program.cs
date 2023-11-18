@@ -1,16 +1,20 @@
-using EduPrime.Infrastructure.Data;
-using EduPrime.Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using EduPrime.Infrastructure.Filters;
-using EduPrime.Infrastructure.Services;
+using EduPrime.Api.Helpers;
+using EduPrime.Api.Services;
+using EduPrime.Application.Helpers.Security;
 using EduPrime.Infrastructure.AzureServices;
-using EduPrime.API.Services;
-using EduPrime.API.Helpers;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using EduPrime.Infrastructure.Data;
+using EduPrime.Infrastructure.Filters;
+using EduPrime.Infrastructure.MailService;
+using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
+using EduPrime.Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +33,37 @@ builder.Services.AddControllers(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Description = @"
+         JWT Authentication using Bearer schema.
+         Insert 'Bearer' followed from a space and then your token in the input below.
+         Ex. Bearer [yourToken]",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Scheme = "Bearer"
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
+});
+
 builder.Services.AddResponseCaching();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -47,9 +81,17 @@ builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryServ
 builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
 builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
 
+// Email service settings
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddScoped<IEmailSender, EmailService>();
+
 // Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
+
+// Security settings
+builder.Services.Configure<SecuritySettings>(builder.Configuration.GetSection("SecuritySettings"));
+builder.Services.AddScoped<ISecurityHelper, SecurityHelper>();
 
 // AutoMapper settings
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EduPrime.API\EduPrime.API.csproj" />
+    <ProjectReference Include="..\EduPrime.API\EduPrime.Api.csproj" />
     <ProjectReference Include="..\EduPrime.Infrastructure\EduPrime.Infrastructure.csproj" />
   </ItemGroup>
 

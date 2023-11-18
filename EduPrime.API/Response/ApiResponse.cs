@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace EduPrime.API.Response
+namespace EduPrime.Api.Response
 {
     /// <summary>
     /// Common API response

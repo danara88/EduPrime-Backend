@@ -1,6 +1,6 @@
 ﻿using EduPrime.Infrastructure.Repository;
 
-namespace EduPrime.API.Services
+namespace EduPrime.Api.Services
 {
     /// <summary>
     /// Subject service implementation

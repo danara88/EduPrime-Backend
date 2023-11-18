@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EduPrime.API.Controllers;
-using EduPrime.API.Response;
+using EduPrime.Api.Controllers;
+using EduPrime.Api.Response;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;

@@ -22,6 +22,16 @@ namespace EduPrime.Infrastructure.Data.Configurations
             builder.Property(prop => prop.LastLogin)
                 .IsRequired(false);
 
+            builder.Property(prop => prop.VerifiedAt)
+                .IsRequired(false);
+
+            builder.Property(prop => prop.VerificationToken)
+                .IsUnicode (false)
+                .IsRequired(false);
+
+            builder.Property(prop => prop.EmailConfirmed)
+                .HasDefaultValue(false);
+
             builder.HasOne(u => u.Role)
                 .WithMany(r => r.Users)
                 .HasForeignKey(u => u.RoleId);
