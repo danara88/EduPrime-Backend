@@ -1,7 +1,7 @@
 ﻿using EduPrime.Core.Entities;
 using EduPrime.Infrastructure.Repository;
 
-namespace EduPrime.API.Services
+namespace EduPrime.Api.Services
 {
     /// <summary>
     /// Student service implementation

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EduPrime.API.Attributes;
-using EduPrime.API.Helpers;
-using EduPrime.API.Response;
-using EduPrime.API.Services;
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Helpers;
+using EduPrime.Api.Response;
+using EduPrime.Api.Services;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/students/v1")]
     [ApiController]

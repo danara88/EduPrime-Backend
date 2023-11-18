@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EduPrime.API.Response;
-using EduPrime.API.Services;
+using EduPrime.Api.Response;
+using EduPrime.Api.Services;
 using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
@@ -9,10 +9,10 @@ using EduPrime.Core.Enums.Subject;
 using Microsoft.AspNetCore.Mvc;
 using EduPrime.Core.DTOs.Shared;
 using Microsoft.AspNetCore.Authorization;
-using EduPrime.API.Attributes;
+using EduPrime.Api.Attributes;
 using EduPrime.Core.Enums;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/subjects/v1")]
     [ApiController]

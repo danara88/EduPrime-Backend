@@ -1,5 +1,5 @@
-using EduPrime.API.Helpers;
-using EduPrime.API.Services;
+using EduPrime.Api.Helpers;
+using EduPrime.Api.Services;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Data;
 using EduPrime.Infrastructure.Filters;

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using EduPrime.API.Controllers;
-using EduPrime.API.Helpers;
-using EduPrime.API.Response;
+using EduPrime.Api.Controllers;
+using EduPrime.Api.Helpers;
+using EduPrime.Api.Response;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;

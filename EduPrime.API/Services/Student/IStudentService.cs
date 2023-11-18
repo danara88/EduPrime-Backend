@@ -1,6 +1,6 @@
 ﻿using EduPrime.Core.Entities;
 
-namespace EduPrime.API.Services
+namespace EduPrime.Api.Services
 {
     /// <summary>
     /// Student service interface
