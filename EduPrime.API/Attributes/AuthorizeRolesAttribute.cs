@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace EduPrime.API.Attributes
+namespace EduPrime.Api.Attributes
 {
     /// <summary>
     /// Authorize roles custom attribute

@@ -1,4 +1,4 @@
-﻿namespace EduPrime.API.Helpers
+﻿namespace EduPrime.Api.Helpers
 {
     /// <summary>
     /// File helper implementation

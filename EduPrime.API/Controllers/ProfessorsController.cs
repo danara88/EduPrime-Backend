@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EduPrime.API.Attributes;
-using EduPrime.API.Response;
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Response;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
@@ -9,7 +9,7 @@ using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/professors/v1")]
     [ApiController]

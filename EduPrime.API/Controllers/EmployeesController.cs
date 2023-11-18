@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using EduPrime.API.Attributes;
-using EduPrime.API.Helpers;
-using EduPrime.API.Response;
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Helpers;
+using EduPrime.Api.Response;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/employees/v1")]
     [ApiController]

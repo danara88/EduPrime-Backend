@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using EduPrime.API.Attributes;
-using EduPrime.API.Response;
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Response;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
-namespace EduPrime.API.Controllers
+namespace EduPrime.Api.Controllers
 {
     [Route("api/users/v1")]
     [ApiController]
