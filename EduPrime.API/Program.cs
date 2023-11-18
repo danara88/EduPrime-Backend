@@ -1,5 +1,6 @@
 using EduPrime.Api.Helpers;
 using EduPrime.Api.Services;
+using EduPrime.Application.Helpers.Security;
 using EduPrime.Infrastructure.AzureServices;
 using EduPrime.Infrastructure.Data;
 using EduPrime.Infrastructure.Filters;
@@ -56,6 +57,10 @@ builder.Services.AddScoped<IEmailSender, EmailService>();
 // Azure settings
 builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
 builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
+
+// Security settings
+builder.Services.Configure<SecuritySettings>(builder.Configuration.GetSection("SecuritySettings"));
+builder.Services.AddScoped<ISecurityHelper, SecurityHelper>();
 
 // AutoMapper settings
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

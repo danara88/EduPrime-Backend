@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EduPrime.Core\EduPrime.Core.csproj" />
+    <ProjectReference Include="..\EduPrime.Application\EduPrime.Application.csproj" />
     <ProjectReference Include="..\EduPrime.Infrastructure\EduPrime.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduPrime.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EduPrime.Tests", "EduPrime.Tests\EduPrime.Tests.csproj", "{04C3AA47-BEBC-4E00-AC87-D3D38D45F1D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduPrime.Application", "EduPrime.Application\EduPrime.Application.csproj", "{FA707706-5552-48C4-A6D1-FB58767F5122}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{04C3AA47-BEBC-4E00-AC87-D3D38D45F1D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04C3AA47-BEBC-4E00-AC87-D3D38D45F1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04C3AA47-BEBC-4E00-AC87-D3D38D45F1D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA707706-5552-48C4-A6D1-FB58767F5122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA707706-5552-48C4-A6D1-FB58767F5122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA707706-5552-48C4-A6D1-FB58767F5122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA707706-5552-48C4-A6D1-FB58767F5122}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

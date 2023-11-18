@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
+using EduPrime.Application.Helpers.Security;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Security;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
@@ -25,6 +27,8 @@ namespace EduPrime.Api.Controllers
         private readonly IMapper _mapper;
         private readonly IEmailSender _emailSender;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IDataProtector _dataProtector;
+        private readonly ISecurityHelper _securityHelper;
 
         public UsersController(
             IUnitOfWork unitOfWork,
@@ -32,7 +36,9 @@ namespace EduPrime.Api.Controllers
             IMapper mapper,
             IJwtFactory jwtFactory,
             IEmailSender emailSender,
-            IWebHostEnvironment hostEnvironment)
+            IWebHostEnvironment hostEnvironment,
+            IDataProtectionProvider dataProtectorProvider,
+            ISecurityHelper securityHelper)
         {
             _unitOfWork = unitOfWork;
             _passwordHasher = passwordHasher;
@@ -40,6 +46,8 @@ namespace EduPrime.Api.Controllers
             _jwtFactory = jwtFactory;
             _emailSender = emailSender;
             _hostEnvironment = hostEnvironment;
+            _dataProtector = dataProtectorProvider.CreateProtector("RecoveryPasswordEmail");
+            _securityHelper = securityHelper;
         }
 
         /// <summary>
@@ -191,6 +199,83 @@ namespace EduPrime.Api.Controllers
                 throw new InternalServerException("Something went wrong while verifying the email.");
             }
             
+        }
+
+        /// <summary>
+        /// End point to send recovery password email
+        /// </summary>
+        /// <param name="recoveryPasswordDTO"></param>
+        /// <returns></returns>
+        /// <exception cref="BadRequestException"></exception>
+        /// <exception cref="InternalServerException"></exception>
+        [HttpPost("recovery-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> RecoveryPassword([FromBody] RecoveryPasswordDTO recoveryPasswordDTO)
+        {
+            var userDB = await _unitOfWork.UserRepository.GetUserByEmail(recoveryPasswordDTO.Email);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The email {recoveryPasswordDTO.Email} is not registered.");
+            }
+
+            if (!userDB.EmailConfirmed)
+            {
+                throw new BadRequestException("The email needs to be confirmed.");
+            }
+
+            try
+            {
+                await SendRecoveryPasswordEmail(userDB);
+                var response = new ApiResponse<object>(null);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while sending recovery password email.");
+            }
+
+        }
+
+        /// <summary>
+        /// End point to change user password
+        /// </summary>
+        /// <param name="changePasswordDTO"></param>
+        /// <returns></returns>
+        [HttpPut("change-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDTO changePasswordDTO)
+        {
+            changePasswordDTO.Email = _dataProtector.Unprotect(changePasswordDTO.Email);
+
+            var userDB = await _unitOfWork.UserRepository.GetUserByEmail(changePasswordDTO.Email);
+            if (userDB is null)
+            {
+                throw new BadRequestException($"The email {changePasswordDTO.Email} is not registered.");
+            }
+
+            // Validate password format
+            if (!IsValidPasword(changePasswordDTO.Password))
+            {
+                throw new BadRequestException("Invalid password.");
+            }
+
+            // Hash new inserted password and assign to the user
+            userDB.Password = _passwordHasher.Hash(changePasswordDTO.Password);
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync();
+                var response = new ApiResponse<object>(null);
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw new InternalServerException("Something went wrong while changing the password.");
+            }
         }
 
         /// <summary>
@@ -355,6 +440,43 @@ namespace EduPrime.Api.Controllers
             try
             {
                 await _emailSender.SendEmailAsync(user.Email, "EduPrime Inc. Confirm your email.", messageBody);
+            }
+            catch (Exception)
+            {
+                throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// Send recovery password email
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task SendRecoveryPasswordEmail(User user)
+        {
+            var expirationTimeEncrypted = _securityHelper.EncryptString(DateTime.Now.AddHours(1).ToString("yyyy-MM-dd/HH:mm:ss"));
+            var callbackUrl = $@"{Request.Scheme}://{Request.Host}/recover-your-password" +
+                $"?Email={_dataProtector.Protect(user.Email)}" +
+                $"&ExpirationTime={expirationTimeEncrypted}";
+
+            var pathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
+                + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"
+                + Path.DirectorySeparatorChar.ToString() + "Recovery_Password_Template.html";
+
+            var htmlBody = "";
+            using (StreamReader streamReader = System.IO.File.OpenText(pathToFile))
+            {
+                htmlBody = streamReader.ReadToEnd();
+            }
+
+            string callbackUrlItem = $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}' style=\"font-size: 1rem;padding: 0.5rem;background-color: #18A3C5;color: white;text-decoration: none;border-radius: 0.4rem;margin: 1rem 0rem;display: inline-block;font-weight: bold;\">Update Password</a>";
+
+            string messageBody = string.Format(htmlBody, user.Name, callbackUrlItem);
+
+            try
+            {
+                await _emailSender.SendEmailAsync(user.Email, "EduPrime Inc. Recover password.", messageBody);
             }
             catch (Exception)
             {
