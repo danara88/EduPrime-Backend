@@ -16,8 +16,4 @@
     <ProjectReference Include="..\EduPrime.Core\EduPrime.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Commands\" />
-  </ItemGroup>
-
 </Project>

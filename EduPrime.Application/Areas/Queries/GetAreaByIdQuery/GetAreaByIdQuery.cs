@@ -4,7 +4,8 @@ using MediatR;
 namespace EduPrime.Application.Areas.Queries
 {
     /// <summary>
-    /// Get area query
+    /// Get area by id query
     /// </summary>
-    public record GetAreasQuery() : IRequest<List<AreaDTO>> {}
+    /// <param name="id"></param>
+    public record GetAreaByIdQuery(int id) : IRequest<AreaDTO> { }
 }

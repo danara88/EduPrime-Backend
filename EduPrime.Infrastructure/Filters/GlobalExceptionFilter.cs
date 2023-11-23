@@ -13,8 +13,32 @@ namespace EduPrime.Infrastructure.Filters
     {
         public void OnException(ExceptionContext context)
         {
+            OnNotFoundException(context);
             OnBadRequestException(context);
             OnInternalServerException(context);
+        }
+
+        /// <summary>
+        /// Configures not found exception
+        /// </summary>
+        /// <param name="context"></param>
+        private void OnNotFoundException(ExceptionContext context)
+        {
+            if (context.Exception.GetType() == typeof(NotFoundException))
+            {
+                var exception = (NotFoundException)context.Exception;
+
+                var error = new ApiFailure
+                {
+                    Message = exception.Message,
+                    Status = (int)HttpStatusCode.NotFound,
+                    Success = false
+                };
+
+                context.Result = new NotFoundObjectResult(error);
+                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                context.ExceptionHandled = true;
+            }
         }
 
         /// <summary>
@@ -57,7 +81,7 @@ namespace EduPrime.Infrastructure.Filters
                     Success = false
                 };
 
-                context.Result = new BadRequestObjectResult(error);
+                context.Result = new ObjectResult(error);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 context.ExceptionHandled = true;
             }

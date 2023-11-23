@@ -1,27 +1,26 @@
-﻿using AutoMapper;
-using EduPrime.Api.Attributes;
-using EduPrime.Api.Response;
-using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.DTOs.Area;
-using EduPrime.Core.Entities;
-using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using EduPrime.Api.Attributes;
+using EduPrime.Api.Response;
+using EduPrime.Application.Areas.Commands;
+using EduPrime.Application.Areas.Queries;
+using EduPrime.Core.DTOs.Area;
+using EduPrime.Core.Enums;
+using EduPrime.Core.Exceptions;
+
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/areas/v1")]
+    [Route("api/areas/v2")]
     [ApiController]
     public class AreasController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
-        public AreasController(IUnitOfWork unitOfWork, IMapper mapper)
+        public AreasController(ISender mediator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -35,10 +34,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAreas()
         {
-            var areas = await _unitOfWork.AreaRepository.GetAllAsync();
-            var areasDTO = _mapper.Map<List<AreaDTO>>(areas);
+            var query = new GetAreasQuery();
+            var getAreasResult = await _mediator.Send(query);
+            var response = new ApiResponse<List<AreaDTO>>(getAreasResult);
 
-            return Ok(new ApiResponse<List<AreaDTO>>(areasDTO));
+            return Ok(response);
         }
 
         /// <summary>
@@ -53,13 +53,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAreaById(int id)
         {
-            var area = await _unitOfWork.AreaRepository.GetByIdAsync(id);
-            if (area is null)
-            {
-                return NotFound();
-            }
-            var areaDTO = _mapper.Map<AreaDTO>(area);
-            var response = new ApiResponse<AreaDTO>(areaDTO);
+            var query = new GetAreaByIdQuery(id);
+            var getAreaResult = await _mediator.Send(query);
+            var response = new ApiResponse<AreaDTO>(getAreaResult);
 
             return Ok(response);
         }
@@ -81,23 +77,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateArea([FromBody] CreateAreaDTO createAreaDTO)
         {
-            if (await _unitOfWork.AreaRepository.ExistsAnyArea(createAreaDTO.Name))
-            {
-                throw new BadRequestException($"The area with name {createAreaDTO.Name} already exists.");
-            }
-
-            var area = _mapper.Map<Area>(createAreaDTO);
-            try
-            {
-                await _unitOfWork.AreaRepository.AddAsync(area);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null)
+            var command = new CreateAreaCommand(createAreaDTO);
+            var createAreaResult = await _mediator.Send(command);
+            var response = new ApiResponse<AreaDTO>(createAreaResult)
             {
                 Status = StatusCodes.Status201Created,
             };
@@ -125,23 +107,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateArea([FromBody] UpdateAreaDTO updateAreaDTO)
         {
-            var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(updateAreaDTO.Id);
-            if (areaDB is null)
-            {
-                throw new BadRequestException($"The area with id {updateAreaDTO.Id} does not exist.");
-            }
+            var command = new UpdateAreaCommand(updateAreaDTO);
+            var updateAreaResult = await _mediator.Send(command);
+            var response = new ApiResponse<AreaDTO>(updateAreaResult);
 
-            areaDB = _mapper.Map(updateAreaDTO, areaDB);
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while updating the resource.");
-            }
-           
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -164,23 +133,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteArea(int id)
         {
-            var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(id);
-            if (areaDB is null)
-            {
-                throw new BadRequestException($"The area with id {id} does not exist.");
-            }
+            var command = new DeleteAreaCommand(id);
+            var deleteAreaResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(deleteAreaResult);
 
-            try
-            {
-                await _unitOfWork.AreaRepository.Delete(areaDB.Id);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while deleting the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -194,9 +150,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAreasWithEmployees()
         {
-            var areasWithEmployees = await _unitOfWork.AreaRepository.GetAreasWithEmployeesAsync();
-            var areasWithEmployeesDTO = _mapper.Map<List<AreaWithEmployeesDTO>>(areasWithEmployees);
-            var response = new ApiResponse<List<AreaWithEmployeesDTO>>(areasWithEmployeesDTO);
+            var query = new GetAreasWithEmployeesQuery();
+            var getAreasWithEmployeesResult = await _mediator.Send(query);
+            var response = new ApiResponse<List<AreaWithEmployeesDTO>>(getAreasWithEmployeesResult);
 
             return Ok(response);
         }
