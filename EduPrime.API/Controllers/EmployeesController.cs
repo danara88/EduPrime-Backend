@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Attributes;
-using EduPrime.Api.Helpers;
 using EduPrime.Api.Response;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
-using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

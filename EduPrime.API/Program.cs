@@ -1,15 +1,8 @@
-using EduPrime.Api.Helpers;
-using EduPrime.Api.Services;
-using EduPrime.Application.Helpers.Security;
-using EduPrime.Infrastructure.AzureServices;
+using EduPrime.Application;
+using EduPrime.Infrastructure;
 using EduPrime.Infrastructure.Data;
 using EduPrime.Infrastructure.Filters;
-using EduPrime.Infrastructure.MailService;
-using EduPrime.Infrastructure.Repository;
-using EduPrime.Infrastructure.Security;
-using EduPrime.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -70,34 +63,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
-builder.Services.AddTransient<ISubjectService, SubjectService>();
-builder.Services.AddTransient<IStudentService, StudentService>();
-builder.Services.AddTransient<IFileHelper, FileHelper>();
-builder.Services.AddTransient<IJwtFactory, JwtFactory>();
-builder.Services.AddTransient<IEmployeeRepositoryService, EmployeeRepositoryService>();
-
-// Password service settings
-builder.Services.Configure<PasswordSettings>(builder.Configuration.GetSection("PasswordSettings"));
-builder.Services.AddTransient<IPasswordHasher, PasswordHasher>();
-
-// Email service settings
-builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddScoped<IEmailSender, EmailService>();
-
-// Azure settings
-builder.Services.Configure<AzureSettings>(builder.Configuration.GetSection("azureSettings"));
-builder.Services.AddSingleton<IBlobStorageService, BlobStorageService>();
-
-// Security settings
-builder.Services.Configure<SecuritySettings>(builder.Configuration.GetSection("SecuritySettings"));
-builder.Services.AddScoped<ISecurityHelper, SecurityHelper>();
-
-// AutoMapper settings
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+// Dependency injection modules
+builder.Services.AddApplication();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // JWT Authentication settings
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

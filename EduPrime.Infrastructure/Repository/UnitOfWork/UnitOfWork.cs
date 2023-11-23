@@ -1,4 +1,12 @@
-﻿using EduPrime.Core.Entities;
+﻿using EduPrime.Application.Areas.Interfaces;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Application.Employees.Interfaces;
+using EduPrime.Application.Professors.Interfaces;
+using EduPrime.Application.Roles.Interfaces;
+using EduPrime.Application.Students.Interfaces;
+using EduPrime.Application.Subjects.Interfaces;
+using EduPrime.Application.Users.Interfaces;
+using EduPrime.Core.Entities;
 using EduPrime.Infrastructure.Data;
 
 namespace EduPrime.Infrastructure.Repository

@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using EduPrime.Application.Common.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace EduPrime.Infrastructure.AzureServices
