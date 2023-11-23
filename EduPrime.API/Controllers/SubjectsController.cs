@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
+using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
-using EduPrime.Api.Services;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
-using EduPrime.Core.Exceptions;
-using EduPrime.Infrastructure.Repository;
-using EduPrime.Core.Enums.Subject;
-using Microsoft.AspNetCore.Mvc;
-using EduPrime.Core.DTOs.Shared;
-using Microsoft.AspNetCore.Authorization;
-using EduPrime.Api.Attributes;
 using EduPrime.Core.Enums;
+using EduPrime.Core.Enums.Subject;
+using EduPrime.Core.Exceptions;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
@@ -19,14 +18,12 @@ namespace EduPrime.Api.Controllers
     public class SubjectsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ISubjectService _subjectService;
         private readonly IMapper _mapper;
 
-        public SubjectsController(IUnitOfWork unitOfWork, IMapper mapper, ISubjectService subjectService)
+        public SubjectsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _subjectService = subjectService;
         }
 
         /// <summary>
@@ -111,7 +108,7 @@ namespace EduPrime.Api.Controllers
                     throw new BadRequestException("You can add maximum 2 professors per subject.");
                 }
 
-                var isValidProfessorIds = await _subjectService.ValidProfessorIds(createSubjectDTO.ProfessorIds);
+                var isValidProfessorIds = await ValidProfessorIds(createSubjectDTO.ProfessorIds);
 
                 if (!isValidProfessorIds.Item1)
                 {
@@ -231,7 +228,7 @@ namespace EduPrime.Api.Controllers
                         throw new BadRequestException($"You can only unassign maximum 2 professors per subject.");
                     }
 
-                    var isValidProfessorIds = await _subjectService.ValidProfessorIds(unassignProfessorsDTO.ProfessorIds);
+                    var isValidProfessorIds = await ValidProfessorIds(unassignProfessorsDTO.ProfessorIds);
                     if (!isValidProfessorIds.Item1)
                     {
                         throw new BadRequestException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
@@ -295,7 +292,7 @@ namespace EduPrime.Api.Controllers
                 throw new BadRequestException($"You can only assign maximum 2 professors per subject.");
             }
 
-            var isValidProfessorIds = await _subjectService.ValidProfessorIds(assignProfessorsDTO.ProfessorIds);
+            var isValidProfessorIds = await ValidProfessorIds(assignProfessorsDTO.ProfessorIds);
             if (!isValidProfessorIds.Item1)
             {
                 throw new BadRequestException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
@@ -375,6 +372,29 @@ namespace EduPrime.Api.Controllers
 
             var response = new ApiResponse<object>(null);
             return Ok(response);
+        }
+
+        /// <summary>
+        /// Validates that each professor id exists in database
+        /// </summary>
+        /// <param name="professorIds"></param>
+        /// <returns></returns>
+        private async Task<(bool, int)> ValidProfessorIds(List<int> professorIds)
+        {
+            int invalidProfessorId = 0;
+            bool isValidProfessorIds = true;
+
+            foreach (var professorId in professorIds)
+            {
+                if (!(await _unitOfWork.ProfessorRepository.ExistsAnyProfessor(professorId)))
+                {
+                    isValidProfessorIds = false;
+                    invalidProfessorId = professorId;
+                    break;
+                }
+            }
+
+            return (isValidProfessorIds, invalidProfessorId);
         }
     }
 }

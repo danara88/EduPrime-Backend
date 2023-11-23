@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Controllers;
 using EduPrime.Api.Response;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
-using EduPrime.Infrastructure.Repository;
 using FakeItEasy;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;

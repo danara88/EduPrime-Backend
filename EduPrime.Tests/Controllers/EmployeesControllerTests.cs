@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Controllers;
-using EduPrime.Api.Helpers;
 using EduPrime.Api.Response;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
-using EduPrime.Infrastructure.Repository;
 using EduPrime.Infrastructure.Services;
 using EduPrime.Tests.Mocks;
 using FakeItEasy;

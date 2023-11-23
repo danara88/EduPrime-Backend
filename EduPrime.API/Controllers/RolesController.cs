@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
-using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers

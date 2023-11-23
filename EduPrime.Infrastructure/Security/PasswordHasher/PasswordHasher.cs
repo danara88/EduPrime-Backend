@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using EduPrime.Application.Common.Interfaces;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 
 namespace EduPrime.Infrastructure.Security

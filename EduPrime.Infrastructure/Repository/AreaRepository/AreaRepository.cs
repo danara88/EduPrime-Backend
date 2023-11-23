@@ -1,4 +1,5 @@
-﻿using EduPrime.Core.Entities;
+﻿using EduPrime.Application.Areas.Interfaces;
+using EduPrime.Core.Entities;
 using EduPrime.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 

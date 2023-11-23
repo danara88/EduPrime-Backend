@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.Api.Attributes;
-using EduPrime.Api.Helpers;
 using EduPrime.Api.Response;
-using EduPrime.Api.Services;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
@@ -10,7 +9,6 @@ using EduPrime.Core.Enums;
 using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
-using EduPrime.Infrastructure.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -22,7 +20,6 @@ namespace EduPrime.Api.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IStudentService _studentService;
         private readonly IBlobStorageService _blobStorageService;
         private readonly IFileHelper _fileHelper;
         private readonly IMapper _mapper;
@@ -31,14 +28,12 @@ namespace EduPrime.Api.Controllers
         public StudentsController(
             IUnitOfWork unitOfWork,
             IMapper mapper,
-            IStudentService studentService,
             IFileHelper fileHelper,
             IOptions<AzureSettings> azureSettings,
             IBlobStorageService blobStorageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _studentService = studentService;
             _fileHelper = fileHelper;
             _azureSettings = azureSettings.Value;
             _blobStorageService = blobStorageService;
@@ -157,7 +152,7 @@ namespace EduPrime.Api.Controllers
 
             var student = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(assignSubjectsDTO.StudentId);
 
-            var isValidSubjectIds = await _studentService.ValidateSubjectIds(assignSubjectsDTO.SubjectIds, student);
+            var isValidSubjectIds = await ValidateSubjectIds(assignSubjectsDTO.SubjectIds, student);
             if (!isValidSubjectIds.Item1)
             {
                 throw new BadRequestException(isValidSubjectIds.Item2);
@@ -282,7 +277,7 @@ namespace EduPrime.Api.Controllers
                 {
                     unassignSubjectsDTO.SubjectIds = unassignSubjectsDTO.SubjectIds.Distinct().ToList();
 
-                    var isValidSubjectsIds = await _studentService.ValidateSubjectIds(unassignSubjectsDTO.SubjectIds, student);
+                    var isValidSubjectsIds = await ValidateSubjectIds(unassignSubjectsDTO.SubjectIds, student);
                     if (!isValidSubjectsIds.Item1)
                     {
                         throw new BadRequestException(isValidSubjectsIds.Item2);
@@ -465,6 +460,38 @@ namespace EduPrime.Api.Controllers
             string guid = Guid.NewGuid().ToString();
             string documentName = $"{guid}{student.Name}{student.Surname}{fileName}";
             return documentName.Replace(" ", "");
+        }
+
+        /// <summary>
+        /// Validates that each subject id exists in database
+        /// </summary>
+        /// <param name="subjectIds"></param>
+        /// <returns></returns>
+        private async Task<(bool, string)> ValidateSubjectIds(List<int> subjectIds, Student student)
+        {
+            bool isValidSubjectIds = true;
+            int studentCurrentSemester = (int)student.CurrentSemester;
+            string invalidReason = string.Empty;
+
+            foreach (var subjectId in subjectIds)
+            {
+                var subject = await _unitOfWork.SubjectRepository.GetByIdAsync(subjectId);
+                if (subject is null)
+                {
+                    isValidSubjectIds = false;
+                    invalidReason = $"The subject with id {subjectId} does not exist.";
+                    break;
+                }
+                int subjectAvailableSemester = (int)subject.AvailableSemester;
+                if (studentCurrentSemester < subjectAvailableSemester)
+                {
+                    isValidSubjectIds = false;
+                    invalidReason = $"The subject with id {subjectId} is only available for {subjectAvailableSemester}° semester students.";
+                    break;
+                }
+            }
+
+            return (isValidSubjectIds, invalidReason);
         }
     }
 }
