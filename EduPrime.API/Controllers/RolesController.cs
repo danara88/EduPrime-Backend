@@ -1,11 +1,12 @@
-﻿using AutoMapper;
-using EduPrime.Api.Attributes;
+﻿using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
-using EduPrime.Application.Common.Interfaces;
+using EduPrime.Application.Roles.Commands;
+using EduPrime.Application.Roles.Commands.DeleteRoleCommand;
+using EduPrime.Application.Roles.Queries;
 using EduPrime.Core.DTOs.Role;
-using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
@@ -14,17 +15,15 @@ namespace EduPrime.Api.Controllers
     /// NOTE:
     /// If you want to update the name of a role, please talk to the DB administrator.
     /// </summary>
-    [Route("api/roles/v1")]
+    [Route("api/roles/v2")]
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
-        public RolesController(IUnitOfWork unitOfWork, IMapper mapper)
+        public RolesController(ISender mediator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -39,10 +38,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         public async Task<IActionResult> GetRoles()
         {
-            var roles = await _unitOfWork.RoleRepository.GetAllAsync();
-            var rolesDTO = _mapper.Map<List<RoleDTO>>(roles);
+            var query = new GetRolesQuery();
+            var getRolesResult = await _mediator.Send(query);
+            var response = new ApiResponse<List<RoleDTO>>(getRolesResult);
 
-            return Ok(new ApiResponse<List<RoleDTO>>(rolesDTO));
+            return Ok(response);
         }
 
         /// <summary>
@@ -58,13 +58,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetRoleById(int id)
         {
-            var role = await _unitOfWork.RoleRepository.GetByIdWithUsersAsync(id);
-            if (role is null)
-            {
-                return NotFound();
-            }
-            var roleDTO = _mapper.Map<RoleWithUsersDTO>(role);
-            var response = new ApiResponse<RoleWithUsersDTO>(roleDTO);
+            var query = new GetRoleByIdQuery(id);
+            var getRoleByIdResult = await _mediator.Send(query);
+            var response = new ApiResponse<RoleWithUsersDTO>(getRoleByIdResult);
 
             return Ok(response);
         }
@@ -86,25 +82,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateRole([FromBody] CreateRoleDTO createRoleDTO)
         {
-            if (await _unitOfWork.RoleRepository.ExistsAnyRoleAsync(createRoleDTO.Name))
+            var command = new CreateRoleCommand(createRoleDTO);
+            var createRoleResult = await _mediator.Send(command);
+            var response = new ApiResponse<RoleDTO>(createRoleResult)
             {
-                throw new BadRequestException($"The role with name {createRoleDTO.Name} already exists.");
-            }
-
-            var role = _mapper.Map<Role>(createRoleDTO);
-            try
-            {
-                await _unitOfWork.RoleRepository.AddAsync(role);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null)
-            {
-                Status = StatusCodes.Status201Created,
+                Status = StatusCodes.Status201Created
             };
 
             return Ok(response);
@@ -126,29 +108,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUserRole([FromBody] UpdateUserRoleDTO updateUserRoleDTO)
         {
-            var user = await _unitOfWork.UserRepository.GetByIdAsync(updateUserRoleDTO.UserId);
-            if (user is null)
-            {
-                throw new BadRequestException($"The user with id {updateUserRoleDTO.UserId} does not exist.");
-            }
+            var command = new UpdateUserRoleCommand(updateUserRoleDTO);
+            var updateUserRoleResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(updateUserRoleResult);
 
-            if (!(await _unitOfWork.RoleRepository.ExistsAnyRoleAsync(updateUserRoleDTO.RoleId)))
-            {
-                throw new BadRequestException($"The role with id {updateUserRoleDTO.RoleId} does not exist.");
-            }
-
-            user.RoleId = updateUserRoleDTO.RoleId;
-
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -169,23 +132,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteRole(int id)
         {
-            var roleDB = await _unitOfWork.RoleRepository.GetByIdAsync(id);
-            if (roleDB is null)
-            {
-                throw new BadRequestException($"The role with id {id} does not exist.");
-            }
+            var command = new DeleteRoleCommand(id);
+            var deleteRoleResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(deleteRoleResult);
 
-            try
-            {
-                await _unitOfWork.RoleRepository.Delete(roleDB.Id);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while deleting the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
