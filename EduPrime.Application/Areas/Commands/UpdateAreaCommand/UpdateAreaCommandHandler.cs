@@ -14,7 +14,7 @@ namespace EduPrime.Application.Areas.Commands
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateAreaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper = null)
+        public UpdateAreaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;

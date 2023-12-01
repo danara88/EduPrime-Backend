@@ -29,7 +29,7 @@ namespace EduPrime.Infrastructure
 
             // Password services set up
             services.Configure<PasswordSettings>(configuration.GetSection("PasswordSettings"));
-            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IPasswordService, PasswordService>();
 
             // Email services set up
             services.Configure<SmtpSettings>(configuration.GetSection("SmtpSettings"));

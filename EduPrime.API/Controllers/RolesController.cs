@@ -1,4 +1,7 @@
-﻿using EduPrime.Api.Attributes;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Roles.Commands;
 using EduPrime.Application.Roles.Commands.DeleteRoleCommand;
@@ -6,8 +9,6 @@ using EduPrime.Application.Roles.Queries;
 using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
