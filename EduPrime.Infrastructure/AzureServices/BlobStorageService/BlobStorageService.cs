@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Enums.Shared;
 using Microsoft.Extensions.Options;
 
 namespace EduPrime.Infrastructure.AzureServices
@@ -24,11 +25,12 @@ namespace EduPrime.Infrastructure.AzureServices
         /// <param name="fileBase64"></param>
         /// <param name="containerName"></param>
         /// <returns></returns>
-        public async Task<string> UploadFileBlobAsync(string fileName, string fileBase64, string containerName)
+        public async Task<string> UploadFileBlobAsync(string fileName, string fileBase64, AzureContainerEnum azureContainerEnum)
         {
             try
             {
                 var blobServiceClient = new BlobServiceClient(_azureSettings.StorageAccountKey);
+                var containerName = GetContainerName(azureContainerEnum);
                 var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
                 var blobClient = containerClient.GetBlobClient(fileName);
 
@@ -61,11 +63,12 @@ namespace EduPrime.Infrastructure.AzureServices
         /// <param name="blobName"></param>
         /// <param name="downloadPath"></param>
         /// <returns></returns>
-        public async Task DownloadBlobAsync(string containerName, string blobName, string downloadPath)
+        public async Task DownloadBlobAsync(AzureContainerEnum azureContainerEnum, string blobName, string downloadPath)
         {
             try
             {
                 var blobServiceClient = new BlobServiceClient(_azureSettings.StorageAccountKey);
+                var containerName = GetContainerName(azureContainerEnum);
                 var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
                 var blobClient = containerClient.GetBlobClient(blobName);
 
@@ -89,11 +92,12 @@ namespace EduPrime.Infrastructure.AzureServices
         /// <param name="containerName"></param>
         /// <param name="blobName"></param>
         /// <returns></returns>
-        public async Task<Stream> DownloadBlobInBrowserAsync(string containerName, string blobName)
+        public async Task<Stream> DownloadBlobInBrowserAsync(AzureContainerEnum azureContainerEnum, string blobName)
         {
             try
             {
                 var blobServiceClient = new BlobServiceClient(_azureSettings.StorageAccountKey);
+                var containerName = GetContainerName(azureContainerEnum);
                 var containerClient = blobServiceClient.GetBlobContainerClient(containerName);
                 var blobClient = containerClient.GetBlobClient(blobName);
            
@@ -122,6 +126,23 @@ namespace EduPrime.Infrastructure.AzureServices
                 _ => ""
             };
             return result;
+        }
+
+        /// <summary>
+        /// Private method in charge of returning container names
+        /// </summary>
+        /// <param name="azureContainerEnum"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private string GetContainerName(AzureContainerEnum azureContainerEnum)
+        {
+            return azureContainerEnum switch
+            {
+                AzureContainerEnum.EmployeesRFCs => _azureSettings.EmployeesRfcsContainer,
+                AzureContainerEnum.EmployeesPictures => _azureSettings.EmployeesPicturesContainer,
+                AzureContainerEnum.StudentsPictures => _azureSettings.StudentsPicturesContainer,
+                _ => throw new Exception("The container does not exist.")
+            };
         }
     }
 }

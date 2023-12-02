@@ -6,6 +6,7 @@ using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
+using EduPrime.Core.Enums.Shared;
 using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
 using EduPrime.Infrastructure.AzureServices;
@@ -213,13 +214,12 @@ namespace EduPrime.Api.Controllers
                 throw new BadRequestException("The file must be a png or jpg image.");
             }
 
-            var containerName = _azureSettings.StudentsPicturesContainer;
             try
             {
                 if (!string.IsNullOrEmpty(uploadStudentFileDTO.fileBase64))
                 {
                     var pictureFileName = GeneratePictureFileName($"picture.{validBase64Image.Item2}", student);
-                    student.PictureURL = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadStudentFileDTO.fileBase64, containerName);
+                    student.PictureURL = await _blobStorageService.UploadFileBlobAsync(pictureFileName, uploadStudentFileDTO.fileBase64, AzureContainerEnum.StudentsPictures);
                     await _unitOfWork.SaveChangesAsync();
                 }
                 else
