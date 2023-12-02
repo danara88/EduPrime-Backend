@@ -1,27 +1,25 @@
-﻿using AutoMapper;
-using EduPrime.Api.Attributes;
+﻿using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
-using EduPrime.Application.Common.Interfaces;
+using EduPrime.Application.Professors.Commands;
+using EduPrime.Application.Professors.Queries;
 using EduPrime.Core.DTOs.Professor;
-using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
 using EduPrime.Core.Exceptions;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/professors/v1")]
+    [Route("api/professors/v2")]
     [ApiController]
     public class ProfessorsController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ISender _mediator;
 
-        public ProfessorsController(IMapper mapper, IUnitOfWork unitOfWork)
+        public ProfessorsController(ISender mediator)
         {
-            _mapper = mapper;
-            _unitOfWork = unitOfWork;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -34,10 +32,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetProfessors()
         {
-            var professors = await _unitOfWork.ProfessorRepository.GetProfessorsWithEmployeeAsync();
-            var professorsDTO = _mapper.Map<List<ProfessorDTO>>(professors);
+            var query = new GetProfessorsQuery();
+            var getProfessorsResult = await _mediator.Send(query);
+            var response = new ApiResponse<List<ProfessorDTO>>(getProfessorsResult);
 
-            return Ok(new ApiResponse<List<ProfessorDTO>>(professorsDTO));
+            return Ok(response);
         }
 
 
@@ -53,13 +52,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetProfessorById(int id)
         {
-            var professor = await _unitOfWork.ProfessorRepository.GetProfessorWithEmployeeAsync(id);
-            if (professor is null)
-            {
-                return NotFound();
-            }
-            var professorDTO = _mapper.Map<ProfessorDTO>(professor);
-            var response = new ApiResponse<ProfessorDTO>(professorDTO);
+            var query = new GetProfessorByIdQuery(id);
+            var getProfessorByIdResult = await _mediator.Send(query);
+            var response = new ApiResponse<ProfessorDTO>(getProfessorByIdResult);
 
             return Ok(response);
         }
@@ -83,39 +78,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateProfessor([FromBody] CreateProfessorDTO createProfessorDTO)
         {
-            if (!(await _unitOfWork.EmployeeRepository.ExistsAnyEmployee(createProfessorDTO.EmployeeId)))
-            {
-                throw new BadRequestException($"The employee with id {createProfessorDTO.EmployeeId} does not exist.");
-            }
-
-            var employee = await _unitOfWork.EmployeeRepository.GetEmployeeAsync(createProfessorDTO.EmployeeId);
-
-            var areas = await _unitOfWork.AreaRepository.GetAllAsync();
-            var professorArea = areas.FirstOrDefault(area => area.Name.ToLower().Contains("professor"));
-
-            if (professorArea is not null)
-            {
-                if (!employee.Areas.Any(a => a.Id == professorArea.Id))
-                {
-                    throw new BadRequestException($"The employee {employee.Name} {employee.Surname} is not assigned to a professor area.");
-                }
-            } 
-            else
-            {
-                throw new BadRequestException("There is not area for professor.");
-            }
-            var professor = _mapper.Map<Professor>(createProfessorDTO);
-            try
-            {
-                await _unitOfWork.ProfessorRepository.AddAsync(professor);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<ProfessorDTO>(_mapper.Map<ProfessorDTO>(professor))
+            var command = new CreateProfessorCommand(createProfessorDTO);
+            var createProfessorResult = await _mediator.Send(command);
+            var response = new ApiResponse<ProfessorDTO>(createProfessorResult)
             {
                 Status = StatusCodes.Status201Created,
             };
@@ -140,25 +105,12 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateEmployee([FromBody] UpdateProfessorDTO updateProfessorDTO)
+        public async Task<IActionResult> UpdateProfessor([FromBody] UpdateProfessorDTO updateProfessorDTO)
         {
-            var professorDB = await _unitOfWork.ProfessorRepository.GetByIdAsync(updateProfessorDTO.Id);
-            if (professorDB is null)
-            {
-                throw new BadRequestException($"The professor with id {updateProfessorDTO.Id} does not exist.");
-            }
+            var command = new UpdateProfessorCommand(updateProfessorDTO);
+            var updateProfessorResult = await _mediator.Send(command);
+            var response = new ApiResponse<ProfessorDTO>(updateProfessorResult);
 
-            professorDB = _mapper.Map(updateProfessorDTO, professorDB);
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while updating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -180,23 +132,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteProfessor(int id) 
         {
-            var professorDB = await _unitOfWork.ProfessorRepository.GetByIdAsync(id);
-            if (professorDB is null)
-            {
-                throw new BadRequestException($"The professor with id {id} does not exist.");
-            }
+            var command = new DeleteProfessorCommand(id);
+            var deleteProfessorResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(deleteProfessorResult);
 
-            try
-            {
-                await _unitOfWork.ProfessorRepository.Delete(professorDB.Id);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while deleting the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
     }
