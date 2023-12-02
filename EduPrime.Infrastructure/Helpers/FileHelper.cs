@@ -1,4 +1,5 @@
 ﻿using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Entities;
 
 namespace EduPrime.Infrastructure.Helpers
 {
@@ -42,6 +43,19 @@ namespace EduPrime.Infrastructure.Helpers
         {
             var data = base64String.Substring(0, 5).ToLower();
             return data == "jvber" ? true : false;
+        }
+
+        /// <summary>
+        /// Generates a unique file name
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="employeeDTO"></param>
+        /// <returns></returns>
+        public string GenerateEmployeeFileName(string fileName, Employee employeeDTO)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string documentName = $"{guid}{employeeDTO.Name}{employeeDTO.Surname}{fileName}";
+            return documentName.Replace(" ", "");
         }
     }
 }

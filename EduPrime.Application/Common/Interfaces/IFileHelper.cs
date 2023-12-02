@@ -1,4 +1,6 @@
-﻿namespace EduPrime.Application.Common.Interfaces
+﻿using EduPrime.Core.Entities;
+
+namespace EduPrime.Application.Common.Interfaces
 {
     /// <summary>
     /// File helper interface
@@ -8,5 +10,7 @@
         bool IsValidBase64Pdf(string base64String);
 
         (bool, string) IsValidBase64Image(string base64String);
+
+        string GenerateEmployeeFileName(string fileName, Employee employeeDTO);
     }
 }
