@@ -1,29 +1,26 @@
-﻿using AutoMapper;
-using EduPrime.Api.Attributes;
+﻿using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
-using EduPrime.Application.Common.Interfaces;
+using EduPrime.Application.Subjects.Commands;
+using EduPrime.Application.Subjects.Queries;
 using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Subject;
-using EduPrime.Core.Entities;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Enums.Subject;
 using EduPrime.Core.Exceptions;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/subjects/v1")]
+    [Route("api/subjects/v2")]
     [ApiController]
     public class SubjectsController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ISender _mediator;
 
-        public SubjectsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SubjectsController(ISender mediator)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -38,13 +35,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetSubjects([FromQuery] PaginationDTO paginationDTO)
         {
-            var subjects = (await _unitOfWork.SubjectRepository.GetSubjectsWithProfessorsAsync())
-                .Skip((paginationDTO.CurrentPage - 1) * paginationDTO.QuantityPerPage)
-                .Take(paginationDTO.QuantityPerPage)
-                .ToList();
-            var subjectsDTO = _mapper.Map<List<SubjectDTO>>(subjects);
-             
-            return Ok(new ApiResponse<List<SubjectDTO>>(subjectsDTO));
+            var query = new GetSubjectsQuery(paginationDTO);
+            var getSubjectsResult = await _mediator.Send(query);
+            var response = new ApiResponse<List<SubjectDTO>>(getSubjectsResult);
+
+            return Ok(response);
         }
 
         /// <summary>
@@ -59,13 +54,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetSubjectById(int id)
         {
-            var subject = await _unitOfWork.SubjectRepository.GetSubjectWithProfessorsAsync(id);
-            if (subject is null)
-            {
-                return NotFound();
-            }
-            var subjectDTO = _mapper.Map<SubjectDTO>(subject);
-            var response = new ApiResponse<SubjectDTO>(subjectDTO);
+            var query = new GetSubjectByIdQuery(id);
+            var getSubjectByIdResult = await _mediator.Send(query);
+            var response = new ApiResponse<SubjectDTO>(getSubjectByIdResult);
 
             return Ok(response);
         }
@@ -89,55 +80,9 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateSubject([FromBody] CreateSubjectDTO createSubjectDTO)
         {
-            if (await _unitOfWork.SubjectRepository.ExistsAnySubject(createSubjectDTO.Name))
-            {
-                throw new BadRequestException($"The subject with name {createSubjectDTO.Name} already exists.");
-            }
-
-            var subject = _mapper.Map<Subject>(createSubjectDTO);
-
-            if (createSubjectDTO.ProfessorIds is not null && createSubjectDTO.ProfessorIds.Any())
-            {
-                subject.ProfessorsSubjects = new List<ProfessorSubject>() { };
-                createSubjectDTO.ProfessorIds = createSubjectDTO.ProfessorIds
-                    .Distinct()
-                    .ToList();
-
-                if (createSubjectDTO.ProfessorIds.Count > 2)
-                {
-                    throw new BadRequestException("You can add maximum 2 professors per subject.");
-                }
-
-                var isValidProfessorIds = await ValidProfessorIds(createSubjectDTO.ProfessorIds);
-
-                if (!isValidProfessorIds.Item1)
-                {
-                    throw new BadRequestException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
-                }
-
-                foreach (var professorId in createSubjectDTO.ProfessorIds)
-                {
-                    var professorSubject = new ProfessorSubject
-                    {
-                        SubjectId = subject.Id,
-                        ProfessorId = professorId
-                    };
-
-                    subject.ProfessorsSubjects.Add(professorSubject);
-                }
-            }
-
-            try
-            {
-                await _unitOfWork.SubjectRepository.AddAsync(subject);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null)
+            var command = new CreateSubjectCommand(createSubjectDTO);
+            var createSubjectResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(createSubjectResult)
             {
                 Status = StatusCodes.Status201Created,
             };
@@ -164,23 +109,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateSubject([FromBody] UpdateSubjectDTO updateSubjectDTO)
         {
-            var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(updateSubjectDTO.Id);
-            if (subjectDB is null)
-            {
-                throw new BadRequestException($"The subject with id {updateSubjectDTO.Id} does not exist.");
-            }
+            var command = new UpdateSubjectCommand(updateSubjectDTO);
+            var updateSubjectResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(updateSubjectResult);
 
-            subjectDB = _mapper.Map(updateSubjectDTO, subjectDB);
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while updating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -203,58 +135,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UnassignProfessors([FromBody] UnassignProfessorsDTO unassignProfessorsDTO)
         {
-            if (!(await _unitOfWork.SubjectRepository.ExistsAnySubject(unassignProfessorsDTO.SubjectId)))
-            {
-                throw new BadRequestException($"The subject with id {unassignProfessorsDTO.SubjectId} does not exist.");
-            }
+            var command = new UnassignProfessorsCommand(unassignProfessorsDTO);
+            var unassignProfessorsResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(unassignProfessorsResult);
 
-            var subject = await _unitOfWork.SubjectRepository.GetSubjectWithProfessorsAsync(unassignProfessorsDTO.SubjectId);
-
-            // Unassign all professors from the subject
-            if (unassignProfessorsDTO.UnassignAction == UnassignProfessorsActionEnum.All)
-            {
-                subject.ProfessorsSubjects.Clear();
-            }
-
-            // Unassign certain professors from the subject
-            if (unassignProfessorsDTO.UnassignAction == UnassignProfessorsActionEnum.NotAll)
-            {
-                if (unassignProfessorsDTO.ProfessorIds.Any())
-                {
-                    unassignProfessorsDTO.ProfessorIds = unassignProfessorsDTO.ProfessorIds.Distinct().ToList();
-
-                    if (unassignProfessorsDTO.ProfessorIds.Count() > 2)
-                    {
-                        throw new BadRequestException($"You can only unassign maximum 2 professors per subject.");
-                    }
-
-                    var isValidProfessorIds = await ValidProfessorIds(unassignProfessorsDTO.ProfessorIds);
-                    if (!isValidProfessorIds.Item1)
-                    {
-                        throw new BadRequestException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
-                    }
-
-                    foreach (var professorId in unassignProfessorsDTO.ProfessorIds)
-                    {
-                        var professorSubject = subject.ProfessorsSubjects.FirstOrDefault(ps => ps.ProfessorId == professorId);
-                        if (professorSubject is not null)
-                        {
-                            subject.ProfessorsSubjects.Remove(professorSubject);
-                        }
-                    }
-                }
-            }
-
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while updating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -276,63 +160,10 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> AssignProfessors([FromBody] AssignProfessorsDTO assignProfessorsDTO)
         {
-            if (!(await _unitOfWork.SubjectRepository.ExistsAnySubject(assignProfessorsDTO.SubjectId)))
-            {
-                throw new BadRequestException($"The subject with id {assignProfessorsDTO.SubjectId} does not exist.");
-            }
+            var command = new AssignProfessorsCommand(assignProfessorsDTO);
+            var assignProfessorsResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(assignProfessorsResult);
 
-            if (assignProfessorsDTO.ProfessorIds.Count() == 0)
-            {
-                throw new BadRequestException("Please assign at least 1 professor.");
-            }
-
-            assignProfessorsDTO.ProfessorIds = assignProfessorsDTO.ProfessorIds.Distinct().ToList();
-            if (assignProfessorsDTO.ProfessorIds.Count() > 2)
-            {
-                throw new BadRequestException($"You can only assign maximum 2 professors per subject.");
-            }
-
-            var isValidProfessorIds = await ValidProfessorIds(assignProfessorsDTO.ProfessorIds);
-            if (!isValidProfessorIds.Item1)
-            {
-                throw new BadRequestException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
-            }
-
-            var subject = await _unitOfWork.SubjectRepository.GetSubjectWithProfessorsAsync(assignProfessorsDTO.SubjectId);
-
-            switch (subject.ProfessorsSubjects.Count())
-            {
-                case 2:
-                    throw new BadRequestException($"The subject with id {assignProfessorsDTO.SubjectId} is already assigned to 2 professors. Please unassign professors to continue.");
-                case 1:
-                    if (assignProfessorsDTO.ProfessorIds.Count() > 1)
-                    {
-                        throw new BadRequestException($"You are trying to add more than 1 professor. The subject with id {assignProfessorsDTO.SubjectId} is already assigned to 1 professor.");
-                    }
-                    break;
-            }
-
-            foreach (var professorId in assignProfessorsDTO.ProfessorIds)
-            {
-                var professorSubject = new ProfessorSubject
-                {
-                    SubjectId = subject.Id,
-                    ProfessorId = professorId
-                };
-
-                subject.ProfessorsSubjects.Add(professorSubject);
-            }
-
-            try
-            {
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while creating the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
         }
 
@@ -354,47 +185,11 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteSubject(int id)
         {
-            var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(id);
-            if (subjectDB is null)
-            {
-                throw new BadRequestException($"The subject with id {id} does not exist.");
-            }
+            var command = new DeleteSubjectCommand(id);
+            var deleteSubjectResult = await _mediator.Send(command);
+            var response = new ApiMessageResponse(deleteSubjectResult);
 
-            try
-            {
-                await _unitOfWork.SubjectRepository.Delete(subjectDB.Id);
-                await _unitOfWork.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw new InternalServerException("Something went wrong while deleting the resource.");
-            }
-
-            var response = new ApiResponse<object>(null);
             return Ok(response);
-        }
-
-        /// <summary>
-        /// Validates that each professor id exists in database
-        /// </summary>
-        /// <param name="professorIds"></param>
-        /// <returns></returns>
-        private async Task<(bool, int)> ValidProfessorIds(List<int> professorIds)
-        {
-            int invalidProfessorId = 0;
-            bool isValidProfessorIds = true;
-
-            foreach (var professorId in professorIds)
-            {
-                if (!(await _unitOfWork.ProfessorRepository.ExistsAnyProfessor(professorId)))
-                {
-                    isValidProfessorIds = false;
-                    invalidProfessorId = professorId;
-                    break;
-                }
-            }
-
-            return (isValidProfessorIds, invalidProfessorId);
         }
     }
 }
