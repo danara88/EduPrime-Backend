@@ -46,15 +46,28 @@ namespace EduPrime.Infrastructure.Helpers
         }
 
         /// <summary>
-        /// Generates a unique file name
+        /// Generates a unique file name for employees
         /// </summary>
         /// <param name="fileName"></param>
-        /// <param name="employeeDTO"></param>
+        /// <param name="employee"></param>
         /// <returns></returns>
-        public string GenerateEmployeeFileName(string fileName, Employee employeeDTO)
+        public string GenerateEmployeeFileName(string fileName, Employee employee)
         {
             string guid = Guid.NewGuid().ToString();
-            string documentName = $"{guid}{employeeDTO.Name}{employeeDTO.Surname}{fileName}";
+            string documentName = $"{guid}{employee.Name}{employee.Surname}{fileName}";
+            return documentName.Replace(" ", "");
+        }
+
+        /// <summary>
+        /// Generates a unique file name for students
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="student"></param>
+        /// <returns></returns>
+        public string GenerateStudentFileName(string fileName, Student student)
+        {
+            string guid = Guid.NewGuid().ToString();
+            string documentName = $"{guid}{student.Name}{student.Surname}{fileName}";
             return documentName.Replace(" ", "");
         }
     }
