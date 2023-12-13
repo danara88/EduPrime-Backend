@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/students/v1")]
+    [Route("api/students/v2")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
