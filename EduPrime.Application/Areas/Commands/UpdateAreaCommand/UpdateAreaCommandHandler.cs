@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Areas;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Exceptions;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Commands
@@ -9,7 +11,7 @@ namespace EduPrime.Application.Areas.Commands
     /// <summary>
     /// Update area command handler
     /// </summary>
-    public class UpdateAreaCommandHandler : IRequestHandler<UpdateAreaCommand, AreaDTO>
+    public class UpdateAreaCommandHandler : IRequestHandler<UpdateAreaCommand, ErrorOr<AreaDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,14 +22,14 @@ namespace EduPrime.Application.Areas.Commands
             _mapper = mapper;
         }
 
-        public async Task<AreaDTO> Handle(UpdateAreaCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AreaDTO>> Handle(UpdateAreaCommand request, CancellationToken cancellationToken)
         {
             var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(request.updateAreaDTO.Id);
             if (areaDB is null)
             {
-                throw new NotFoundException($"The area with id {request.updateAreaDTO.Id} does not exist.");
+                return AreaErrors.AreaWithIdDoesNotExist(request.updateAreaDTO.Id);
             }
-
+            
             areaDB = _mapper.Map(request.updateAreaDTO, areaDB);
             try
             {

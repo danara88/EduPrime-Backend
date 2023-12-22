@@ -1,6 +1,7 @@
-﻿using AutoMapper;
-using EduPrime.Application.Common.Interfaces;
+﻿using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Areas;
 using EduPrime.Core.Exceptions;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Commands
@@ -8,23 +9,21 @@ namespace EduPrime.Application.Areas.Commands
     /// <summary>
     /// Delete area command handler
     /// </summary>
-    public class DeleteAreaCommandHandler : IRequestHandler<DeleteAreaCommand, string>
+    public class DeleteAreaCommandHandler : IRequestHandler<DeleteAreaCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public DeleteAreaCommandHandler(IUnitOfWork unitOfWork, IMapper mapper = null)
+        public DeleteAreaCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<string> Handle(DeleteAreaCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteAreaCommand request, CancellationToken cancellationToken)
         {
             var areaDB = await _unitOfWork.AreaRepository.GetByIdAsync(request.id);
             if (areaDB is null)
             {
-                throw new NotFoundException($"The area with id {request.id} does not exist.");
+                return AreaErrors.AreaWithIdDoesNotExist(request.id);
             }
 
             try

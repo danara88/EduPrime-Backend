@@ -57,6 +57,7 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddProblemDetails();
 builder.Services.AddResponseCaching();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -111,6 +112,8 @@ builder.Services.AddCors(options => options.AddPolicy("AppCorsPolicy", build =>
 }));
 
 var app = builder.Build();
+
+app.UseExceptionHandler(); 
 
 app.UseSwagger();
 app.UseSwaggerUI();

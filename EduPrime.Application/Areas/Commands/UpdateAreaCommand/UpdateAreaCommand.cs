@@ -1,4 +1,5 @@
 ﻿using EduPrime.Core.DTOs.Area;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Commands
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Areas.Commands
     /// Update area command
     /// </summary>
     /// <param name="UpdateAreaDTO"></param>
-    public record UpdateAreaCommand(UpdateAreaDTO updateAreaDTO) : IRequest<AreaDTO> { }
+    public record UpdateAreaCommand(UpdateAreaDTO updateAreaDTO) : IRequest<ErrorOr<AreaDTO>> { }
 }

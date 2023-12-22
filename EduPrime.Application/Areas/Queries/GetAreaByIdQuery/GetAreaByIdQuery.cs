@@ -1,4 +1,5 @@
 ﻿using EduPrime.Core.DTOs.Area;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Queries
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Areas.Queries
     /// Get area by id query
     /// </summary>
     /// <param name="id"></param>
-    public record GetAreaByIdQuery(int id) : IRequest<AreaDTO> { }
+    public record GetAreaByIdQuery(int id) : IRequest<ErrorOr<AreaDTO>> { }
 }

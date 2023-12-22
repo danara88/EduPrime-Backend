@@ -13,8 +13,7 @@ using EduPrime.Core.Exceptions;
 namespace EduPrime.Api.Controllers
 {
     [Route("api/areas/v2")]
-    [ApiController]
-    public class AreasController : ControllerBase
+    public class AreasController : ApiController
     {
         private readonly ISender _mediator;
 
@@ -55,9 +54,13 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetAreaByIdQuery(id);
             var getAreaResult = await _mediator.Send(query);
-            var response = new ApiResponse<AreaDTO>(getAreaResult);
 
-            return Ok(response);
+            Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO));
+
+            return getAreaResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -79,12 +82,16 @@ namespace EduPrime.Api.Controllers
         {
             var command = new CreateAreaCommand(createAreaDTO);
             var createAreaResult = await _mediator.Send(command);
-            var response = new ApiResponse<AreaDTO>(createAreaResult)
+
+            Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO) 
             {
                 Status = StatusCodes.Status201Created,
-            };
-
-            return Ok(response);
+            });
+            
+            return createAreaResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -109,9 +116,13 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UpdateAreaCommand(updateAreaDTO);
             var updateAreaResult = await _mediator.Send(command);
-            var response = new ApiResponse<AreaDTO>(updateAreaResult);
 
-            return Ok(response);
+            Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO));
+            
+            return updateAreaResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -135,9 +146,13 @@ namespace EduPrime.Api.Controllers
         {
             var command = new DeleteAreaCommand(id);
             var deleteAreaResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(deleteAreaResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return deleteAreaResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
