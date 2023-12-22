@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Areas;
 using EduPrime.Core.DTOs.Area;
-using EduPrime.Core.Exceptions;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Queries
@@ -9,7 +10,7 @@ namespace EduPrime.Application.Areas.Queries
     /// <summary>
     /// Get area by id query handler
     /// </summary>
-    public class GetAreaByIdQueryHandler : IRequestHandler<GetAreaByIdQuery, AreaDTO>
+    public class GetAreaByIdQueryHandler : IRequestHandler<GetAreaByIdQuery, ErrorOr<AreaDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +21,12 @@ namespace EduPrime.Application.Areas.Queries
             _mapper = mapper;
         }
 
-        public async Task<AreaDTO> Handle(GetAreaByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AreaDTO>> Handle(GetAreaByIdQuery request, CancellationToken cancellationToken)
         {
             var area = await _unitOfWork.AreaRepository.GetByIdAsync(request.id);
             if (area is null)
             {
-                throw new NotFoundException($"The area with id {request.id} does not exist.");
+                return AreaErrors.AreaWithIdDoesNotExist(request.id);
             }
             var areaDTO = _mapper.Map<AreaDTO>(area);
 

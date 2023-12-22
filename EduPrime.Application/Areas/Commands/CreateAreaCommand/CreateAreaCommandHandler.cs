@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Areas;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Commands
@@ -10,7 +12,7 @@ namespace EduPrime.Application.Areas.Commands
     /// <summary>
     /// Create area command handler
     /// </summary>
-    public class CreateAreaCommandHandler : IRequestHandler<CreateAreaCommand, AreaDTO>
+    public class CreateAreaCommandHandler : IRequestHandler<CreateAreaCommand, ErrorOr<AreaDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -21,11 +23,11 @@ namespace EduPrime.Application.Areas.Commands
             _mapper = mapper;
         }
 
-        public async Task<AreaDTO> Handle(CreateAreaCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AreaDTO>> Handle(CreateAreaCommand request, CancellationToken cancellationToken)
         {
             if (await _unitOfWork.AreaRepository.ExistsAnyArea(request.createAreaDTO.Name))
             {
-                throw new BadRequestException($"The area with name {request.createAreaDTO.Name} already exists.");
+                return AreaErrors.AreaWithNameAlreadyExists(request.createAreaDTO.Name);
             }
 
             var area = _mapper.Map<Area>(request.createAreaDTO);
