@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using ErrorOr;
+﻿using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -11,7 +10,7 @@ namespace EduPrime.Api.Controllers
     /// </summary>
     [ApiController]
     public class ApiController : ControllerBase
-    {   
+    {
         /// <summary>
         /// Handles a list of errors and return correct error response
         /// </summary>
@@ -24,16 +23,18 @@ namespace EduPrime.Api.Controllers
                 return Problem();
             }
 
+            // If all the errors are of type Validation
             if (errors.All(error => error.Type == ErrorType.Validation))
             {
                 return ValidationProblem(errors);
             }
 
+            // Call Problem method to map the correct error type
             return Problem(errors[0]);
         }
 
         /// <summary>
-        /// Handles one single error and return correct error response
+        /// Handles one single error and maps correct error status code
         /// </summary>
         /// <param name="error"></param>
         /// <returns></returns>
@@ -51,7 +52,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// Handler a list of errors
+        /// Handles a list of validation errors
         /// </summary>
         /// <param name="errors"></param>
         /// <returns></returns>

@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using ErrorOr;
+using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Enums.Shared;
 using EduPrime.Core.Exceptions;
-using MediatR;
 
 namespace EduPrime.Application.Employees.Commands
 {
     /// <summary>
     /// Upload employee picture command handler
     /// </summary>
-    public class UploadEmployeePictureCommandHandler : IRequestHandler<UploadEmployeePictureCommand, EmployeeDTO>
+    public class UploadEmployeePictureCommandHandler : IRequestHandler<UploadEmployeePictureCommand, ErrorOr<EmployeeDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -29,18 +30,18 @@ namespace EduPrime.Application.Employees.Commands
             _blobStorageService = blobStorageService;
         }
 
-        public async Task<EmployeeDTO> Handle(UploadEmployeePictureCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<EmployeeDTO>> Handle(UploadEmployeePictureCommand request, CancellationToken cancellationToken)
         {
             var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.uploadEmployeeFileDTO.employeeId);
             if (employee is null)
             {
-                throw new NotFoundException($"The employee with id {request.uploadEmployeeFileDTO.employeeId} does not exist.");
+                return EmployeeErrors.EmployeeWithIdDoesNotExist(request.uploadEmployeeFileDTO.employeeId);
             }
 
             var validBase64Image = _fileHelper.IsValidBase64Image(request.uploadEmployeeFileDTO.fileBase64);
             if (!validBase64Image.Item1)
             {
-                throw new BadRequestException("The file must be a png or jpg image.");
+                return CommonErrors.InvalidFileExtension();
             }
 
             try

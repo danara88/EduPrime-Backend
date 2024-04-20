@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using ErrorOr;
+using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Enums.Shared;
 using EduPrime.Core.Exceptions;
-using MediatR;
 
 namespace EduPrime.Application.Employees.Commands
 {
     /// <summary>
     /// Upload RFC document command handler
     /// </summary>
-    public class UploadRFCDocumentCommandHandler : IRequestHandler<UploadRFCDocumentCommand, EmployeeDTO>
+    public class UploadRFCDocumentCommandHandler : IRequestHandler<UploadRFCDocumentCommand, ErrorOr<EmployeeDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,9 +19,9 @@ namespace EduPrime.Application.Employees.Commands
         private readonly IBlobStorageService _blobStorageService;
 
         public UploadRFCDocumentCommandHandler(
-            IUnitOfWork unitOfWork, 
-            IMapper mapper, 
-            IFileHelper fileHelper, 
+            IUnitOfWork unitOfWork,
+            IMapper mapper,
+            IFileHelper fileHelper,
             IBlobStorageService blobStorageService)
         {
             _unitOfWork = unitOfWork;
@@ -29,17 +30,18 @@ namespace EduPrime.Application.Employees.Commands
             _blobStorageService = blobStorageService;
         }
 
-        public async Task<EmployeeDTO> Handle(UploadRFCDocumentCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<EmployeeDTO>> Handle(UploadRFCDocumentCommand request, CancellationToken cancellationToken)
         {
             var employee = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.uploadEmployeeFileDTO.employeeId);
             if (employee is null)
             {
-                throw new NotFoundException($"The employee with id {request.uploadEmployeeFileDTO.employeeId} does not exist.");
+                return EmployeeErrors.EmployeeWithIdDoesNotExist(request.uploadEmployeeFileDTO.employeeId);
             }
 
             if (!_fileHelper.IsValidBase64Pdf(request.uploadEmployeeFileDTO.fileBase64))
             {
-                throw new BadRequestException("The file must be a PDF file.");
+                var allowedExtensions = new string[] { "pdf" };
+                return CommonErrors.InvalidFileExtension(allowedExtensions);
             }
 
             try
@@ -53,7 +55,7 @@ namespace EduPrime.Application.Employees.Commands
                 }
                 else
                 {
-                    throw new Exception();
+                    return CommonErrors.FileOrDocumentNotFound;
                 }
 
                 var employeeDTO = _mapper.Map<EmployeeDTO>(employee);

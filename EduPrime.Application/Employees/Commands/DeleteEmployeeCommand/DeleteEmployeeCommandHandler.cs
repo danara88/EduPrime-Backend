@@ -1,13 +1,14 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Application.Employees.Commands
 {
     /// <summary>
     /// Delete employee command handler
     /// </summary>
-    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, string>
+    public class DeleteEmployeeCommandHandler : IRequestHandler<DeleteEmployeeCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -16,12 +17,12 @@ namespace EduPrime.Application.Employees.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
             var employeeDB = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.id);
             if (employeeDB is null)
             {
-                throw new NotFoundException($"The employee with id {request.id} does not exist.");
+                return EmployeeErrors.EmployeeWithIdDoesNotExist(request.id);
             }
 
             try

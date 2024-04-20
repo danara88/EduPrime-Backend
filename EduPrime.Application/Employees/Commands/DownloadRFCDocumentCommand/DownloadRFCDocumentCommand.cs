@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Employee;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Employee;
 
 namespace EduPrime.Application.Employees.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Employees.Commands
     /// Download RFC document command
     /// </summary>
     /// <param name="employeeId"></param>
-    public record DownloadRFCDocumentCommand(int employeeId) : IRequest<DownloadEmployeeRfcDTO> { }
+    public record DownloadRFCDocumentCommand(int employeeId) : IRequest<ErrorOr<DownloadEmployeeRfcDTO>> { }
 }

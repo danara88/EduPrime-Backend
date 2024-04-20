@@ -1,16 +1,17 @@
-﻿using AutoMapper;
+﻿using ErrorOr;
+using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
-using MediatR;
 
 namespace EduPrime.Application.Employees.Commands
 {
     /// <summary>
     /// Create employee command handler
     /// </summary>
-    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, EmployeeDTO>
+    public class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, ErrorOr<EmployeeDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -23,8 +24,9 @@ namespace EduPrime.Application.Employees.Commands
             _employeeRepositoryService = employeeRepositoryService;
         }
 
-        public async Task<EmployeeDTO> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<EmployeeDTO>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
+            // Delete duplicated areas IDs
             request.createEmployeeDTO.Areas = request.createEmployeeDTO.Areas?.Distinct().ToList();
             var employee = _mapper.Map<Employee>(request.createEmployeeDTO);
 
@@ -32,9 +34,10 @@ namespace EduPrime.Application.Employees.Commands
             {
                 if (employee.Areas.Count == 0)
                 {
+                    // Throw error if the employee is assigned to a professor since it hasn't been added to any area
                     if (employee.Professor is not null)
                     {
-                        throw new Exception();
+                        return EmployeeErrors.EmployeeIsNotAssignedToProfessorArea;
                     }
 
                     await _unitOfWork.EmployeeRepository.AddAsync(employee);
@@ -42,20 +45,22 @@ namespace EduPrime.Application.Employees.Commands
                 }
                 else
                 {
+                    // If the employee that you are creating is assigned to a professor resource
                     if (employee.Professor is not null)
                     {
                         var areas = await _unitOfWork.AreaRepository.GetAllAsync();
                         var professorArea = areas.FirstOrDefault(area => area.Name.ToLower().Contains("professor"));
-                        if (professorArea is not null)
+
+                        // Throw error if the employee were not assigned to a Professor area
+                        // and user is trying to create an employee with a professor resource
+                        if (professorArea is not null && !employee.Areas.Any(a => a.Id == professorArea.Id))
                         {
-                            if (!employee.Areas.Any(a => a.Id == professorArea.Id))
-                            {
-                                throw new Exception();
-                            }
+                            return EmployeeErrors.EmployeeIsAssignedToProfessorResourceButNotAssignedToProfessorArea;
                         }
-                        else
+
+                        if (professorArea is null)
                         {
-                            throw new Exception();
+                            return EmployeeErrors.EmployeeIsNotAssignedToProfessorArea;
                         }
                     }
 
