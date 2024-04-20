@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Professor;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Professor;
 
 namespace EduPrime.Application.Professors.Queries
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Professors.Queries
     /// Get professor by id
     /// </summary>
     /// <param name="id"></param>
-    public record GetProfessorByIdQuery(int id) : IRequest<ProfessorDTO> { }
+    public record GetProfessorByIdQuery(int id) : IRequest<ErrorOr<ProfessorDTO>> { }
 }

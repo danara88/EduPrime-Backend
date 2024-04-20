@@ -22,7 +22,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to return all employees
+        /// End point that returns all employees
         /// </summary>
         [Authorize]
         [HttpGet("get-employees")]
@@ -38,7 +38,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to get an employee by id
+        /// End point that gets an employee by id
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
@@ -60,7 +60,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to create an employee
+        /// End point that creates an employee
         /// </summary>
         /// <param name="createEmployeeDTO"></param>
         [AuthorizeRoles(
@@ -90,7 +90,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to upload a RFC document to an employee
+        /// End point that uploads a RFC document to an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
         [AuthorizeRoles(
@@ -116,7 +116,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to upload a picture for an employee
+        /// End point that uploads a picture for an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
         [AuthorizeRoles(
@@ -142,7 +142,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// Downloads the RFC document from an employee
+        /// End point that downloads the RFC document from an employee
         /// </summary>
         /// <param name="employeeId"></param>
         [Authorize]
@@ -168,7 +168,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to update an employee
+        /// End point that updates an employee
         /// </summary>
         /// <param name="updateEmployeeDTO"></param>
         [AuthorizeRoles(
@@ -195,7 +195,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to delete an employee
+        /// End point that deletes an employee
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(

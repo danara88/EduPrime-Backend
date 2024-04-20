@@ -1,5 +1,6 @@
-using System.Diagnostics.Contracts;
 using ErrorOr;
+
+namespace EduPrime.Core.Common;
 
 /// <summary>
 /// Common domain errors

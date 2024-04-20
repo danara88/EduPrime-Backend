@@ -1,5 +1,7 @@
 using ErrorOr;
 
+namespace EduPrime.Core.Employees;
+
 /// <summary>
 /// Employee domain errors
 /// </summary>

@@ -2,6 +2,7 @@
 using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.Exceptions;
+using EduPrime.Core.Employees;
 
 namespace EduPrime.Application.Employees.Commands
 {

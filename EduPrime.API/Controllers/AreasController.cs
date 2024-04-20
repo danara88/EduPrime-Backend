@@ -21,7 +21,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to return all areas
+        /// End point that returns all areas
         /// </summary>
         [Authorize]
         [HttpGet("get-areas")]
@@ -38,7 +38,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to get an area by id
+        /// End point that gets an area by id
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
@@ -60,7 +60,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to create an area
+        /// End point that creates an area
         /// </summary>
         /// <param name="createAreaDTO"></param>
         [AuthorizeRoles(
@@ -90,7 +90,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to update an Area
+        /// End point that updates an Area
         /// </summary>
         /// <param name="updateAreaDTO"></param>
         [AuthorizeRoles(
@@ -117,7 +117,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to delete an Area
+        /// End point that deletes an Area
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(
@@ -144,7 +144,7 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to get areas with employees
+        /// End point that gets all areas with employees
         /// </summary>
         [Authorize]
         [HttpGet("get-areas-with-employees")]
