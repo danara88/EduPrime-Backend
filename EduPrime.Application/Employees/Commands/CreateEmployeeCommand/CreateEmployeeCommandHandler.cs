@@ -4,6 +4,8 @@ using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Employees;
+using EduPrime.Core.Professors;
 using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Application.Employees.Commands
@@ -49,6 +51,7 @@ namespace EduPrime.Application.Employees.Commands
                     if (employee.Professor is not null)
                     {
                         var areas = await _unitOfWork.AreaRepository.GetAllAsync();
+                        // TODO: Delete "professor" hardcoded value
                         var professorArea = areas.FirstOrDefault(area => area.Name.ToLower().Contains("professor"));
 
                         // Throw error if the employee were not assigned to a Professor area
@@ -60,7 +63,7 @@ namespace EduPrime.Application.Employees.Commands
 
                         if (professorArea is null)
                         {
-                            return EmployeeErrors.EmployeeIsNotAssignedToProfessorArea;
+                            return ProfessorErrors.ProfessorAreaDoesNotExist;
                         }
                     }
 

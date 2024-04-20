@@ -1,15 +1,16 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Professor;
-using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Professors;
 
 namespace EduPrime.Application.Professors.Queries
 {
     /// <summary>
     /// Get professor by id query handler
     /// </summary>
-    public class GetProfessorByIdQueryHandler : IRequestHandler<GetProfessorByIdQuery, ProfessorDTO>
+    public class GetProfessorByIdQueryHandler : IRequestHandler<GetProfessorByIdQuery, ErrorOr<ProfessorDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +21,12 @@ namespace EduPrime.Application.Professors.Queries
             _mapper = mapper;
         }
 
-        public async Task<ProfessorDTO> Handle(GetProfessorByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<ProfessorDTO>> Handle(GetProfessorByIdQuery request, CancellationToken cancellationToken)
         {
             var professor = await _unitOfWork.ProfessorRepository.GetProfessorWithEmployeeAsync(request.id);
             if (professor is null)
             {
-                throw new NotFoundException($"The professor with id {request.id} does not exist.");
+                return ProfessorErrors.ProfessorWithIdDoesNotExist(request.id);
             }
 
             var professorDTO = _mapper.Map<ProfessorDTO>(professor);

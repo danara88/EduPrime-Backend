@@ -1,5 +1,5 @@
-﻿using EduPrime.Core.DTOs.Professor;
-using MediatR;
+﻿using MediatR;
+using EduPrime.Core.DTOs.Professor;
 
 namespace EduPrime.Application.Professors.Queries
 {

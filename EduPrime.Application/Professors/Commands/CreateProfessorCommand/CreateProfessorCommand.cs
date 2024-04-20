@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Professor;
-using MediatR;
+﻿using MediatR;
+using ErrorOr;
+using EduPrime.Core.DTOs.Professor;
 
 namespace EduPrime.Application.Professors.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Professors.Commands
     /// Create professor command
     /// </summary>
     /// <param name="createProfessorDTO"></param>
-    public record CreateProfessorCommand(CreateProfessorDTO createProfessorDTO) : IRequest<ProfessorDTO> { }
+    public record CreateProfessorCommand(CreateProfessorDTO createProfessorDTO) : IRequest<ErrorOr<ProfessorDTO>> { }
 }

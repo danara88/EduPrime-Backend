@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Professors;
 
 namespace EduPrime.Application.Professors.Commands
 {
     /// <summary>
     /// Update professor command handler
     /// </summary>
-    public class UpdateProfessorCommandHandler : IRequestHandler<UpdateProfessorCommand, ProfessorDTO>
+    public class UpdateProfessorCommandHandler : IRequestHandler<UpdateProfessorCommand, ErrorOr<ProfessorDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +22,12 @@ namespace EduPrime.Application.Professors.Commands
             _mapper = mapper;
         }
 
-        public async Task<ProfessorDTO> Handle(UpdateProfessorCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<ProfessorDTO>> Handle(UpdateProfessorCommand request, CancellationToken cancellationToken)
         {
             var professorDB = await _unitOfWork.ProfessorRepository.GetByIdAsync(request.updateProfessorDTO.Id);
             if (professorDB is null)
             {
-                throw new NotFoundException($"The professor with id {request.updateProfessorDTO.Id} does not exist.");
+                return ProfessorErrors.ProfessorWithIdDoesNotExist(request.updateProfessorDTO.Id);
             }
 
             professorDB = _mapper.Map(request.updateProfessorDTO, professorDB);

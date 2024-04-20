@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Professor;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Professor;
 
 namespace EduPrime.Application.Professors.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Professors.Commands
     /// Update professor command
     /// </summary>
     /// <param name="updateProfessorDTO"></param>
-    public record UpdateProfessorCommand(UpdateProfessorDTO updateProfessorDTO) : IRequest<ProfessorDTO> { }
+    public record UpdateProfessorCommand(UpdateProfessorDTO updateProfessorDTO) : IRequest<ErrorOr<ProfessorDTO>> { }
 }

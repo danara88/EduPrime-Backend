@@ -1,19 +1,18 @@
-﻿using EduPrime.Api.Attributes;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Professors.Commands;
 using EduPrime.Application.Professors.Queries;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EduPrime.Api.Controllers
 {
     [Route("api/professors/v2")]
     [ApiController]
-    public class ProfessorsController : ControllerBase
+    public class ProfessorsController : ApiController
     {
         private readonly ISender _mediator;
 
@@ -23,9 +22,8 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to return all professors
+        /// End point that returns all professors
         /// </summary>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,10 +39,9 @@ namespace EduPrime.Api.Controllers
 
 
         /// <summary>
-        /// End point to get an employee by id
+        /// End point that gets an employee by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -54,18 +51,19 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetProfessorByIdQuery(id);
             var getProfessorByIdResult = await _mediator.Send(query);
-            var response = new ApiResponse<ProfessorDTO>(getProfessorByIdResult);
 
-            return Ok(response);
+            Func<ProfessorDTO, IActionResult> response = (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO));
+
+            return getProfessorByIdResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to create a professor
+        /// End point that creates a professor
         /// </summary>
         /// <param name="createProfessorDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -80,21 +78,22 @@ namespace EduPrime.Api.Controllers
         {
             var command = new CreateProfessorCommand(createProfessorDTO);
             var createProfessorResult = await _mediator.Send(command);
-            var response = new ApiResponse<ProfessorDTO>(createProfessorResult)
+
+            Func<ProfessorDTO, IActionResult> response = (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO)
             {
                 Status = StatusCodes.Status201Created,
-            };
+            });
 
-            return Ok(response);
+            return createProfessorResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to update a professor
+        /// End point that updates a professor
         /// </summary>
         /// <param name="updateProfessorDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -109,18 +108,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UpdateProfessorCommand(updateProfessorDTO);
             var updateProfessorResult = await _mediator.Send(command);
-            var response = new ApiResponse<ProfessorDTO>(updateProfessorResult);
 
-            return Ok(response);
+            Func<ProfessorDTO, IActionResult> response = (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO));
+
+            return updateProfessorResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to delete a professor by id
+        /// End point that deletes a professor by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -130,13 +130,17 @@ namespace EduPrime.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteProfessor(int id) 
+        public async Task<IActionResult> DeleteProfessor(int id)
         {
             var command = new DeleteProfessorCommand(id);
             var deleteProfessorResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(deleteProfessorResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return deleteProfessorResult.Match(
+                response,
+                Problem
+            );
         }
     }
 }

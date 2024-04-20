@@ -3,6 +3,7 @@ using ErrorOr;
 using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
+using EduPrime.Core.Employees;
 
 namespace EduPrime.Application.Employees.Queries
 {
