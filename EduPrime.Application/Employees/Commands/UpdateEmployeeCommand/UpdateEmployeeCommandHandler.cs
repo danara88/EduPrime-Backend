@@ -1,15 +1,16 @@
-﻿using AutoMapper;
+﻿using ErrorOr;
+using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Exceptions;
-using MediatR;
 
 namespace EduPrime.Application.Employees.Commands
 {
     /// <summary>
     /// Update employee command handler
     /// </summary>
-    public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, EmployeeDTO>
+    public class UpdateEmployeeCommandHandler : IRequestHandler<UpdateEmployeeCommand, ErrorOr<EmployeeDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +21,12 @@ namespace EduPrime.Application.Employees.Commands
             _mapper = mapper;
         }
 
-        public async Task<EmployeeDTO> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<EmployeeDTO>> Handle(UpdateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var employeeDB = await _unitOfWork.EmployeeRepository.GetByIdAsync(request.updateEmployeeDTO.Id);
             if (employeeDB is null)
             {
-                throw new NotFoundException($"The employee with id {request.updateEmployeeDTO.Id} does not exist.");
+                return EmployeeErrors.EmployeeWithIdDoesNotExist(request.updateEmployeeDTO.Id);
             }
 
             employeeDB = _mapper.Map(request.updateEmployeeDTO, employeeDB);

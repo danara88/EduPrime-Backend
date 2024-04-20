@@ -1,5 +1,5 @@
 using ErrorOr;
-namespace EduPrime.Core.Areas 
+namespace EduPrime.Core.Areas
 {
     /// <summary>
     /// Area domain errors
@@ -7,11 +7,15 @@ namespace EduPrime.Core.Areas
     public static class AreaErrors
     {
         public static Error AreaWithNameAlreadyExists(string name) {
-            return Error.Validation("Area.AreaWithNameAlreadyExists", $"The area with name {name} already exists.");
+            return Error.Validation(
+                "Area.AreaWithNameAlreadyExists",
+                $"The area with name {name} already exists.");
         }
 
         public static Error AreaWithIdDoesNotExist(int id) {
-            return Error.NotFound("Area.AreaWithIdDoesNotExist", $"The area with id {id} does not exist.");
+            return Error.NotFound(
+                "Area.AreaWithIdDoesNotExist",
+                $"The area with id {id} does not exist.");
         }
     }
 }

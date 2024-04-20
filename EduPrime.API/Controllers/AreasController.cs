@@ -1,14 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Areas.Commands;
 using EduPrime.Application.Areas.Queries;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Api.Controllers
 {
@@ -25,7 +23,6 @@ namespace EduPrime.Api.Controllers
         /// <summary>
         /// End point to return all areas
         /// </summary>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-areas")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
@@ -44,7 +41,6 @@ namespace EduPrime.Api.Controllers
         /// End point to get an area by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,10 +63,9 @@ namespace EduPrime.Api.Controllers
         /// End point to create an area
         /// </summary>
         /// <param name="createAreaDTO"></param>
-        /// <returns></returns>
         [AuthorizeRoles(
-            nameof(RoleTypeEnum.Primary), 
-            nameof(RoleTypeEnum.Admin), 
+            nameof(RoleTypeEnum.Primary),
+            nameof(RoleTypeEnum.Admin),
             nameof(RoleTypeEnum.Standard))]
         [HttpPost("create-area")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -83,11 +78,11 @@ namespace EduPrime.Api.Controllers
             var command = new CreateAreaCommand(createAreaDTO);
             var createAreaResult = await _mediator.Send(command);
 
-            Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO) 
+            Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO)
             {
                 Status = StatusCodes.Status201Created,
             });
-            
+
             return createAreaResult.Match(
                 response,
                 Problem
@@ -98,10 +93,6 @@ namespace EduPrime.Api.Controllers
         /// End point to update an Area
         /// </summary>
         /// <param name="updateAreaDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
-        /// [Authorize(Roles = nameof(RoleTypeEnum.Primary))]
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -118,7 +109,7 @@ namespace EduPrime.Api.Controllers
             var updateAreaResult = await _mediator.Send(command);
 
             Func<AreaDTO, IActionResult> response = (areaDTO) => Ok(new ApiResponse<AreaDTO>(areaDTO));
-            
+
             return updateAreaResult.Match(
                 response,
                 Problem
@@ -129,9 +120,6 @@ namespace EduPrime.Api.Controllers
         /// End point to delete an Area
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -158,7 +146,6 @@ namespace EduPrime.Api.Controllers
         /// <summary>
         /// End point to get areas with employees
         /// </summary>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-areas-with-employees")]
         [ProducesResponseType(StatusCodes.Status200OK)]

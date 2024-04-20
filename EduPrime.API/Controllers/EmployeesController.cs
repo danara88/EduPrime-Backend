@@ -1,20 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Employees.Commands;
 using EduPrime.Application.Employees.Queries;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Api.Controllers
 {
     [Route("api/employees/v2")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : ApiController
     {
         private readonly ISender _mediator;
 
@@ -26,7 +24,6 @@ namespace EduPrime.Api.Controllers
         /// <summary>
         /// End point to return all employees
         /// </summary>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-employees")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,7 +41,6 @@ namespace EduPrime.Api.Controllers
         /// End point to get an employee by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpGet("get-employee/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -54,16 +50,19 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetEmployeeByIdQuery(id);
             var getEmployeeByIdResult = await _mediator.Send(query);
-            var response = new ApiResponse<EmployeeDTO>(getEmployeeByIdResult);
 
-            return Ok(response);
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+
+            return getEmployeeByIdResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
         /// End point to create an employee
         /// </summary>
         /// <param name="createEmployeeDTO"></param>
-        /// <returns></returns>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -78,21 +77,22 @@ namespace EduPrime.Api.Controllers
         {
             var command = new CreateEmployeeCommand(createEmployeeDTO);
             var createEmployeeResult = await _mediator.Send(command);
-            var response = new ApiResponse<EmployeeDTO>(createEmployeeResult)
+
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO)
             {
                 Status = StatusCodes.Status201Created,
-            };
+            });
 
-            return Ok(response);
+            return createEmployeeResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
         /// End point to upload a RFC document to an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -106,18 +106,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UploadRFCDocumentCommand(uploadEmployeeFileDTO);
             var uploadRFCDocumentResult = await _mediator.Send(command);
-            var response = new ApiResponse<EmployeeDTO>(uploadRFCDocumentResult);
 
-            return Ok(response);
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+
+            return uploadRFCDocumentResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
         /// End point to upload a picture for an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -131,18 +132,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UploadEmployeePictureCommand(uploadEmployeeFileDTO);
             var uploadEmployeePictureResult = await _mediator.Send(command);
-            var response = new ApiResponse<EmployeeDTO>(uploadEmployeePictureResult);
 
-            return Ok(response);
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+
+            return uploadEmployeePictureResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// Downloads the RFC document from an employee 
+        /// Downloads the RFC document from an employee
         /// </summary>
         /// <param name="employeeId"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [Authorize]
         [HttpGet("download-employee-rfc/{employeeId:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -154,17 +156,21 @@ namespace EduPrime.Api.Controllers
             var command = new DownloadRFCDocumentCommand(employeeId);
             var downloadRFCDocumentResult = await _mediator.Send(command);
 
-            Response.Headers.Add("Content-Disposition", "attachment; filename=" + downloadRFCDocumentResult.employee.RfcDocument);
-            return File(downloadRFCDocumentResult.stream, "application/octet-stream");
+            Func<DownloadEmployeeRfcDTO, IActionResult> response = (downloadEmployeeRfcDTO) => {
+                Response.Headers.Add("Content-Disposition", "attachment; filename=" + downloadEmployeeRfcDTO.employee.RfcDocument);
+                return File(downloadEmployeeRfcDTO.stream, "application/octet-stream");
+            };
+
+            return downloadRFCDocumentResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
         /// End point to update an employee
         /// </summary>
         /// <param name="updateEmployeeDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -179,18 +185,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UpdateEmployeeCommand(updateEmployeeDTO);
             var updateEmployeeResult = await _mediator.Send(command);
-            var response = new ApiResponse<EmployeeDTO>(updateEmployeeResult);
 
-            return Ok(response);
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+
+            return updateEmployeeResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
         /// End point to delete an employee
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
@@ -205,9 +212,13 @@ namespace EduPrime.Api.Controllers
         {
             var command = new DeleteEmployeeCommand(id);
             var deleteEmployeeResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(deleteEmployeeResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return deleteEmployeeResult.Match(
+                response,
+                Problem
+            );
         }
     }
 }

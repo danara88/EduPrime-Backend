@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Employee;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Employee;
 
 namespace EduPrime.Application.Employees.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Employees.Commands
     /// Create employee command
     /// </summary>
     /// <param name="createEmployeeDTO"></param>
-    public record CreateEmployeeCommand(CreateEmployeeDTO createEmployeeDTO) : IRequest<EmployeeDTO> { }
+    public record CreateEmployeeCommand(CreateEmployeeDTO createEmployeeDTO) : IRequest<ErrorOr<EmployeeDTO>> { }
 }
