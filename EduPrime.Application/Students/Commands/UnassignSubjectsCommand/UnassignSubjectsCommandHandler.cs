@@ -1,15 +1,17 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using MediatR;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Application.Subjects.Interfaces;
 using EduPrime.Core.Enums.Student;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Students;
 
 namespace EduPrime.Application.Students.Commands
 {
     /// <summary>
     /// Unassign subjects from a student command handler
     /// </summary>
-    public class UnassignSubjectsCommandHandler : IRequestHandler<UnassignSubjectsCommand, string>
+    public class UnassignSubjectsCommandHandler : IRequestHandler<UnassignSubjectsCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISubjectService _subjectService;
@@ -20,11 +22,11 @@ namespace EduPrime.Application.Students.Commands
             _subjectService = subjectService;
         }
 
-        public async Task<string> Handle(UnassignSubjectsCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(UnassignSubjectsCommand request, CancellationToken cancellationToken)
         {
-            if (!(await _unitOfWork.StudentRepository.ExistsAnyStudent(request.unassignSubjectsDTO.StudentId)))
+            if (!await _unitOfWork.StudentRepository.ExistsAnyStudent(request.unassignSubjectsDTO.StudentId))
             {
-                throw new NotFoundException($"The student with id {request.unassignSubjectsDTO.StudentId} does not exist.");
+                return StudentErrors.StudentWithIdDoesNotExist(request.unassignSubjectsDTO.StudentId);
             }
 
             var student = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(request.unassignSubjectsDTO.StudentId);
@@ -45,7 +47,8 @@ namespace EduPrime.Application.Students.Commands
                     var isValidSubjectsIds = await _subjectService.ValidateSubjectIds(request.unassignSubjectsDTO.SubjectIds, student);
                     if (!isValidSubjectsIds.Item1)
                     {
-                        throw new BadRequestException(isValidSubjectsIds.Item2);
+                       // Return the correct error
+                        return isValidSubjectsIds.Item2;
                     }
 
                     foreach (var subjectId in request.unassignSubjectsDTO.SubjectIds)

@@ -52,4 +52,11 @@ public static class SubjectErrors
             "Subject.SubjectAlreadyExists",
             $"The subject with name {subjectName} already exists.");
     }
+
+    public static Error SubjectNotAvailableDueToSemester(int subjectId, int subjectAvailableSemester)
+    {
+        return Error.Validation(
+            "Subject.SubjectNotAvailableDueToSemester",
+            $"The subject with id {subjectId} is only available for {subjectAvailableSemester}° semester students.");
+    }
 }

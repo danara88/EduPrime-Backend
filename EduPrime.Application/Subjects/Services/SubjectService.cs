@@ -1,6 +1,8 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Application.Subjects.Interfaces;
 using EduPrime.Core.Entities;
+using EduPrime.Core.Subjects;
 
 namespace EduPrime.Application.Subjects.Services
 {
@@ -20,13 +22,11 @@ namespace EduPrime.Application.Subjects.Services
         /// </summary>
         /// <param name="subjectIds"></param>
         /// <param name="student"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<(bool, string)> ValidateSubjectIds(List<int> subjectIds, Student student)
+        public async Task<(bool, Error)> ValidateSubjectIds(List<int> subjectIds, Student student)
         {
             bool isValidSubjectIds = true;
             int studentCurrentSemester = (int)student.CurrentSemester;
-            string invalidReason = string.Empty;
+            Error invalidReason = new Error();
 
             foreach (var subjectId in subjectIds)
             {
@@ -34,14 +34,14 @@ namespace EduPrime.Application.Subjects.Services
                 if (subject is null)
                 {
                     isValidSubjectIds = false;
-                    invalidReason = $"The subject with id {subjectId} does not exist.";
+                    invalidReason = SubjectErrors.SubjectWithIdDoesNotExist(subjectId);
                     break;
                 }
                 int subjectAvailableSemester = (int)subject.AvailableSemester;
                 if (studentCurrentSemester < subjectAvailableSemester)
                 {
                     isValidSubjectIds = false;
-                    invalidReason = $"The subject with id {subjectId} is only available for {subjectAvailableSemester}° semester students.";
+                    invalidReason = SubjectErrors.SubjectNotAvailableDueToSemester(subjectId, subjectAvailableSemester);
                     break;
                 }
             }
