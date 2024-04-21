@@ -1,4 +1,5 @@
-﻿using EduPrime.Core.Entities;
+﻿using ErrorOr;
+using EduPrime.Core.Entities;
 
 namespace EduPrime.Application.Subjects.Interfaces
 {
@@ -7,6 +8,6 @@ namespace EduPrime.Application.Subjects.Interfaces
     /// </summary>
     public interface ISubjectService
     {
-        Task<(bool, string)> ValidateSubjectIds(List<int> subjectIds, Student student);
+        Task<(bool, Error)> ValidateSubjectIds(List<int> subjectIds, Student student);
     }
 }

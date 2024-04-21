@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
+using EduPrime.Core.Exceptions;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Student;
-using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Students;
 
 namespace EduPrime.Application.Students.Commands
 {
     /// <summary>
     /// Update student command handler
     /// </summary>
-    public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, StudentDTO>
+    public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, ErrorOr<StudentDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +22,12 @@ namespace EduPrime.Application.Students.Commands
             _mapper = mapper;
         }
 
-        public async Task<StudentDTO> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<StudentDTO>> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
         {
             var studentDB = await _unitOfWork.StudentRepository.GetByIdAsync(request.updateStudentDTO.Id);
             if (studentDB is null)
             {
-                throw new NotFoundException($"The student with id {request.updateStudentDTO.Id} does not exist.");
+                return StudentErrors.StudentWithIdDoesNotExist(request.updateStudentDTO.Id);
             }
 
             request.updateStudentDTO.Id = studentDB.Id;

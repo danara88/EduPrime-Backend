@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Student;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Student;
 
 namespace EduPrime.Application.Students.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Students.Commands
     /// Upload student picture command
     /// </summary>
     /// <param name="uploadStudentFileDTO"></param>
-    public record UploadStudentPictureCommand(UploadStudentFileDTO uploadStudentFileDTO) : IRequest<StudentDTO> { }
+    public record UploadStudentPictureCommand(UploadStudentFileDTO uploadStudentFileDTO) : IRequest<ErrorOr<StudentDTO>> { }
 }

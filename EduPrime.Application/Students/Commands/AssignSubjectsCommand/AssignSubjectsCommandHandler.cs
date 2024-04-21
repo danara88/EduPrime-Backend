@@ -1,15 +1,17 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using MediatR;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Application.Subjects.Interfaces;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Students;
 
 namespace EduPrime.Application.Students.Commands
 {
     /// <summary>
     /// Assign subjects to student command handler
     /// </summary>
-    public class AssignSubjectsCommandHandler : IRequestHandler<AssignSubjectsCommand, string>
+    public class AssignSubjectsCommandHandler : IRequestHandler<AssignSubjectsCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISubjectService _subjectService;
@@ -20,16 +22,16 @@ namespace EduPrime.Application.Students.Commands
             _subjectService = subjectService;
         }
 
-        public async Task<string> Handle(AssignSubjectsCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(AssignSubjectsCommand request, CancellationToken cancellationToken)
         {
-            if (!(await _unitOfWork.StudentRepository.ExistsAnyStudent(request.assignSubjectsDTO.StudentId)))
+            if (!await _unitOfWork.StudentRepository.ExistsAnyStudent(request.assignSubjectsDTO.StudentId))
             {
-                throw new NotFoundException($"The student with id {request.assignSubjectsDTO.StudentId} does not exist.");
+                return StudentErrors.StudentWithIdDoesNotExist(request.assignSubjectsDTO.StudentId);
             }
 
             if (request.assignSubjectsDTO.SubjectIds.Count() == 0)
             {
-                throw new BadRequestException("Please assign at least 1 subject.");
+                return StudentErrors.StudentRequiresAtLeastOneSubject;
             }
             request.assignSubjectsDTO.SubjectIds = request.assignSubjectsDTO.SubjectIds.Distinct().ToList();
 
@@ -38,7 +40,8 @@ namespace EduPrime.Application.Students.Commands
             var isValidSubjectIds = await _subjectService.ValidateSubjectIds(request.assignSubjectsDTO.SubjectIds, student);
             if (!isValidSubjectIds.Item1)
             {
-                throw new BadRequestException(isValidSubjectIds.Item2);
+                // Return the correct error
+                return isValidSubjectIds.Item2;
             }
 
             foreach (var subjectId in request.assignSubjectsDTO.SubjectIds)

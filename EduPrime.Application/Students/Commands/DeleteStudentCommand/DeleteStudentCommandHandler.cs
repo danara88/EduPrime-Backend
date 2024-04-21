@@ -1,5 +1,7 @@
 ﻿using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.Exceptions;
+using EduPrime.Core.Students;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Students.Commands
@@ -7,7 +9,7 @@ namespace EduPrime.Application.Students.Commands
     /// <summary>
     /// Delete student command handler
     /// </summary>
-    public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand, string>
+    public class DeleteStudentCommandHandler : IRequestHandler<DeleteStudentCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -16,12 +18,12 @@ namespace EduPrime.Application.Students.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
         {
             var studentDB = await _unitOfWork.StudentRepository.GetByIdAsync(request.id);
             if (studentDB is null)
             {
-                throw new NotFoundException($"The student with id {request.id} does not exist.");
+                return StudentErrors.StudentWithIdDoesNotExist(request.id);
             }
 
             try

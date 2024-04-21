@@ -1,14 +1,17 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using MediatR;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Students;
+using EduPrime.Core.Subjects;
 
 namespace EduPrime.Application.Students.Commands
 {
     /// <summary>
     /// Update student subject assignment command handler
     /// </summary>
-    public class UpdateStudentAssignmentCommandHandler : IRequestHandler<UpdateStudentAssignmentCommand, string>
+    public class UpdateStudentAssignmentCommandHandler : IRequestHandler<UpdateStudentAssignmentCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +20,7 @@ namespace EduPrime.Application.Students.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(UpdateStudentAssignmentCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(UpdateStudentAssignmentCommand request, CancellationToken cancellationToken)
         {
             var studentDB = await _unitOfWork.StudentRepository.GetStudentWithAssignmentsAsync(request.updateStudentAssignmentDTO.StudentId);
             var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(request.updateStudentAssignmentDTO.SubjectId);
@@ -25,13 +28,13 @@ namespace EduPrime.Application.Students.Commands
             // Validate that the student exists
             if (studentDB is null)
             {
-                throw new NotFoundException($"The student with id {request.updateStudentAssignmentDTO.StudentId} does not exist.");
+                return StudentErrors.StudentWithIdDoesNotExist(request.updateStudentAssignmentDTO.StudentId);
             }
 
             // Validate that the subject exists
             if (subjectDB is null)
             {
-                throw new NotFoundException($"The subject with id {request.updateStudentAssignmentDTO.SubjectId} does not exist.");
+                return SubjectErrors.SubjectWithIdDoesNotExist(request.updateStudentAssignmentDTO.SubjectId);
             }
 
             // Validate that the student is currently assigned to the subject
@@ -43,7 +46,7 @@ namespace EduPrime.Application.Students.Commands
 
             if (!assignedSubjects.Contains(subjectDB))
             {
-                throw new BadRequestException($"The student with id {request.updateStudentAssignmentDTO.StudentId} is not assigned to the subject with id {subjectDB.Id}");
+                return StudentErrors.StudentIsNotAssignedToSubject(subjectDB.Id);
             }
 
             var studentSubjectToUpdate = studentDB.StudentsSubjects.First(ss => ss.SubjectId == subjectDB.Id);
