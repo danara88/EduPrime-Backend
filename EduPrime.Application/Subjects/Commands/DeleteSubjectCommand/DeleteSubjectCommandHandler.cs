@@ -1,13 +1,15 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Subjects;
 
 namespace EduPrime.Application.Subjects.Commands
 {
     /// <summary>
     /// Delete subject command handler
     /// </summary>
-    public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand, string>
+    public class DeleteSubjectCommandHandler : IRequestHandler<DeleteSubjectCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -16,12 +18,12 @@ namespace EduPrime.Application.Subjects.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteSubjectCommand request, CancellationToken cancellationToken)
         {
             var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(request.id);
             if (subjectDB is null)
             {
-                throw new NotFoundException($"The subject with id {request.id} does not exist.");
+                return SubjectErrors.SubjectWithIdDoesNotExist(request.id);
             }
 
             try
