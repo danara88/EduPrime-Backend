@@ -1,17 +1,20 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Application.Professors.Interfaces;
 using EduPrime.Core.DTOs.Subject;
 using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Professors;
+using EduPrime.Core.Subjects;
 
 namespace EduPrime.Application.Subjects.Commands
 {
     /// <summary>
     /// Create subject command handler
     /// </summary>
-    public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand, string>
+    public class CreateSubjectCommandHandler : IRequestHandler<CreateSubjectCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,11 +27,11 @@ namespace EduPrime.Application.Subjects.Commands
             _professorService = professorService;
         }
 
-        public async Task<string> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
         {
             if (await _unitOfWork.SubjectRepository.ExistsAnySubject(request.createSubjectDTO.Name))
             {
-                throw new BadRequestException($"The subject with name {request.createSubjectDTO.Name} already exists.");
+                return SubjectErrors.SubjectAlreadyExists(request.createSubjectDTO.Name);
             }
 
             var subject = _mapper.Map<Subject>(request.createSubjectDTO);
@@ -42,14 +45,14 @@ namespace EduPrime.Application.Subjects.Commands
 
                 if (request.createSubjectDTO.ProfessorIds.Count > 2)
                 {
-                    throw new BadRequestException("You can add maximum 2 professors per subject.");
+                    return SubjectErrors.SubjectCannotBeAssignedToMoreThanTwoProfessors;
                 }
 
                 var isValidProfessorIds = await _professorService.ValidProfessorIds(request.createSubjectDTO.ProfessorIds);
 
                 if (!isValidProfessorIds.Item1)
                 {
-                    throw new NotFoundException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
+                    return ProfessorErrors.ProfessorWithIdDoesNotExist(isValidProfessorIds.Item2);
                 }
 
                 foreach (var professorId in request.createSubjectDTO.ProfessorIds)

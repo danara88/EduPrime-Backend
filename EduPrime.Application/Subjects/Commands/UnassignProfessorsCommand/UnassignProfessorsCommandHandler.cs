@@ -1,15 +1,18 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using MediatR;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Application.Professors.Interfaces;
 using EduPrime.Core.Enums.Subject;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Subjects;
+using EduPrime.Core.Professors;
 
 namespace EduPrime.Application.Subjects.Commands
 {
     /// <summary>
     /// Unassign professors from subject command handler
     /// </summary>
-    public class UnassignProfessorsCommandHandler : IRequestHandler<UnassignProfessorsCommand, string>
+    public class UnassignProfessorsCommandHandler : IRequestHandler<UnassignProfessorsCommand, ErrorOr<string>>
     {
 
         private readonly IUnitOfWork _unitOfWork;
@@ -21,11 +24,11 @@ namespace EduPrime.Application.Subjects.Commands
             _professorService = professorService;
         }
 
-        public async Task<string> Handle(UnassignProfessorsCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(UnassignProfessorsCommand request, CancellationToken cancellationToken)
         {
             if (!await _unitOfWork.SubjectRepository.ExistsAnySubject(request.unassignProfessorsDTO.SubjectId))
             {
-                throw new NotFoundException($"The subject with id {request.unassignProfessorsDTO.SubjectId} does not exist.");
+                return SubjectErrors.SubjectWithIdDoesNotExist(request.unassignProfessorsDTO.SubjectId);
             }
 
             var subject = await _unitOfWork.SubjectRepository.GetSubjectWithProfessorsAsync(request.unassignProfessorsDTO.SubjectId);
@@ -45,13 +48,13 @@ namespace EduPrime.Application.Subjects.Commands
 
                     if (request.unassignProfessorsDTO.ProfessorIds.Count() > 2)
                     {
-                        throw new BadRequestException($"You can only unassign maximum 2 professors per subject.");
+                        return SubjectErrors.CannotUnassignMoreThanTwoProfessorsFromSubject;
                     }
 
                     var isValidProfessorIds = await _professorService.ValidProfessorIds(request.unassignProfessorsDTO.ProfessorIds);
                     if (!isValidProfessorIds.Item1)
                     {
-                        throw new NotFoundException($"The professor with id {isValidProfessorIds.Item2} does not exist.");
+                        return ProfessorErrors.ProfessorWithIdDoesNotExist(isValidProfessorIds.Item2);
                     }
 
                     foreach (var professorId in request.unassignProfessorsDTO.ProfessorIds)

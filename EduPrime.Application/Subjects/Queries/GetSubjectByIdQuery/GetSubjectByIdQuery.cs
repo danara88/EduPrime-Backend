@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Subject;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Subject;
 
 namespace EduPrime.Application.Subjects.Queries
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Subjects.Queries
     /// Get subject by id query
     /// </summary>
     /// <param name="id"></param>
-    public record GetSubjectByIdQuery(int id) : IRequest<SubjectDTO> { }
+    public record GetSubjectByIdQuery(int id) : IRequest<ErrorOr<SubjectDTO>> { }
 }

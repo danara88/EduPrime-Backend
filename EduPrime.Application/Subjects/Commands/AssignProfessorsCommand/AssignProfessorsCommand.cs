@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Subject;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Subject;
 
 namespace EduPrime.Application.Subjects.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Subjects.Commands
     /// Assign professors to a subject command
     /// </summary>
     /// <param name="assignProfessorsDTO"></param>
-    public record AssignProfessorsCommand(AssignProfessorsDTO assignProfessorsDTO) : IRequest<string> { }
+    public record AssignProfessorsCommand(AssignProfessorsDTO assignProfessorsDTO) : IRequest<ErrorOr<string>> { }
 }

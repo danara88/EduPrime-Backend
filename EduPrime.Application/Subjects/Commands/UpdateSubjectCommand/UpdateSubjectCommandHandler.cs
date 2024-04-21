@@ -1,14 +1,16 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Subjects;
 
 namespace EduPrime.Application.Subjects.Commands
 {
     /// <summary>
     /// Update subject command handler
     /// </summary>
-    public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand, string>
+    public class UpdateSubjectCommandHandler : IRequestHandler<UpdateSubjectCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,12 +21,12 @@ namespace EduPrime.Application.Subjects.Commands
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
         {
             var subjectDB = await _unitOfWork.SubjectRepository.GetByIdAsync(request.updateSubjectDTO.Id);
             if (subjectDB is null)
             {
-                throw new NotFoundException($"The subject with id {request.updateSubjectDTO.Id} does not exist.");
+                return SubjectErrors.SubjectWithIdDoesNotExist(request.updateSubjectDTO.Id);
             }
 
             request.updateSubjectDTO.Id = subjectDB.Id;

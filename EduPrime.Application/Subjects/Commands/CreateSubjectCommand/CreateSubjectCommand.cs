@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Subject;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Subject;
 
 namespace EduPrime.Application.Subjects.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Subjects.Commands
     /// Create subject command
     /// </summary>
     /// <param name="createSubjectDTO"></param>
-    public record CreateSubjectCommand(CreateSubjectDTO createSubjectDTO) : IRequest<string> { }
+    public record CreateSubjectCommand(CreateSubjectDTO createSubjectDTO) : IRequest<ErrorOr<string>> { }
 }
