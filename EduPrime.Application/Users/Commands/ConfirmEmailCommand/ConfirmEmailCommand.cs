@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.User;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.User;
 
 namespace EduPrime.Application.Users.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Users.Commands
     /// Confirm email command
     /// </summary>
     /// <param name="confirmEmailDTO"></param>
-    public record ConfirmEmailCommand(ConfirmEmailDTO confirmEmailDTO) : IRequest<string> { }
+    public record ConfirmEmailCommand(ConfirmEmailDTO confirmEmailDTO) : IRequest<ErrorOr<string>> { }
 }

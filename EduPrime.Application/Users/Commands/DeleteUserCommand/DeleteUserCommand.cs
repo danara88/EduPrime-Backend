@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ErrorOr;
+using MediatR;
 
 namespace EduPrime.Application.Users.Commands
 {
@@ -6,5 +7,5 @@ namespace EduPrime.Application.Users.Commands
     /// Delete user command
     /// </summary>
     /// <param name="id"></param>
-    public record DeleteUserCommand(int id) : IRequest<string> { }
+    public record DeleteUserCommand(int id) : IRequest<ErrorOr<string>> { }
 }

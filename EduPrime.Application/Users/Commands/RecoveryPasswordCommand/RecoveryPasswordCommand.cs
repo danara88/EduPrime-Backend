@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.User;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.User;
 
 namespace EduPrime.Application.Users.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Users.Commands
     /// Recovery password command
     /// </summary>
     /// <param name="recoveryPasswordDTO"></param>
-    public record RecoveryPasswordCommand(RecoveryPasswordDTO recoveryPasswordDTO) : IRequest<string> { }
+    public record RecoveryPasswordCommand(RecoveryPasswordDTO recoveryPasswordDTO) : IRequest<ErrorOr<string>> { }
 }

@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.User;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.User;
 
 namespace EduPrime.Application.Users.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Users.Commands
     /// Login command
     /// </summary>
     /// <param name="loginUserDTO"></param>
-    public record LoginCommand(LogInUserDTO logInUserDTO) : IRequest<AuthTokenDTO> { }
+    public record LoginCommand(LogInUserDTO logInUserDTO) : IRequest<ErrorOr<AuthTokenDTO>> { }
 }

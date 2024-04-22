@@ -1,14 +1,16 @@
-﻿using EduPrime.Application.Common.Interfaces;
+﻿using ErrorOr;
+using MediatR;
+using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Login command handler
     /// </summary>
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthTokenDTO>
+    public class LoginCommandHandler : IRequestHandler<LoginCommand, ErrorOr<AuthTokenDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
@@ -21,12 +23,12 @@ namespace EduPrime.Application.Users.Commands
             _jwtFactory = jwtFactory;
         }
 
-        public async Task<AuthTokenDTO> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AuthTokenDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var emailExists = await _unitOfWork.UserRepository.UserEmailExistsAsync(request.logInUserDTO.Email);
             if (!emailExists)
             {
-                throw new BadRequestException("The email or password are invalid.");
+                return UserErrors.InvalidUserCredentials;
             }
 
             var user = await _unitOfWork.UserRepository.GetUserByEmail(request.logInUserDTO.Email);
@@ -34,13 +36,14 @@ namespace EduPrime.Application.Users.Commands
             var validPassword = _passwordService.CheckHash(user.Password,request.logInUserDTO.Password);
             if (!validPassword)
             {
-                throw new BadRequestException("The email or password are invalid.");
+                return UserErrors.InvalidUserCredentials;
             }
 
             if (!user.EmailConfirmed)
             {
-                throw new BadRequestException("The email needs to be confirmed.");
+                return UserErrors.UserEmailMustBeConfirmed;
             }
+
             user.LastLogin = DateTime.UtcNow;
 
             try

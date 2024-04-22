@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Update user command handler
     /// </summary>
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDTO>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, ErrorOr<UserDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,12 +22,12 @@ namespace EduPrime.Application.Users.Commands
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<UserDTO>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var userDB = await _unitOfWork.UserRepository.GetByIdAsync(request.updateUserDTO.Id);
             if (userDB is null)
             {
-                throw new NotFoundException($"The user with id {request.updateUserDTO.Id} does not exist.");
+                return UserErrors.UserWithIdDoesNotExist(request.updateUserDTO.Id);
             }
 
             userDB = _mapper.Map(request.updateUserDTO, userDB);

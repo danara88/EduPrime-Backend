@@ -1,13 +1,15 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Confirm email command handler
     /// </summary>
-    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, string>
+    public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -16,26 +18,26 @@ namespace EduPrime.Application.Users.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
         {
             var userDB = await _unitOfWork.UserRepository.GetByVerificationTokenAsync(request.confirmEmailDTO.Code);
 
             // Validates if the verificationToken exists and is assigned to the correct user
             if (userDB is null)
             {
-                throw new BadRequestException($"The verification token is invalid.");
+                return UserErrors.InvalidVerificationToken;
             }
 
             // Validates if the user has not previously confirmed the account
             if (userDB.EmailConfirmed)
             {
-                throw new BadRequestException($"The email is already confirmed.");
+               return UserErrors.UserEmailAlreadyConfirmed;
             }
 
             // Validates if the verification token is not yet expired
             if (DateTime.UtcNow > userDB.VerificationTokenExpirationTime)
             {
-                throw new BadRequestException($"The verification token has expired.");
+                return UserErrors.ExpiredVerificationToken;
             }
 
             userDB.EmailConfirmed = true;
