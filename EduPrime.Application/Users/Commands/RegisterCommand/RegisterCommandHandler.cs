@@ -1,21 +1,23 @@
 ﻿using AutoMapper;
-using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.DTOs.User;
-using EduPrime.Core.Entities;
-using EduPrime.Core.Exceptions;
+using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Security.Cryptography;
 using System.Text.Encodings.Web;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.DTOs.User;
+using EduPrime.Core.Entities;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands.RegisterCommand
 {
     /// <summary>
     /// Register command handler
     /// </summary>
-    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, UserDTO>
+    public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ErrorOr<UserDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -40,16 +42,17 @@ namespace EduPrime.Application.Users.Commands.RegisterCommand
             _hostEnvironment = hostEnvironment;
         }
 
-        public async Task<UserDTO> Handle(RegisterCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<UserDTO>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             if (await _unitOfWork.UserRepository.UserEmailExistsAsync(request.registerUserDTO.Email))
             {
-                throw new BadRequestException($"The email {request.registerUserDTO.Email} is already registered.");
+                return UserErrors.UserEmailAlreadyRegistered(request.registerUserDTO.Email);
             }
 
+            // TODO: Change method name IsValidPassword to IsValidPasswordFormat
             if (!_passwordService.IsValidPassword(request.registerUserDTO.Password))
             {
-                throw new BadRequestException("Invalid password.");
+                return UserErrors.InvalidPasswordFormat;
             }
 
             var user = _mapper.Map<User>(request.registerUserDTO);
@@ -70,7 +73,10 @@ namespace EduPrime.Application.Users.Commands.RegisterCommand
             try
             {
                 await _unitOfWork.SaveChangesAsync();
+
+                // TODO: Implement event domain pattern here
                 await SendVerificationEmail(user);
+
                 var userDTO = _mapper.Map<UserDTO>(user);
 
                 return userDTO;

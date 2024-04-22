@@ -1,14 +1,16 @@
-﻿using AutoMapper;
+﻿using ErrorOr;
+using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Roles;
 
 namespace EduPrime.Application.Roles.Commands.DeleteRoleCommand
 {
     /// <summary>
     /// Delete role command handler
     /// </summary>
-    public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, string>
+    public class DeleteRoleCommandHandler : IRequestHandler<DeleteRoleCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,12 +21,12 @@ namespace EduPrime.Application.Roles.Commands.DeleteRoleCommand
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
         {
             var roleDB = await _unitOfWork.RoleRepository.GetByIdAsync(request.id);
             if (roleDB is null)
             {
-                throw new NotFoundException($"The role with id {request.id} does not exist.");
+                return RoleErrors.RoleWithIdDoesNotExist(request.id);
             }
 
             try

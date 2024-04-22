@@ -1,20 +1,22 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Application.Helpers.Security;
-using EduPrime.Core.Entities;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Text.Encodings.Web;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Application.Helpers.Security;
+using EduPrime.Core.Entities;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Recovery password command handler
     /// </summary>
-    public class RecoveryPasswordCommandHandler : IRequestHandler<RecoveryPasswordCommand, string>
+    public class RecoveryPasswordCommandHandler : IRequestHandler<RecoveryPasswordCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ISecurityHelper _securityHelper;
@@ -24,9 +26,9 @@ namespace EduPrime.Application.Users.Commands
         private readonly IDataProtector _dataProtector;
 
         public RecoveryPasswordCommandHandler(
-            IUnitOfWork unitOfWork, 
+            IUnitOfWork unitOfWork,
             ISecurityHelper securityHelper,
-            IEmailSender emailSender, 
+            IEmailSender emailSender,
             IHttpContextAccessor httpContextAccessor,
             IDataProtectionProvider dataProtectionProvider,
             IWebHostEnvironment hostEnvironment)
@@ -39,17 +41,17 @@ namespace EduPrime.Application.Users.Commands
             _dataProtector = dataProtectionProvider.CreateProtector("RecoveryPasswordEmail");
         }
 
-        public async Task<string> Handle(RecoveryPasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(RecoveryPasswordCommand request, CancellationToken cancellationToken)
         {
             var userDB = await _unitOfWork.UserRepository.GetUserByEmail(request.recoveryPasswordDTO.Email);
             if (userDB is null)
             {
-                throw new BadRequestException("Something went wrong while sending recovery password email.");
+                return UserErrors.UserEmailDoesNotExist;
             }
 
             if (!userDB.EmailConfirmed)
             {
-                throw new BadRequestException("The email needs to be confirmed.");
+                return UserErrors.UserEmailMustBeConfirmed;
             }
 
             try

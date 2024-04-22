@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.User;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.User;
 
 namespace EduPrime.Application.Users.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Users.Commands
     /// Change password DTO
     /// </summary>
     /// <param name="changePasswordDTO"></param>
-    public record ChangePasswordCommand(ChangePasswordDTO changePasswordDTO) : IRequest<string> { }
+    public record ChangePasswordCommand(ChangePasswordDTO changePasswordDTO) : IRequest<ErrorOr<string>> { }
 }

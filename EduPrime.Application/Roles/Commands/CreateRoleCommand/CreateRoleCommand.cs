@@ -1,5 +1,6 @@
-﻿using EduPrime.Core.DTOs.Role;
-using MediatR;
+﻿using MediatR;
+using ErrorOr;
+using EduPrime.Core.DTOs.Role;
 
 namespace EduPrime.Application.Roles.Commands
 {
@@ -7,5 +8,5 @@ namespace EduPrime.Application.Roles.Commands
     /// Create role command
     /// </summary>
     /// <param name="createRoleDTO"></param>
-    public record CreateRoleCommand(CreateRoleDTO createRoleDTO) : IRequest<RoleDTO> { }
+    public record CreateRoleCommand(CreateRoleDTO createRoleDTO) : IRequest<ErrorOr<RoleDTO>> { }
 }

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Users.Commands;
@@ -8,13 +7,12 @@ using EduPrime.Application.Users.Commands.RegisterCommand;
 using EduPrime.Application.Users.Queries;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Api.Controllers
 {
     [Route("api/users/v2")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiController
     {
         private readonly ISender _mediator;
 
@@ -24,12 +22,9 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to register a user
+        /// End point that registers a user
         /// </summary>
         /// <param name="registerUserDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,17 +33,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new RegisterCommand(registerUserDTO);
             var registerResult = await _mediator.Send(command);
-            var response = new ApiResponse<UserDTO>(registerResult);
-            
-            return Ok(response);
+
+            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+
+            return registerResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to login a user
+        /// End point that signs a user in
         /// </summary>
         /// <param name="logInUserDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
         [HttpPost("login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -57,18 +54,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new LoginCommand(logInUserDTO);
             var loginResult = await _mediator.Send(command);
-            var response = new ApiResponse<AuthTokenDTO>(loginResult);
 
-            return Ok(response);
+            Func<AuthTokenDTO, IActionResult> response = (authTokenDTO) => Ok(new ApiResponse<AuthTokenDTO>(authTokenDTO));
+
+            return loginResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to confirm user's email
+        /// End point that confirms user's email
         /// </summary>
         /// <param name="confirmEmailDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [HttpGet("confirm-email")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -77,18 +75,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new ConfirmEmailCommand(confirmEmailDTO);
             var confirmEmailResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(confirmEmailResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return confirmEmailResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to send recovery password email
+        /// End point that sends recovery password email
         /// </summary>
         /// <param name="recoveryPasswordDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [HttpPost("recovery-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -97,16 +96,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new RecoveryPasswordCommand(recoveryPasswordDTO);
             var recoveryPassowrdResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(recoveryPassowrdResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return recoveryPassowrdResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to change user password
+        /// End point that changes user password
         /// </summary>
         /// <param name="changePasswordDTO"></param>
-        /// <returns></returns>
         [HttpPut("change-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -115,15 +117,18 @@ namespace EduPrime.Api.Controllers
         {
             var command = new ChangePasswordCommand(changePasswordDTO);
             var changePasswordResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(changePasswordResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return changePasswordResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to get all users
+        /// End point that gets all users
         /// </summary>
-        /// <returns></returns>
         [HttpGet("get-users")]
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -138,10 +143,9 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to get a user by id
+        /// End point that gets a user by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
         [HttpGet("get-user/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -152,18 +156,19 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetUserByIdQuery(id);
             var getUserByIdResult = await _mediator.Send(query);
-            var response = new ApiResponse<UserDTO>(getUserByIdResult);
 
-            return Ok(response);
+            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+
+            return getUserByIdResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to update a user
+        /// End point that updates a user
         /// </summary>
         /// <param name="updateUserDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
         [HttpPut("update-user")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -175,18 +180,19 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UpdateUserCommand(updateUserDTO);
             var updateUserResult = await _mediator.Send(command);
-            var response = new ApiResponse<UserDTO>(updateUserResult);
 
-            return Ok(response);
+            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+
+            return updateUserResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to delete a user
+        /// End point that deletes a user
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
         [HttpDelete("delete-user/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -198,9 +204,13 @@ namespace EduPrime.Api.Controllers
         {
             var command = new DeleteUserCommand(id);
             var deleteUserResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(deleteUserResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return deleteUserResult.Match(
+                response,
+                Problem
+            );
         }
     }
 }

@@ -1,15 +1,18 @@
 ﻿using AutoMapper;
+using ErrorOr;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Exceptions;
-using MediatR;
+using EduPrime.Core.Users;
+using EduPrime.Core.Roles;
 
 namespace EduPrime.Application.Roles.Commands
 {
     /// <summary>
     /// Update user role command handler
     /// </summary>
-    public class UpdateUserRoleCommandHandler : IRequestHandler<UpdateUserRoleCommand, string>
+    public class UpdateUserRoleCommandHandler : IRequestHandler<UpdateUserRoleCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -20,20 +23,20 @@ namespace EduPrime.Application.Roles.Commands
             _mapper = mapper;
         }
 
-        public async Task<string> Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(UpdateUserRoleCommand request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetByIdWithAssignedRoleAsync(request.updateUserRoleDTO.UserId);
 
             // Validates if the user exist
             if (user is null)
             {
-                throw new NotFoundException($"The user with id {request.updateUserRoleDTO.UserId} does not exist.");
+                return UserErrors.UserWithIdDoesNotExist(request.updateUserRoleDTO.UserId);
             }
 
             // Validates if the role exist
-            if (!(await _unitOfWork.RoleRepository.ExistsAnyRoleAsync(request.updateUserRoleDTO.RoleId)))
+            if (!await _unitOfWork.RoleRepository.ExistsAnyRoleAsync(request.updateUserRoleDTO.RoleId))
             {
-                throw new NotFoundException($"The role with id {request.updateUserRoleDTO.RoleId} does not exist.");
+                return RoleErrors.RoleWithIdDoesNotExist(request.updateUserRoleDTO.RoleId);
             }
 
             user.RoleId = request.updateUserRoleDTO.RoleId;

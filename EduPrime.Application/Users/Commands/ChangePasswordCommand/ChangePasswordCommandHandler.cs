@@ -1,22 +1,24 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Change password command handler
     /// </summary>
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, string>
+    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDataProtector _dataProtector;
         private readonly IPasswordService _passwordService;
 
         public ChangePasswordCommandHandler(
-            IDataProtectionProvider dataProtectionProvider, 
-            IUnitOfWork unitOfWork, 
+            IDataProtectionProvider dataProtectionProvider,
+            IUnitOfWork unitOfWork,
             IPasswordService passwordService)
         {
             _dataProtector = dataProtectionProvider.CreateProtector("RecoveryPasswordEmail");
@@ -24,20 +26,21 @@ namespace EduPrime.Application.Users.Commands
             _passwordService = passwordService;
         }
 
-        public async Task<string> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             request.changePasswordDTO.Email = _dataProtector.Unprotect(request.changePasswordDTO.Email);
 
             var userDB = await _unitOfWork.UserRepository.GetUserByEmail(request.changePasswordDTO.Email);
             if (userDB is null)
             {
-                throw new BadRequestException("Something went wrong while changing the password.");
+                return UserErrors.UserEmailDoesNotExist;
             }
 
             // Validate password format
+            // TODO: Change method name IsValidPassword to IsValidPasswordFormat
             if (!_passwordService.IsValidPassword(request.changePasswordDTO.Password))
             {
-                throw new BadRequestException("Invalid password.");
+                return UserErrors.InvalidPasswordFormat;
             }
 
             // Hash new inserted password and assign to the user

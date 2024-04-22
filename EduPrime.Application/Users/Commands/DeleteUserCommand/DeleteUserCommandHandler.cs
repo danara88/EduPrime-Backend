@@ -1,13 +1,15 @@
-﻿using EduPrime.Application.Common.Interfaces;
-using EduPrime.Core.Exceptions;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Application.Common.Interfaces;
+using EduPrime.Core.Exceptions;
+using EduPrime.Core.Users;
 
 namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Delete user command handler
     /// </summary>
-    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, string>
+    public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, ErrorOr<string>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -16,12 +18,12 @@ namespace EduPrime.Application.Users.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<string> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var userDB = await _unitOfWork.UserRepository.GetByIdAsync(request.id);
             if (userDB is null)
             {
-                throw new NotFoundException($"The user with id {request.id} does not exist.");
+                return UserErrors.UserWithIdDoesNotExist(request.id);
             }
 
             try

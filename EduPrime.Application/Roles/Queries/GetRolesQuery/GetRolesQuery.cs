@@ -1,5 +1,5 @@
-﻿using EduPrime.Core.DTOs.Role;
-using MediatR;
+﻿using MediatR;
+using EduPrime.Core.DTOs.Role;
 
 namespace EduPrime.Application.Roles.Queries
 {

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Role;
-using MediatR;
 
 namespace EduPrime.Application.Roles.Queries
 {
