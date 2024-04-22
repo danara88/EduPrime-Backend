@@ -1,10 +1,11 @@
-﻿using EduPrime.Core.DTOs.Role;
+﻿using ErrorOr;
 using MediatR;
+using EduPrime.Core.DTOs.Role;
 
 namespace EduPrime.Application.Roles.Queries
 {
     /// <summary>
     /// Get role by id query
     /// </summary>
-    public record GetRoleByIdQuery(int Id) : IRequest<RoleWithUsersDTO> { }
+    public record GetRoleByIdQuery(int Id) : IRequest<ErrorOr<RoleWithUsersDTO>> { }
 }

@@ -1,6 +1,6 @@
-﻿using EduPrime.Core.DTOs.Role;
-using EduPrime.Core.DTOs.User;
-using MediatR;
+﻿using MediatR;
+using ErrorOr;
+using EduPrime.Core.DTOs.Role;
 
 namespace EduPrime.Application.Roles.Commands
 {
@@ -8,5 +8,5 @@ namespace EduPrime.Application.Roles.Commands
     /// Update user role command
     /// </summary>
     /// <param name="updateUserRole"></param>
-    public record UpdateUserRoleCommand(UpdateUserRoleDTO updateUserRoleDTO) : IRequest<string> { }
+    public record UpdateUserRoleCommand(UpdateUserRoleDTO updateUserRoleDTO) : IRequest<ErrorOr<string>> { }
 }

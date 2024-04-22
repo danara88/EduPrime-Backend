@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Roles.Commands;
@@ -8,7 +7,6 @@ using EduPrime.Application.Roles.Commands.DeleteRoleCommand;
 using EduPrime.Application.Roles.Queries;
 using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.Enums;
-using EduPrime.Core.Exceptions;
 
 namespace EduPrime.Api.Controllers
 {
@@ -18,7 +16,7 @@ namespace EduPrime.Api.Controllers
     /// </summary>
     [Route("api/roles/v2")]
     [ApiController]
-    public class RolesController : ControllerBase
+    public class RolesController : ApiController
     {
         private readonly ISender _mediator;
 
@@ -28,9 +26,8 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to return all the roles
+        /// End point that returns all the roles
         /// </summary>
-        /// <returns></returns>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
         [HttpGet("get-roles")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
@@ -47,10 +44,9 @@ namespace EduPrime.Api.Controllers
         }
 
         /// <summary>
-        /// End point to get a role by id
+        /// End point that gets a role by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
         [HttpGet("get-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,19 +57,20 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetRoleByIdQuery(id);
             var getRoleByIdResult = await _mediator.Send(query);
-            var response = new ApiResponse<RoleWithUsersDTO>(getRoleByIdResult);
 
-            return Ok(response);
+            Func<RoleWithUsersDTO, IActionResult> response = (roleWithUsersDTO) => Ok(new ApiResponse<RoleWithUsersDTO>(roleWithUsersDTO));
+
+            return getRoleByIdResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to create a role.
+        /// End point that creates a role.
         /// NOTE: Be sure to add your new role into the enum: RoleTypeEnum.
         /// </summary>
         /// <param name="createRoleDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
         [HttpPost("create-role")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -85,21 +82,22 @@ namespace EduPrime.Api.Controllers
         {
             var command = new CreateRoleCommand(createRoleDTO);
             var createRoleResult = await _mediator.Send(command);
-            var response = new ApiResponse<RoleDTO>(createRoleResult)
+
+            Func<RoleDTO, IActionResult> response = (roleDTO) => Ok(new ApiResponse<RoleDTO>(roleDTO)
             {
                 Status = StatusCodes.Status201Created
-            };
+            });
 
-            return Ok(response);
+            return createRoleResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to update the assigned role of a user
+        /// End point that updates the assigned role of a user
         /// </summary>
         /// <param name="updateUserRoleDTO"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
         [HttpPut("update-user-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -111,19 +109,20 @@ namespace EduPrime.Api.Controllers
         {
             var command = new UpdateUserRoleCommand(updateUserRoleDTO);
             var updateUserRoleResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(updateUserRoleResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return updateUserRoleResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
-        /// End point to delete a role.
+        /// End point that deletes a role.
         /// NOTE: Be carefull. It will delete on cascade.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="BadRequestException"></exception>
-        /// <exception cref="InternalServerException"></exception>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
         [HttpDelete("delete-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -135,9 +134,13 @@ namespace EduPrime.Api.Controllers
         {
             var command = new DeleteRoleCommand(id);
             var deleteRoleResult = await _mediator.Send(command);
-            var response = new ApiMessageResponse(deleteRoleResult);
 
-            return Ok(response);
+            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+
+            return deleteRoleResult.Match(
+                response,
+                Problem
+            );
         }
 
     }
