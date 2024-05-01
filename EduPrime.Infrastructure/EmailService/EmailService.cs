@@ -1,7 +1,8 @@
-﻿using MailKit.Net.Smtp;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using MailKit.Net.Smtp;
+using MailKit.Security;
 
 namespace EduPrime.Infrastructure.MailService
 {
@@ -23,7 +24,6 @@ namespace EduPrime.Infrastructure.MailService
         /// <param name="email"></param>
         /// <param name="subject"></param>
         /// <param name="htmlMessage"></param>
-        /// <returns></returns>
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
             try
@@ -31,7 +31,7 @@ namespace EduPrime.Infrastructure.MailService
                 var message = new MimeMessage();
 
                 // From
-                message.From.Add(new MailboxAddress(_smtpSettings.SenderName, _smtpSettings.SenderEmail));
+                message.From.Add(new MailboxAddress(_smtpSettings.SenderName, "daniara88cloud@outlook.com"));
 
                 // To
                 message.To.Add(new MailboxAddress("", email));
@@ -41,7 +41,9 @@ namespace EduPrime.Infrastructure.MailService
                 // Open smtp client and send email
                 using (var client = new SmtpClient())
                 {
-                    await client.ConnectAsync(_smtpSettings.Server);
+                    // StartTls: Inform to mail server that the content must be encrypted
+                    // Use 587 port to send encrypted mail
+                    await client.ConnectAsync(_smtpSettings.Server, _smtpSettings.Port,  SecureSocketOptions.StartTls);
                     await client.AuthenticateAsync(_smtpSettings.UserName, _smtpSettings.Password);
                     await client.SendAsync(message);
                     await client.DisconnectAsync(true);
