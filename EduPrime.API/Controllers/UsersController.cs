@@ -10,8 +10,6 @@ using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/users/v2")]
-    [ApiController]
     public class UsersController : ApiController
     {
         private readonly ISender _mediator;
@@ -25,7 +23,7 @@ namespace EduPrime.Api.Controllers
         /// End point that registers a user
         /// </summary>
         /// <param name="registerUserDTO"></param>
-        [HttpPost("register")]
+        [HttpPost("~/api/v1/users/register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -46,7 +44,7 @@ namespace EduPrime.Api.Controllers
         /// End point that signs a user in
         /// </summary>
         /// <param name="logInUserDTO"></param>
-        [HttpPost("login")]
+        [HttpPost("~/api/v1/users/login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -67,7 +65,7 @@ namespace EduPrime.Api.Controllers
         /// End point that confirms user's email
         /// </summary>
         /// <param name="confirmEmailDTO"></param>
-        [HttpGet("confirm-email")]
+        [HttpGet("~/api/v1/users/confirm-email")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -88,7 +86,7 @@ namespace EduPrime.Api.Controllers
         /// End point that sends recovery password email
         /// </summary>
         /// <param name="recoveryPasswordDTO"></param>
-        [HttpPost("recovery-password")]
+        [HttpPost("~/api/v1/users/recovery-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -109,7 +107,7 @@ namespace EduPrime.Api.Controllers
         /// End point that changes user password
         /// </summary>
         /// <param name="changePasswordDTO"></param>
-        [HttpPut("change-password")]
+        [HttpPut("~/api/v1/users/change-password")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -129,7 +127,7 @@ namespace EduPrime.Api.Controllers
         /// <summary>
         /// End point that gets all users
         /// </summary>
-        [HttpGet("get-users")]
+        [HttpGet("~/api/v1/users/get-users")]
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -147,7 +145,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
-        [HttpGet("get-user/{id:int}")]
+        [HttpGet("~/api/v1/users/get-user/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -170,7 +168,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="updateUserDTO"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
-        [HttpPut("update-user")]
+        [HttpPut("~/api/v1/users/update-user")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -194,7 +192,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
-        [HttpDelete("delete-user/{id:int}")]
+        [HttpDelete("~/api/v1/users/delete-user/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

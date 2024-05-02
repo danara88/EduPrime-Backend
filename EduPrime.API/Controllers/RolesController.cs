@@ -14,8 +14,6 @@ namespace EduPrime.Api.Controllers
     /// NOTE:
     /// If you want to update the name of a role, please talk to the DB administrator.
     /// </summary>
-    [Route("api/roles/v2")]
-    [ApiController]
     public class RolesController : ApiController
     {
         private readonly ISender _mediator;
@@ -29,7 +27,7 @@ namespace EduPrime.Api.Controllers
         /// End point that returns all the roles
         /// </summary>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
-        [HttpGet("get-roles")]
+        [HttpGet("~/api/v1/roles/get-roles")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -48,7 +46,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
-        [HttpGet("get-role/{id:int}")]
+        [HttpGet("~/api/v1/roles/get-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -72,7 +70,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="createRoleDTO"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
-        [HttpPost("create-role")]
+        [HttpPost("~/api/v1/roles/create-role")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -99,7 +97,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="updateUserRoleDTO"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
-        [HttpPut("update-user-role")]
+        [HttpPut("~/api/v1/roles/update-user-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -124,7 +122,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
-        [HttpDelete("delete-role/{id:int}")]
+        [HttpDelete("~/api/v1/roles/delete-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

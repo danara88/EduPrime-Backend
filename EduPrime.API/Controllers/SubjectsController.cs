@@ -11,8 +11,6 @@ using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/subjects/v2")]
-    [ApiController]
     public class SubjectsController : ApiController
     {
         private readonly ISender _mediator;
@@ -27,7 +25,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="paginationDTO"></param>
         [Authorize]
-        [HttpGet("get-subjects")]
+        [HttpGet("~/api/v1/subjects/get-subjects")]
         [ResponseCache(CacheProfileName = "HalfMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -45,7 +43,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
-        [HttpGet("get-subject/{id:int}")]
+        [HttpGet("~/api/v1/subjects/get-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,7 +68,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPost("create-subject")]
+        [HttpPost("~/api/v1/subjects/create-subject")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -100,7 +98,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPut("update-subject")]
+        [HttpPut("~/api/v1/subjects/update-subject")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -127,7 +125,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPut("unassign-professors")]
+        [HttpPut("~/api/v1/subjects/unassign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -154,7 +152,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPost("assign-professors")]
+        [HttpPost("~/api/v1/subjects/assign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -181,7 +179,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpDelete("delete-subject/{id:int}")]
+        [HttpDelete("~/api/v1/subjects/delete-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
