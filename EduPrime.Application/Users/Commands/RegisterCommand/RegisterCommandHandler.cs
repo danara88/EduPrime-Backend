@@ -97,7 +97,7 @@ namespace EduPrime.Application.Users.Commands.RegisterCommand
         {
             // Example: https://localhost:44392/api/users/v1/confirm-email?code=exampleCode
             var callbackUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}"
-                               + $"/api/users/v2/confirm-email?code={user.VerificationToken}";
+                               + $"/api/v1/users/confirm-email?code={user.VerificationToken}";
 
             var pathToFile = _hostEnvironment.WebRootPath + Path.DirectorySeparatorChar.ToString()
                 + "Templates" + Path.DirectorySeparatorChar.ToString() + "EmailTemplates"

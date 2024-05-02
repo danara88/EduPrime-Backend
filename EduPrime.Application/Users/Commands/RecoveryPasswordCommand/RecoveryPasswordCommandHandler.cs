@@ -74,6 +74,8 @@ namespace EduPrime.Application.Users.Commands
         private async Task SendRecoveryPasswordEmail(User user)
         {
             var expirationTimeEncrypted = _securityHelper.EncryptString(DateTime.Now.AddHours(1).ToString("yyyy-MM-dd/HH:mm:ss"));
+
+            // TODO: Change to frontend HOST
             var callbackUrl = $@"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}/recover-your-password" +
                 $"?Email={_dataProtector.Protect(user.Email)}" +
                 $"&ExpirationTime={expirationTimeEncrypted}";

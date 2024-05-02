@@ -10,7 +10,6 @@ using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/areas/v2")]
     public class AreasController : ApiController
     {
         private readonly ISender _mediator;
@@ -24,7 +23,7 @@ namespace EduPrime.Api.Controllers
         /// End point that returns all areas
         /// </summary>
         [Authorize]
-        [HttpGet("get-areas")]
+        [HttpGet("~/api/v1/areas/get-areas")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -42,7 +41,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
-        [HttpGet("get-area/{id:int}")]
+        [HttpGet("~/api/v1/areas/get-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -67,7 +66,7 @@ namespace EduPrime.Api.Controllers
             nameof(RoleTypeEnum.Primary),
             nameof(RoleTypeEnum.Admin),
             nameof(RoleTypeEnum.Standard))]
-        [HttpPost("create-area")]
+        [HttpPost("~/api/v1/areas/create-area")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -97,7 +96,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPut("update-area")]
+        [HttpPut("~/api/v1/areas/update-area")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -124,7 +123,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpDelete("delete-area/{id:int}")]
+        [HttpDelete("~/api/v1/areas/delete-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -147,7 +146,7 @@ namespace EduPrime.Api.Controllers
         /// End point that gets all areas with employees
         /// </summary>
         [Authorize]
-        [HttpGet("get-areas-with-employees")]
+        [HttpGet("~/api/v1/areas/get-areas-with-employees")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetAreasWithEmployees()

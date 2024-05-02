@@ -10,8 +10,6 @@ using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {
-    [Route("api/professors/v2")]
-    [ApiController]
     public class ProfessorsController : ApiController
     {
         private readonly ISender _mediator;
@@ -25,7 +23,7 @@ namespace EduPrime.Api.Controllers
         /// End point that returns all professors
         /// </summary>
         [Authorize]
-        [HttpGet("get-professors")]
+        [HttpGet("~/api/v1/professors/get-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> GetProfessors()
@@ -43,7 +41,7 @@ namespace EduPrime.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         [Authorize]
-        [HttpGet("get-professor/{id:int}")]
+        [HttpGet("~/api/v1/professors/get-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,7 +66,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPost("create-professor")]
+        [HttpPost("~/api/v1/professors/create-professor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -98,7 +96,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpPut("update-professor")]
+        [HttpPut("~/api/v1/professors/update-professor")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -125,7 +123,7 @@ namespace EduPrime.Api.Controllers
            nameof(RoleTypeEnum.Primary),
            nameof(RoleTypeEnum.Admin),
            nameof(RoleTypeEnum.Standard))]
-        [HttpDelete("delete-professor/{id:int}")]
+        [HttpDelete("~/api/v1/professors/delete-professor/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
