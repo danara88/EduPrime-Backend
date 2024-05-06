@@ -12,7 +12,7 @@ using EduPrime.Core.Entities;
 using EduPrime.Core.Exceptions;
 using EduPrime.Core.Users;
 
-namespace EduPrime.Application.Users.Commands.RegisterCommand
+namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Register command handler

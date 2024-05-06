@@ -1,7 +1,7 @@
 ﻿namespace EduPrime.Core.Enums
 {
     /// <summary>
-    /// Semesters enum
+    /// Semester types enum
     /// </summary>
     public enum SemesterTypeEnum
     {

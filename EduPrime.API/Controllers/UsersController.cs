@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Users.Commands;
-using EduPrime.Application.Users.Commands.RegisterCommand;
 using EduPrime.Application.Users.Queries;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Enums;

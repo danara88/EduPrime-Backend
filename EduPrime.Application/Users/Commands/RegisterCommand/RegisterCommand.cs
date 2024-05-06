@@ -2,7 +2,7 @@
 using MediatR;
 using EduPrime.Core.DTOs.User;
 
-namespace EduPrime.Application.Users.Commands.RegisterCommand
+namespace EduPrime.Application.Users.Commands
 {
     /// <summary>
     /// Register command

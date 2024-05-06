@@ -1,6 +1,4 @@
-﻿using EduPrime.Core.DTOs.User;
-
-namespace EduPrime.Core.DTOs.Role
+﻿namespace EduPrime.Core.DTOs.Role
 {
     public class RoleWithUsersDTO
     {

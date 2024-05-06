@@ -1,9 +1,11 @@
-﻿using EduPrime.Application.Professors.Interfaces;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using FluentValidation;
+using EduPrime.Application.Common.Behaviors;
+using EduPrime.Application.Professors.Interfaces;
 using EduPrime.Application.Professors.Services;
 using EduPrime.Application.Subjects.Interfaces;
 using EduPrime.Application.Subjects.Services;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace EduPrime.Application
 {
@@ -18,9 +20,18 @@ namespace EduPrime.Application
             services.AddScoped<IProfessorService, ProfessorService>();
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddMediatR(options => 
-                options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection))
-            );
+
+            services.AddMediatR(options =>{
+                // Add commands/queries from the current assembly (Application layer)
+                options.RegisterServicesFromAssemblyContaining(
+                    typeof(DependencyInjection));
+
+                // Add generic behavior for validation
+                options.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            });
+
+            // Register all the validators IValidator<T> from the current assembly (Application layer)
+            services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
 
             return services;
         }
