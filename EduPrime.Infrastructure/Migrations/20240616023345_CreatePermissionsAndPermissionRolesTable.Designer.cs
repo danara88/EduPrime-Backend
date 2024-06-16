@@ -4,6 +4,7 @@ using EduPrime.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EduPrime.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240616023345_CreatePermissionsAndPermissionRolesTable")]
+    partial class CreatePermissionsAndPermissionRolesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,7 +108,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 2, DateTimeKind.Utc).AddTicks(2330));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 928, DateTimeKind.Utc).AddTicks(5240));
 
                     b.Property<string>("Description")
                         .HasMaxLength(200)
@@ -127,28 +130,28 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(8860),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8630),
                             Description = "Only those who teach a subject",
                             Name = "Professor"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(8860),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8630),
                             Description = "Office administrative area",
                             Name = "Office administrative"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(8860),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8630),
                             Description = "School clean service",
                             Name = "Clean service"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(8860),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8640),
                             Description = "School security guard",
                             Name = "Security guard"
                         });
@@ -168,7 +171,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 2, DateTimeKind.Utc).AddTicks(3830));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 928, DateTimeKind.Utc).AddTicks(6240));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -214,7 +217,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             BirthDate = new DateTime(1988, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8720),
                             Email = "BrendaLopez@school.com",
                             Name = "Brenda",
                             PhoneNumber = "8445678787",
@@ -224,7 +227,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 2,
                             BirthDate = new DateTime(1980, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "AlmaRosa@school.com",
                             Name = "Alma Rosa",
                             PhoneNumber = "8445567556",
@@ -234,7 +237,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 3,
                             BirthDate = new DateTime(1990, 2, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "LorenaSuarez@school.com",
                             Name = "Lorena",
                             PhoneNumber = "8445552552",
@@ -244,7 +247,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 4,
                             BirthDate = new DateTime(1985, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "RamiroTorrero@school.com",
                             Name = "Ramiro",
                             PhoneNumber = "8449883834",
@@ -254,7 +257,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 5,
                             BirthDate = new DateTime(1990, 5, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "MarisolTorres@school.com",
                             Name = "Marisol",
                             PhoneNumber = "8445556781",
@@ -264,7 +267,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 6,
                             BirthDate = new DateTime(1980, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9030),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "SofiaCardenas@school.com",
                             Name = "Sofía",
                             PhoneNumber = "8445556781",
@@ -274,7 +277,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 7,
                             BirthDate = new DateTime(1981, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9040),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "ReginaGonzales@school.com",
                             Name = "Regina",
                             PhoneNumber = "8446787575",
@@ -284,7 +287,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 8,
                             BirthDate = new DateTime(1975, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9040),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8730),
                             Email = "VeronicaZertuche@school.com",
                             Name = "Verónica",
                             PhoneNumber = "8449990023",
@@ -294,7 +297,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 9,
                             BirthDate = new DateTime(1975, 2, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9040),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8740),
                             Email = "LuisCarranza@school.com",
                             Name = "Luis",
                             PhoneNumber = "8445678787",
@@ -313,7 +316,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 2, DateTimeKind.Utc).AddTicks(5760));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 928, DateTimeKind.Utc).AddTicks(7490));
 
                     b.Property<string>("Name")
                         .HasMaxLength(80)
@@ -325,176 +328,6 @@ namespace EduPrime.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permissions");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:areas"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:areas"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:areas"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:areas"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:employees"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:employees"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:employees"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:employees"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:professors"
-                        },
-                        new
-                        {
-                            Id = 10,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:professors"
-                        },
-                        new
-                        {
-                            Id = 11,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:professors"
-                        },
-                        new
-                        {
-                            Id = 12,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:professors"
-                        },
-                        new
-                        {
-                            Id = 13,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:subjects"
-                        },
-                        new
-                        {
-                            Id = 14,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:subjects"
-                        },
-                        new
-                        {
-                            Id = 15,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:subjects"
-                        },
-                        new
-                        {
-                            Id = 16,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:subjects"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:students"
-                        },
-                        new
-                        {
-                            Id = 18,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:students"
-                        },
-                        new
-                        {
-                            Id = 19,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:students"
-                        },
-                        new
-                        {
-                            Id = 20,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:students"
-                        },
-                        new
-                        {
-                            Id = 21,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:users"
-                        },
-                        new
-                        {
-                            Id = 22,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:users"
-                        },
-                        new
-                        {
-                            Id = 23,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:users"
-                        },
-                        new
-                        {
-                            Id = 24,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:users"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "create:roles"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "update:roles"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "delete:roles"
-                        },
-                        new
-                        {
-                            Id = 28,
-                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "get:roles"
-                        });
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.PermissionRole", b =>
@@ -505,368 +338,17 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<int>("PermissionId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("RoleId", "PermissionId");
 
                     b.HasIndex("PermissionId");
 
                     b.ToTable("PermissionsRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 9
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 10
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 11
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 12
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 13
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 14
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 15
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 16
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 17
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 18
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 19
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 20
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 21
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 22
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 23
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 24
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 25
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 26
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 27
-                        },
-                        new
-                        {
-                            RoleId = 1,
-                            PermissionId = 28
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 9
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 10
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 11
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 12
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 13
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 14
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 15
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 16
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 17
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 18
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 19
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 20
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 24
-                        },
-                        new
-                        {
-                            RoleId = 2,
-                            PermissionId = 28
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 1
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 2
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 3
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 5
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 6
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 7
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 9
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 10
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 11
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 12
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 13
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 14
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 15
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 16
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 17
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 18
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 19
-                        },
-                        new
-                        {
-                            RoleId = 3,
-                            PermissionId = 20
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 4
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 8
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 12
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 16
-                        },
-                        new
-                        {
-                            RoleId = 4,
-                            PermissionId = 20
-                        });
                 });
 
             modelBuilder.Entity("EduPrime.Core.Entities.Professor", b =>
@@ -880,7 +362,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(250));
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
@@ -910,7 +392,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9100),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 1,
                             Satisfaction = 85,
                             YearsOnDuty = 5
@@ -918,7 +400,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9100),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 2,
                             Satisfaction = 90,
                             YearsOnDuty = 30
@@ -926,7 +408,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9100),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 3,
                             Satisfaction = 90,
                             YearsOnDuty = 15
@@ -934,7 +416,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9100),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 4,
                             Satisfaction = 100,
                             YearsOnDuty = 10
@@ -942,7 +424,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9110),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 5,
                             Satisfaction = 45,
                             YearsOnDuty = 3
@@ -950,7 +432,7 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9110),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8790),
                             EmployeeId = 6,
                             Satisfaction = 100,
                             YearsOnDuty = 10
@@ -1040,7 +522,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(2980));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(3050));
 
                     b.Property<string>("Name")
                         .HasMaxLength(50)
@@ -1057,25 +539,25 @@ namespace EduPrime.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9290),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8980),
                             Name = "Primary"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9290),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8980),
                             Name = "Admim"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9290),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8980),
                             Name = "Standard"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9290),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8980),
                             Name = "Guest"
                         });
                 });
@@ -1094,7 +576,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(3820));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(3930));
 
                     b.Property<int>("CurrentSemester")
                         .HasColumnType("int");
@@ -1134,7 +616,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             BirthDate = new DateTime(2000, 8, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9170),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8850),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
                             Name = "Emiliano",
@@ -1145,7 +627,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 2,
                             BirthDate = new DateTime(2000, 5, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9170),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8850),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
                             Name = "Omar",
@@ -1156,7 +638,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 3,
                             BirthDate = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9170),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8850),
                             CurrentSemester = 1,
                             EmergencyContact = "8445677676",
                             Name = "Verónica",
@@ -1167,7 +649,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 4,
                             BirthDate = new DateTime(1999, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8850),
                             CurrentSemester = 2,
                             EmergencyContact = "8445677676",
                             Name = "Jimena",
@@ -1178,7 +660,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 5,
                             BirthDate = new DateTime(1999, 11, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 2,
                             EmergencyContact = "8445677676",
                             Name = "Daniel",
@@ -1189,7 +671,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 6,
                             BirthDate = new DateTime(1999, 3, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 2,
                             EmergencyContact = "8445677676",
                             Name = "Valeria",
@@ -1200,7 +682,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 7,
                             BirthDate = new DateTime(1998, 7, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 3,
                             EmergencyContact = "8445677676",
                             Name = "Julian",
@@ -1211,7 +693,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 8,
                             BirthDate = new DateTime(1998, 4, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 3,
                             EmergencyContact = "8445677676",
                             Name = "Juan",
@@ -1222,7 +704,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 9,
                             BirthDate = new DateTime(1998, 1, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9180),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 3,
                             EmergencyContact = "8445677676",
                             Name = "Gabriela",
@@ -1233,7 +715,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 10,
                             BirthDate = new DateTime(1997, 6, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9190),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8860),
                             CurrentSemester = 4,
                             EmergencyContact = "8445677676",
                             Name = "Pedro",
@@ -1244,7 +726,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 11,
                             BirthDate = new DateTime(1997, 11, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9190),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8870),
                             CurrentSemester = 4,
                             EmergencyContact = "8445677676",
                             Name = "Amanda",
@@ -1255,7 +737,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 12,
                             BirthDate = new DateTime(1997, 9, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9190),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8870),
                             CurrentSemester = 4,
                             EmergencyContact = "8445677676",
                             Name = "Jessica",
@@ -1275,7 +757,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(6040));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(6200));
 
                     b.Property<int>("FinalGrade")
                         .ValueGeneratedOnAdd()
@@ -1311,7 +793,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 1,
                             SubjectId = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9200),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8880),
                             FinalGrade = 0,
                             FirstGrade = 91,
                             SecondGrade = 0,
@@ -1321,7 +803,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 2,
                             SubjectId = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9200),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8880),
                             FinalGrade = 0,
                             FirstGrade = 71,
                             SecondGrade = 0,
@@ -1331,7 +813,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 3,
                             SubjectId = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9200),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8880),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1341,7 +823,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 1,
                             SubjectId = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8890),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1351,7 +833,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 2,
                             SubjectId = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8920),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1361,7 +843,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 3,
                             SubjectId = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1371,7 +853,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 1,
                             SubjectId = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1381,7 +863,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 2,
                             SubjectId = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1391,7 +873,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 3,
                             SubjectId = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1401,7 +883,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 4,
                             SubjectId = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1411,7 +893,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 5,
                             SubjectId = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9210),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1421,7 +903,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 6,
                             SubjectId = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1431,7 +913,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 4,
                             SubjectId = 5,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8930),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1441,7 +923,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 5,
                             SubjectId = 5,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1451,7 +933,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 6,
                             SubjectId = 5,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1461,7 +943,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 4,
                             SubjectId = 6,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 85,
                             SecondGrade = 0,
@@ -1471,7 +953,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 5,
                             SubjectId = 6,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1481,7 +963,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 6,
                             SubjectId = 6,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9220),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 95,
                             SecondGrade = 0,
@@ -1491,7 +973,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 7,
                             SubjectId = 7,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 85,
                             SecondGrade = 0,
@@ -1501,7 +983,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 8,
                             SubjectId = 7,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1511,7 +993,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 9,
                             SubjectId = 7,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8940),
                             FinalGrade = 0,
                             FirstGrade = 95,
                             SecondGrade = 0,
@@ -1521,7 +1003,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 7,
                             SubjectId = 8,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1531,7 +1013,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 8,
                             SubjectId = 8,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 87,
                             SecondGrade = 0,
@@ -1541,7 +1023,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 9,
                             SubjectId = 8,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 65,
                             SecondGrade = 0,
@@ -1551,7 +1033,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 7,
                             SubjectId = 9,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1561,7 +1043,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 8,
                             SubjectId = 9,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9230),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 80,
                             SecondGrade = 0,
@@ -1571,7 +1053,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 9,
                             SubjectId = 9,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 90,
                             SecondGrade = 0,
@@ -1581,7 +1063,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 10,
                             SubjectId = 10,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1591,7 +1073,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 11,
                             SubjectId = 10,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 70,
                             SecondGrade = 0,
@@ -1601,7 +1083,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 12,
                             SubjectId = 10,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8950),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1611,7 +1093,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 10,
                             SubjectId = 11,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1621,7 +1103,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 11,
                             SubjectId = 11,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 70,
                             SecondGrade = 0,
@@ -1631,7 +1113,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 12,
                             SubjectId = 11,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1641,7 +1123,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 10,
                             SubjectId = 12,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 50,
                             SecondGrade = 0,
@@ -1651,7 +1133,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 11,
                             SubjectId = 12,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9240),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 70,
                             SecondGrade = 0,
@@ -1661,7 +1143,7 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             StudentId = 12,
                             SubjectId = 12,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9250),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8960),
                             FinalGrade = 0,
                             FirstGrade = 100,
                             SecondGrade = 0,
@@ -1683,7 +1165,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(7070));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(7070));
 
                     b.Property<string>("Name")
                         .HasMaxLength(100)
@@ -1701,84 +1183,84 @@ namespace EduPrime.Infrastructure.Migrations
                         {
                             Id = 1,
                             AvailableSemester = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9120),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Matemáticas I"
                         },
                         new
                         {
                             Id = 4,
                             AvailableSemester = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Matemáticas II"
                         },
                         new
                         {
                             Id = 7,
                             AvailableSemester = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Matemáticas III"
                         },
                         new
                         {
                             Id = 2,
                             AvailableSemester = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9120),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Física I"
                         },
                         new
                         {
                             Id = 5,
                             AvailableSemester = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Física II"
                         },
                         new
                         {
                             Id = 8,
                             AvailableSemester = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Física III"
                         },
                         new
                         {
                             Id = 3,
                             AvailableSemester = 1,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9120),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Historia"
                         },
                         new
                         {
                             Id = 6,
                             AvailableSemester = 2,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Finanzas"
                         },
                         new
                         {
                             Id = 9,
                             AvailableSemester = 3,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8810),
                             Name = "Química I"
                         },
                         new
                         {
                             Id = 10,
                             AvailableSemester = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8820),
                             Name = "Filosofía"
                         },
                         new
                         {
                             Id = 11,
                             AvailableSemester = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8820),
                             Name = "Informática"
                         },
                         new
                         {
                             Id = 12,
                             AvailableSemester = 4,
-                            CreatedOn = new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(9130),
+                            CreatedOn = new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8820),
                             Name = "Química II"
                         });
                 });
@@ -1794,7 +1276,7 @@ namespace EduPrime.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2024, 6, 16, 18, 53, 4, 3, DateTimeKind.Utc).AddTicks(8590));
+                        .HasDefaultValue(new DateTime(2024, 6, 16, 2, 33, 44, 929, DateTimeKind.Utc).AddTicks(8420));
 
                     b.Property<string>("Email")
                         .HasMaxLength(100)

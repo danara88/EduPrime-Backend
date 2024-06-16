@@ -398,7 +398,19 @@ namespace EduPrime.Infrastructure.Data.Seeding
                 SubjectId = chemistry2.Id
             };
 
-            modelBuilder.Entity<ProfessorSubject>().HasData(AlmaRosaMath1, AlmaRosaMath2, LorenaMath1, LorenaMath3, BrendaPhysics, BrendaPhysics2, RamiroFinance, MarisolHistory, MarisolPhilosophy, SofiaChemistry, SofiaChemistry2);
+            modelBuilder.Entity<ProfessorSubject>().HasData(
+                AlmaRosaMath1,
+                AlmaRosaMath2,
+                LorenaMath1,
+                LorenaMath3,
+                BrendaPhysics,
+                BrendaPhysics2,
+                RamiroFinance,
+                MarisolHistory,
+                MarisolPhilosophy,
+                SofiaChemistry,
+                SofiaChemistry2
+            );
 
             /**
              * STUDENTS
@@ -979,6 +991,731 @@ namespace EduPrime.Infrastructure.Data.Seeding
             };
 
             modelBuilder.Entity<Role>().HasData(primaryRole, adminRole, standardRole, guestRole);
+
+            /**
+            * Permission
+            */
+
+            // AREAS
+            var createAreas = new Permission
+            {
+                Id = 1,
+                Name = "create:areas"
+            };
+
+            var updateAreas = new Permission
+            {
+                Id = 2,
+                Name = "update:areas"
+            };
+
+            var deleteAreas = new Permission
+            {
+                Id = 3,
+                Name = "delete:areas"
+            };
+
+            var getAreas = new Permission
+            {
+                Id = 4,
+                Name = "get:areas"
+            };
+
+            // EMPLOYEES
+            var createEmployees = new Permission
+            {
+                Id = 5,
+                Name = "create:employees"
+            };
+
+            var updateEmployees = new Permission
+            {
+                Id = 6,
+                Name = "update:employees"
+            };
+
+            var deleteEmployees = new Permission
+            {
+                Id = 7,
+                Name = "delete:employees"
+            };
+
+            var getEmployees = new Permission
+            {
+                Id = 8,
+                Name = "get:employees"
+            };
+
+            // PROFESSORS
+            var createProfessors = new Permission
+            {
+                Id = 9,
+                Name = "create:professors"
+            };
+
+            var updateProfessors = new Permission
+            {
+                Id = 10,
+                Name = "update:professors"
+            };
+
+            var deleteProfessors = new Permission
+            {
+                Id = 11,
+                Name = "delete:professors"
+            };
+
+            var getProfessors = new Permission
+            {
+                Id = 12,
+                Name = "get:professors"
+            };
+
+            // SUBJECTS
+            var createSubjects = new Permission
+            {
+                Id = 13,
+                Name = "create:subjects"
+            };
+
+            var updateSubjects = new Permission
+            {
+                Id = 14,
+                Name = "update:subjects"
+            };
+
+            var deleteSubjects = new Permission
+            {
+                Id = 15,
+                Name = "delete:subjects"
+            };
+
+            var getSubjects = new Permission
+            {
+                Id = 16,
+                Name = "get:subjects"
+            };
+
+            // STUDENTS
+            var createStudents = new Permission
+            {
+                Id = 17,
+                Name = "create:students"
+            };
+
+            var updateStudents = new Permission
+            {
+                Id = 18,
+                Name = "update:students"
+            };
+
+            var deleteStudents = new Permission
+            {
+                Id = 19,
+                Name = "delete:students"
+            };
+
+            var getStudents = new Permission
+            {
+                Id = 20,
+                Name = "get:students"
+            };
+
+            // USERS
+            var createUsers = new Permission
+            {
+                Id = 21,
+                Name = "create:users"
+            };
+
+            var updateUsers = new Permission
+            {
+                Id = 22,
+                Name = "update:users"
+            };
+
+            var deleteUsers = new Permission
+            {
+                Id = 23,
+                Name = "delete:users"
+            };
+
+            var getUsers = new Permission
+            {
+                Id = 24,
+                Name = "get:users"
+            };
+
+             // ROLES
+            var createRoles = new Permission
+            {
+                Id = 25,
+                Name = "create:roles"
+            };
+
+            var updateRoles = new Permission
+            {
+                Id = 26,
+                Name = "update:roles"
+            };
+
+            var deleteRoles = new Permission
+            {
+                Id = 27,
+                Name = "delete:roles"
+            };
+
+            var getRoles = new Permission
+            {
+                Id = 28,
+                Name = "get:roles"
+            };
+
+             modelBuilder.Entity<Permission>().HasData(
+                createAreas,
+                updateAreas,
+                deleteAreas,
+                getAreas,
+
+                createEmployees,
+                updateEmployees,
+                deleteEmployees,
+                getEmployees,
+
+                createProfessors,
+                updateProfessors,
+                deleteProfessors,
+                getProfessors,
+
+                createSubjects,
+                updateSubjects,
+                deleteSubjects,
+                getSubjects,
+
+                createStudents,
+                updateStudents,
+                deleteStudents,
+                getStudents,
+
+                createUsers,
+                updateUsers,
+                deleteUsers,
+                getUsers,
+
+                createRoles,
+                updateRoles,
+                deleteRoles,
+                getRoles
+            );
+
+            /**
+            * PermissionRole
+            */
+
+            // Primary Role
+            var primaryRoleCreateAreas = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createAreas.Id
+            };
+            var primaryRoleUpdateAreas = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateAreas.Id
+            };
+            var primaryRoleDeleteAreas = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteAreas.Id
+            };
+             var primaryRoleGetAreas = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getAreas.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateAreas,
+                primaryRoleUpdateAreas,
+                primaryRoleDeleteAreas,
+                primaryRoleGetAreas
+            );
+
+            var primaryRoleCreateEmployees = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createEmployees.Id
+            };
+            var primaryRoleUpdateEmployees = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateEmployees.Id
+            };
+            var primaryRoleDeleteEmployees = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteEmployees.Id
+            };
+            var primaryRoleGetEmployees = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getEmployees.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateEmployees,
+                primaryRoleUpdateEmployees,
+                primaryRoleDeleteEmployees,
+                primaryRoleGetEmployees
+            );
+
+            var primaryRoleCreateProfessors = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createProfessors.Id
+            };
+            var primaryRoleUpdateProfessors = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateProfessors.Id
+            };
+            var primaryRoleDeleteProfessors = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteProfessors.Id
+            };
+            var primaryRoleGetProfessors = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getProfessors.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateProfessors,
+                primaryRoleUpdateProfessors,
+                primaryRoleDeleteProfessors,
+                primaryRoleGetProfessors
+            );
+
+            var primaryRoleCreateSubjects = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createSubjects.Id
+            };
+            var primaryRoleUpdateSubjects = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateSubjects.Id
+            };
+            var primaryRoleDeleteSubjects = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteSubjects.Id
+            };
+            var primaryRoleGetSubjects = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getSubjects.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateSubjects,
+                primaryRoleUpdateSubjects,
+                primaryRoleDeleteSubjects,
+                primaryRoleGetSubjects
+            );
+
+            var primaryRoleCreateStudents = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createStudents.Id
+            };
+            var primaryRoleUpdateStudents = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateStudents.Id
+            };
+            var primaryRoleDeleteStudents = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteStudents.Id
+            };
+            var primaryRoleGetStudents = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getStudents.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateStudents,
+                primaryRoleUpdateStudents,
+                primaryRoleDeleteStudents,
+                primaryRoleGetStudents
+            );
+
+            var primaryRoleCreateUsers = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createUsers.Id
+            };
+            var primaryRoleUpdateUsers = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateUsers.Id
+            };
+            var primaryRoleDeleteUsers = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteUsers.Id
+            };
+            var primaryRoleGetUsers = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getUsers.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateUsers,
+                primaryRoleUpdateUsers,
+                primaryRoleDeleteUsers,
+                primaryRoleGetUsers
+            );
+
+            var primaryRoleCreateRoles = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = createRoles.Id
+            };
+            var primaryRoleUpdateRoles = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = updateRoles.Id
+            };
+            var primaryRoleDeleteRoles = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = deleteRoles.Id
+            };
+            var primaryRoleGetRoles = new PermissionRole
+            {
+                RoleId = primaryRole.Id,
+                PermissionId = getRoles.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                primaryRoleCreateRoles,
+                primaryRoleUpdateRoles,
+                primaryRoleDeleteRoles,
+                primaryRoleGetRoles
+            );
+
+            // Admin Role
+            var adminRoleCreateAreas = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = createAreas.Id
+            };
+            var adminRoleUpdateAreas = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = updateAreas.Id
+            };
+            var adminRoleDeleteAreas = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = deleteAreas.Id
+            };
+             var adminRoleGetAreas = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getAreas.Id
+            };
+
+            var adminRoleCreateEmployees = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = createEmployees.Id
+            };
+            var adminRoleUpdateEmployees = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = updateEmployees.Id
+            };
+            var adminRoleDeleteEmployees = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = deleteEmployees.Id
+            };
+            var adminRoleGetEmployees = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getEmployees.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                adminRoleCreateEmployees,
+                adminRoleUpdateEmployees,
+                adminRoleDeleteEmployees,
+                adminRoleGetEmployees
+            );
+
+            var adminRoleCreateProfessors = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = createProfessors.Id
+            };
+            var adminRoleUpdateProfessors = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = updateProfessors.Id
+            };
+            var adminRoleDeleteProfessors = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = deleteProfessors.Id
+            };
+            var adminRoleGetProfessors = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getProfessors.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                adminRoleCreateProfessors,
+                adminRoleUpdateProfessors,
+                adminRoleDeleteProfessors,
+                adminRoleGetProfessors
+            );
+
+             var adminRoleCreateSubjects = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = createSubjects.Id
+            };
+            var adminRoleUpdateSubjects = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = updateSubjects.Id
+            };
+            var adminRoleDeleteSubjects = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = deleteSubjects.Id
+            };
+            var adminRoleGetSubjects = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getSubjects.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                adminRoleCreateSubjects,
+                adminRoleUpdateSubjects,
+                adminRoleDeleteSubjects,
+                adminRoleGetSubjects
+            );
+
+             var adminRoleCreateStudents = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = createStudents.Id
+            };
+            var adminRoleUpdateStudents = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = updateStudents.Id
+            };
+            var adminRoleDeleteStudents = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = deleteStudents.Id
+            };
+            var adminRoleGetStudents = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getStudents.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                adminRoleCreateStudents,
+                adminRoleUpdateStudents,
+                adminRoleDeleteStudents,
+                adminRoleGetStudents
+            );
+
+            var adminRoleGetUsers = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getUsers.Id
+            };
+            var adminRoleGetRoles = new PermissionRole
+            {
+                RoleId = adminRole.Id,
+                PermissionId = getRoles.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                adminRoleGetUsers,
+                adminRoleGetRoles
+            );
+
+            // Standard Role
+            var standardRoleCreateAreas = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = createAreas.Id
+            };
+            var standardRoleUpdateAreas = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = updateAreas.Id
+            };
+            var standardRoleDeleteAreas = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = deleteAreas.Id
+            };
+             var standardRoleGetAreas = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = getAreas.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                standardRoleCreateAreas,
+                standardRoleUpdateAreas,
+                standardRoleDeleteAreas,
+                standardRoleGetAreas
+            );
+
+            var standardRoleCreateEmployees = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = createEmployees.Id
+            };
+            var standardRoleUpdateEmployees = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = updateEmployees.Id
+            };
+            var standardRoleDeleteEmployees = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = deleteEmployees.Id
+            };
+            var standardRoleGetEmployees = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = getEmployees.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                standardRoleCreateEmployees,
+                standardRoleUpdateEmployees,
+                standardRoleDeleteEmployees,
+                standardRoleGetEmployees
+            );
+
+            var standardRoleCreateProfessors = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = createProfessors.Id
+            };
+            var standardRoleUpdateProfessors = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = updateProfessors.Id
+            };
+            var standardRoleDeleteProfessors = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = deleteProfessors.Id
+            };
+            var standardRoleGetProfessors = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = getProfessors.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                standardRoleCreateProfessors,
+                standardRoleUpdateProfessors,
+                standardRoleDeleteProfessors,
+                standardRoleGetProfessors
+            );
+
+            var standardRoleCreateSubjects = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = createSubjects.Id
+            };
+            var standardRoleUpdateSubjects = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = updateSubjects.Id
+            };
+            var standardRoleDeleteSubjects = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = deleteSubjects.Id
+            };
+            var standardRoleGetSubjects = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = getSubjects.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                standardRoleCreateSubjects,
+                standardRoleUpdateSubjects,
+                standardRoleDeleteSubjects,
+                standardRoleGetSubjects
+            );
+
+            var standardRoleCreateStudents = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = createStudents.Id
+            };
+            var standardRoleUpdateStudents = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = updateStudents.Id
+            };
+            var standardRoleDeleteStudents = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = deleteStudents.Id
+            };
+            var standardRoleGetStudents = new PermissionRole
+            {
+                RoleId = standardRole.Id,
+                PermissionId = getStudents.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                standardRoleCreateStudents,
+                standardRoleUpdateStudents,
+                standardRoleDeleteStudents,
+                standardRoleGetStudents
+            );
+
+            // Guest Role
+            var guestRoleGetAreas = new PermissionRole
+            {
+                RoleId = guestRole.Id,
+                PermissionId = getAreas.Id
+            };
+            var guestRoleGetEmployees = new PermissionRole
+            {
+                RoleId = guestRole.Id,
+                PermissionId = getEmployees.Id
+            };
+            var guestRoleGetProfessors = new PermissionRole
+            {
+                RoleId = guestRole.Id,
+                PermissionId = getProfessors.Id
+            };
+            var guestRoleGetSubjects = new PermissionRole
+            {
+                RoleId = guestRole.Id,
+                PermissionId = getSubjects.Id
+            };
+            var guestRoleGetStudents = new PermissionRole
+            {
+                RoleId = guestRole.Id,
+                PermissionId = getStudents.Id
+            };
+            modelBuilder.Entity<PermissionRole>().HasData(
+                guestRoleGetAreas,
+                guestRoleGetEmployees,
+                guestRoleGetProfessors,
+                guestRoleGetSubjects,
+                guestRoleGetStudents
+            );
         }
     }
 }
