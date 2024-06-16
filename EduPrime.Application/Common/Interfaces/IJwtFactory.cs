@@ -1,4 +1,4 @@
-﻿using EduPrime.Core.Entities;
+﻿using EduPrime.Core.DTOs.User;
 
 namespace EduPrime.Application.Common.Interfaces
 {
@@ -7,6 +7,6 @@ namespace EduPrime.Application.Common.Interfaces
     /// </summary>
     public interface IJwtFactory
     {
-        string GenerateJwtToken(User user);
+        string GenerateJwtToken(UserDTO userDTO);
     }
 }

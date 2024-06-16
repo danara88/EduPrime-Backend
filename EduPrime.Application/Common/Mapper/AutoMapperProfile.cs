@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.Core.DTOs.Area;
 using EduPrime.Core.DTOs.Employee;
+using EduPrime.Core.DTOs.Permission;
 using EduPrime.Core.DTOs.Professor;
 using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.DTOs.Student;
@@ -28,7 +29,10 @@ namespace EduPrime.Application.Mapper
             #region Employee
             CreateMap<Employee, EmployeeDTO>();
             CreateMap<CreateEmployeeDTO, Employee>()
-                .ForMember(ent => ent.Areas, dto => dto.MapFrom(prop => prop.Areas.Select(id => new Area() { Id = id })));
+                .ForMember(
+                    ent => ent.Areas, dto => dto
+                        .MapFrom(prop => prop.Areas
+                        .Select(id => new Area() { Id = id })));
             CreateMap<UpdateEmployeeDTO, Employee>();
             #endregion
 
@@ -40,14 +44,18 @@ namespace EduPrime.Application.Mapper
 
             #region Subject
             CreateMap<Subject, SubjectDTO>()
-                .ForMember(dto => dto.Professors, ent => ent.MapFrom(prop => prop.ProfessorsSubjects.Select(ps => ps.Professor)));
+                .ForMember(dto => dto.Professors,
+                    ent => ent
+                        .MapFrom(prop => prop.ProfessorsSubjects
+                        .Select(ps => ps.Professor)));
             CreateMap<CreateSubjectDTO, Subject>();
             CreateMap<UpdateSubjectDTO, Subject>();
             #endregion
 
             #region Student
             CreateMap<Student, StudentDTO>()
-                .ForMember(dto => dto.Assignments, ent => ent.MapFrom(prop => prop.StudentsSubjects));
+                .ForMember(dto => dto.Assignments,
+                    ent => ent.MapFrom(prop => prop.StudentsSubjects));
             CreateMap<UpdateStudentDTO, Student>();
             CreateMap<CreateStudentDTO, Student>();
             #endregion
@@ -64,9 +72,17 @@ namespace EduPrime.Application.Mapper
             #endregion
 
             #region Role
-            CreateMap<Role, RoleDTO>();
+            CreateMap<Role, RoleDTO>()
+                .ForMember(dto => dto.Permissions,
+                    ent => ent
+                        .MapFrom(prop => prop.PermissionsRoles
+                        .Select(pr => pr.Permission)));
             CreateMap<Role, RoleWithUsersDTO>();
             CreateMap<CreateRoleDTO, Role>();
+            #endregion
+
+            #region Permission
+            CreateMap<Permission, PermissionDTO>();
             #endregion
         }
     }
