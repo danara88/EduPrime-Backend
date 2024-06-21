@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Subject;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Subjects.Queries
@@ -8,7 +9,7 @@ namespace EduPrime.Application.Subjects.Queries
     /// <summary>
     /// Get subjects query handler
     /// </summary>
-    public class GetSubjectsQueryHandler : IRequestHandler<GetSubjectsQuery, List<SubjectDTO>>
+    public class GetSubjectsQueryHandler : IRequestHandler<GetSubjectsQuery, ErrorOr<List<SubjectDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ namespace EduPrime.Application.Subjects.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<SubjectDTO>> Handle(GetSubjectsQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<SubjectDTO>>> Handle(GetSubjectsQuery request, CancellationToken cancellationToken)
         {
             var subjects = (await _unitOfWork.SubjectRepository.GetSubjectsWithProfessorsAsync())
             .Skip((request.paginationDTO.CurrentPage - 1) * request.paginationDTO.QuantityPerPage)

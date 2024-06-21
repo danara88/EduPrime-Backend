@@ -29,9 +29,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetProfessorsQuery();
             var getProfessorsResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<ProfessorDTO>>(getProfessorsResult);
 
-            return Ok(response);
+            Func<List<ProfessorDTO>, IActionResult> response = (professorsDTO) =>
+                Ok(new ApiResponse<List<ProfessorDTO>>(professorsDTO));
+
+            return getProfessorsResult.Match(
+                response,
+                Problem
+            );
         }
 
 
@@ -49,7 +54,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetProfessorByIdQuery(id);
             var getProfessorByIdResult = await _mediator.Send(query);
 
-            Func<ProfessorDTO, IActionResult> response = (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO));
+            Func<ProfessorDTO, IActionResult> response =
+                (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO));
 
             return getProfessorByIdResult.Match(
                 response,
@@ -100,7 +106,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateProfessorCommand(updateProfessorDTO);
             var updateProfessorResult = await _mediator.Send(command);
 
-            Func<ProfessorDTO, IActionResult> response = (professorDTO) => Ok(new ApiResponse<ProfessorDTO>(professorDTO));
+            Func<ProfessorDTO, IActionResult> response = (professorDTO) =>
+                Ok(new ApiResponse<ProfessorDTO>(professorDTO));
 
             return updateProfessorResult.Match(
                 response,
@@ -123,7 +130,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteProfessorCommand(id);
             var deleteProfessorResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteProfessorResult.Match(
                 response,

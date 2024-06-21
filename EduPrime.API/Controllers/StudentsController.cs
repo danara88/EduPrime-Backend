@@ -30,9 +30,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetStudentsQuery(paginationDTO);
             var getStudentsResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<StudentDTO>>(getStudentsResult);
 
-            return Ok(response);
+            Func<List<StudentDTO>, IActionResult> response =
+                (studentsDTO) => Ok(new ApiResponse<List<StudentDTO>>(studentsDTO));
+
+            return getStudentsResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -49,7 +54,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetStudentByIdQuery(id);
             var getStudentResult = await _mediator.Send(query);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return getStudentResult.Match(
                 response,
@@ -100,7 +106,8 @@ namespace EduPrime.Api.Controllers
             var command = new AssignSubjectsCommand(assignSubjectsDTO);
             var assignSubjectsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return assignSubjectsResult.Match(
                 response,
@@ -123,7 +130,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadStudentPictureCommand(uploadStudentFileDTO);
             var uploadStudentPictureResult = await _mediator.Send(command);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return uploadStudentPictureResult.Match(
                 response,
@@ -147,7 +155,8 @@ namespace EduPrime.Api.Controllers
             var command = new UnassignSubjectsCommand(unassignSubjectsDTO);
             var unassignSubjectsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return unassignSubjectsResult.Match(
                 response,
@@ -171,7 +180,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateStudentAssignmentCommand(updateStudentAssignmentDTO);
             var updateStudentAssignmentResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return updateStudentAssignmentResult.Match(
                 response,
@@ -195,7 +205,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateStudentCommand(updateStudentDTO);
             var updateStudentResult = await _mediator.Send(command);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return updateStudentResult.Match(
                 response,
@@ -218,7 +229,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteStudentCommand(id);
             var deleteStudentResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteStudentResult.Match(
                 response,

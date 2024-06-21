@@ -32,7 +32,8 @@ namespace EduPrime.Api.Controllers
             var command = new RegisterCommand(registerUserDTO);
             var registerResult = await _mediator.Send(command);
 
-            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+            Func<UserDTO, IActionResult> response = (userDTO) =>
+                Ok(new ApiResponse<UserDTO>(userDTO));
 
             return registerResult.Match(
                 response,
@@ -54,7 +55,8 @@ namespace EduPrime.Api.Controllers
             var command = new LoginCommand(logInUserDTO);
             var loginResult = await _mediator.Send(command);
 
-            Func<AuthTokenDTO, IActionResult> response = (authTokenDTO) => Ok(new ApiResponse<AuthTokenDTO>(authTokenDTO));
+            Func<AuthTokenDTO, IActionResult> response = (authTokenDTO) =>
+                Ok(new ApiResponse<AuthTokenDTO>(authTokenDTO));
 
             return loginResult.Match(
                 response,
@@ -76,7 +78,8 @@ namespace EduPrime.Api.Controllers
             var command = new ConfirmEmailCommand(confirmEmailDTO);
             var confirmEmailResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return confirmEmailResult.Match(
                 response,
@@ -98,7 +101,8 @@ namespace EduPrime.Api.Controllers
             var command = new RecoveryPasswordCommand(recoveryPasswordDTO);
             var recoveryPassowrdResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return recoveryPassowrdResult.Match(
                 response,
@@ -120,7 +124,8 @@ namespace EduPrime.Api.Controllers
             var command = new ChangePasswordCommand(changePasswordDTO);
             var changePasswordResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return changePasswordResult.Match(
                 response,
@@ -139,9 +144,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetUsersQuery();
             var getUsersResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<UserDTO>>(getUsersResult);
 
-            return Ok(response);
+            Func<List<UserDTO>, IActionResult> response = (usersDTO) =>
+                Ok(new ApiResponse<List<UserDTO>>(usersDTO));
+
+            return getUsersResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -159,7 +169,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetUserByIdQuery(id);
             var getUserByIdResult = await _mediator.Send(query);
 
-            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+            Func<UserDTO, IActionResult> response = (userDTO) =>
+                Ok(new ApiResponse<UserDTO>(userDTO));
 
             return getUserByIdResult.Match(
                 response,
@@ -183,7 +194,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateUserCommand(updateUserDTO);
             var updateUserResult = await _mediator.Send(command);
 
-            Func<UserDTO, IActionResult> response = (userDTO) => Ok(new ApiResponse<UserDTO>(userDTO));
+            Func<UserDTO, IActionResult> response = (userDTO) =>
+                Ok(new ApiResponse<UserDTO>(userDTO));
 
             return updateUserResult.Match(
                 response,
@@ -207,7 +219,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteUserCommand(id);
             var deleteUserResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteUserResult.Match(
                 response,

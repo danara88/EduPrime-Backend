@@ -1,6 +1,7 @@
 ﻿using EduPrime.Application.Common.Attributes;
 using EduPrime.Core.DTOs.Employee;
 using EduPrime.Core.Permissions.Consts;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Employees.Queries
@@ -9,5 +10,5 @@ namespace EduPrime.Application.Employees.Queries
     /// Get employee query
     /// </summary>
     [Authorize(Permissions = PermissionsConsts.GetEmployeesPermission)]
-    public record GetEmployeesQuery() : IRequest<List<EmployeeDTO>> { }
+    public record GetEmployeesQuery() : IRequest<ErrorOr<List<EmployeeDTO>>> { }
 }

@@ -32,9 +32,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetSubjectsQuery(paginationDTO);
             var getSubjectsResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<SubjectDTO>>(getSubjectsResult);
 
-            return Ok(response);
+            Func<List<SubjectDTO>, IActionResult> response = (subjectsDTO) =>
+                Ok(new ApiResponse<List<SubjectDTO>>(subjectsDTO));
+
+            return getSubjectsResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -51,7 +56,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetSubjectByIdQuery(id);
             var getSubjectByIdResult = await _mediator.Send(query);
 
-            Func<SubjectDTO, IActionResult> response = (subjectDTO) => Ok(new ApiResponse<SubjectDTO>(subjectDTO));
+            Func<SubjectDTO, IActionResult> response = (subjectDTO) =>
+                Ok(new ApiResponse<SubjectDTO>(subjectDTO));
 
             return getSubjectByIdResult.Match(
                 response,
@@ -102,7 +108,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateSubjectCommand(updateSubjectDTO);
             var updateSubjectResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return updateSubjectResult.Match(
                 response,
@@ -126,7 +133,8 @@ namespace EduPrime.Api.Controllers
             var command = new UnassignProfessorsCommand(unassignProfessorsDTO);
             var unassignProfessorsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return unassignProfessorsResult.Match(
                 response,
@@ -150,7 +158,8 @@ namespace EduPrime.Api.Controllers
             var command = new AssignProfessorsCommand(assignProfessorsDTO);
             var assignProfessorsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return assignProfessorsResult.Match(
                 response,
@@ -173,7 +182,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteSubjectCommand(id);
             var deleteSubjectResult = await _mediator.Send(command);
 
-             Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+             Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteSubjectResult.Match(
                 response,

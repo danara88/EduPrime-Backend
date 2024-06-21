@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Area;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Queries
@@ -8,7 +9,7 @@ namespace EduPrime.Application.Areas.Queries
     /// <summary>
     /// Get areas with employees query handler
     /// </summary>
-    public class GetAreasWithEmployeesQueryHandler : IRequestHandler<GetAreasWithEmployeesQuery, List<AreaWithEmployeesDTO>>
+    public class GetAreasWithEmployeesQueryHandler : IRequestHandler<GetAreasWithEmployeesQuery, ErrorOr<List<AreaWithEmployeesDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ namespace EduPrime.Application.Areas.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<AreaWithEmployeesDTO>> Handle(GetAreasWithEmployeesQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<AreaWithEmployeesDTO>>> Handle(GetAreasWithEmployeesQuery request, CancellationToken cancellationToken)
         {
             var areasWithEmployees = await _unitOfWork.AreaRepository.GetAreasWithEmployeesAsync();
             var areasWithEmployeesDTO = _mapper.Map<List<AreaWithEmployeesDTO>>(areasWithEmployees);

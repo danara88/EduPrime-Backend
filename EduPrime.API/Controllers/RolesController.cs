@@ -36,9 +36,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetRolesQuery();
             var getRolesResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<RoleDTO>>(getRolesResult);
 
-            return Ok(response);
+            Func<List<RoleDTO>, IActionResult> response =
+                (rolesDTO) => Ok(new ApiResponse<List<RoleDTO>>(rolesDTO));
+
+            return getRolesResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -56,7 +61,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetRoleByIdQuery(id);
             var getRoleByIdResult = await _mediator.Send(query);
 
-            Func<RoleWithUsersDTO, IActionResult> response = (roleWithUsersDTO) => Ok(new ApiResponse<RoleWithUsersDTO>(roleWithUsersDTO));
+            Func<RoleWithUsersDTO, IActionResult> response = (roleWithUsersDTO) =>
+                Ok(new ApiResponse<RoleWithUsersDTO>(roleWithUsersDTO));
 
             return getRoleByIdResult.Match(
                 response,
@@ -108,7 +114,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateUserRoleCommand(updateUserRoleDTO);
             var updateUserRoleResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return updateUserRoleResult.Match(
                 response,
@@ -133,7 +140,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteRoleCommand(id);
             var deleteRoleResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteRoleResult.Match(
                 response,

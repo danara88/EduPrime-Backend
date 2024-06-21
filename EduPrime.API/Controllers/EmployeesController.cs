@@ -29,9 +29,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetEmployeesQuery();
             var getEmployeesResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<EmployeeDTO>>(getEmployeesResult);
 
-            return Ok(response);
+            Func<List<EmployeeDTO>, IActionResult> response = (employeesDTO) =>
+                Ok(new ApiResponse<List<EmployeeDTO>>(employeesDTO));
+
+            return getEmployeesResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -48,7 +53,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetEmployeeByIdQuery(id);
             var getEmployeeByIdResult = await _mediator.Send(query);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return getEmployeeByIdResult.Match(
                 response,
@@ -98,7 +104,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadRFCDocumentCommand(uploadEmployeeFileDTO);
             var uploadRFCDocumentResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return uploadRFCDocumentResult.Match(
                 response,
@@ -121,7 +128,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadEmployeePictureCommand(uploadEmployeeFileDTO);
             var uploadEmployeePictureResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return uploadEmployeePictureResult.Match(
                 response,
@@ -171,7 +179,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateEmployeeCommand(updateEmployeeDTO);
             var updateEmployeeResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return updateEmployeeResult.Match(
                 response,
@@ -195,7 +204,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteEmployeeCommand(id);
             var deleteEmployeeResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteEmployeeResult.Match(
                 response,
