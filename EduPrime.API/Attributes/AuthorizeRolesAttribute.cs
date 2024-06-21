@@ -3,7 +3,7 @@
 namespace EduPrime.Api.Attributes
 {
     /// <summary>
-    /// Authorize roles custom attribute
+    /// Deprecated: Authorize roles custom attribute
     /// </summary>
     public class AuthorizeRolesAttribute : AuthorizeAttribute
     {

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Areas.Commands;
 using EduPrime.Application.Areas.Queries;
@@ -62,10 +61,7 @@ namespace EduPrime.Api.Controllers
         /// End point that creates an area
         /// </summary>
         /// <param name="createAreaDTO"></param>
-        [AuthorizeRoles(
-            nameof(RoleTypeEnum.Primary),
-            nameof(RoleTypeEnum.Admin),
-            nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/areas/create-area")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,10 +88,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates an Area
         /// </summary>
         /// <param name="updateAreaDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/areas/update-area")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -119,10 +112,11 @@ namespace EduPrime.Api.Controllers
         /// End point that deletes an Area
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        // [AuthorizeRoles(
+        //    nameof(RoleTypeEnum.Primary),
+        //    nameof(RoleTypeEnum.Admin),
+        //    nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpDelete("~/api/v1/areas/delete-area/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

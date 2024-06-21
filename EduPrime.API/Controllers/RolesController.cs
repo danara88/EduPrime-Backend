@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Roles.Commands;
 using EduPrime.Application.Roles.Commands.DeleteRoleCommand;
 using EduPrime.Application.Roles.Queries;
 using EduPrime.Core.DTOs.Role;
 using EduPrime.Core.Enums;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EduPrime.Api.Controllers
 {
@@ -26,7 +26,7 @@ namespace EduPrime.Api.Controllers
         /// <summary>
         /// End point that returns all the roles
         /// </summary>
-        [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
+        [Authorize]
         [HttpGet("~/api/v1/roles/get-roles")]
         [ResponseCache(CacheProfileName = "OneMinuteCache")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,7 +45,7 @@ namespace EduPrime.Api.Controllers
         /// End point that gets a role by id
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(nameof(RoleTypeEnum.Primary), nameof(RoleTypeEnum.Admin))]
+        [Authorize]
         [HttpGet("~/api/v1/roles/get-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -69,7 +69,7 @@ namespace EduPrime.Api.Controllers
         /// NOTE: Be sure to add your new role into the enum: RoleTypeEnum.
         /// </summary>
         /// <param name="createRoleDTO"></param>
-        [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
+        [Authorize]
         [HttpPost("~/api/v1/roles/create-role")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,7 +96,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates the assigned role of a user
         /// </summary>
         /// <param name="updateUserRoleDTO"></param>
-        [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
+        [Authorize]
         [HttpPut("~/api/v1/roles/update-user-role")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -121,7 +121,7 @@ namespace EduPrime.Api.Controllers
         /// NOTE: Be carefull. It will delete on cascade.
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(nameof(RoleTypeEnum.Primary))]
+        [Authorize]
         [HttpDelete("~/api/v1/roles/delete-role/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

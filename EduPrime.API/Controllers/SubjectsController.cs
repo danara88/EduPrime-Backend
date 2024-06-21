@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Subjects.Commands;
 using EduPrime.Application.Subjects.Queries;
@@ -64,10 +63,7 @@ namespace EduPrime.Api.Controllers
         /// End point to crate a subject
         /// </summary>
         /// <param name="createSubjectDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/subjects/create-subject")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -94,10 +90,7 @@ namespace EduPrime.Api.Controllers
         /// End point to update a subject
         /// </summary>
         /// <param name="updateSubjectDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/subjects/update-subject")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -121,10 +114,7 @@ namespace EduPrime.Api.Controllers
         /// End point to unassign professors
         /// </summary>
         /// <param name="unassignProfessorsDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/subjects/unassign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -148,10 +138,7 @@ namespace EduPrime.Api.Controllers
         /// End point to assign professors
         /// </summary>
         /// <param name="assignProfessorsDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/subjects/assign-professors")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -175,10 +162,7 @@ namespace EduPrime.Api.Controllers
         /// End point to delete a subject by id
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpDelete("~/api/v1/subjects/delete-subject/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]

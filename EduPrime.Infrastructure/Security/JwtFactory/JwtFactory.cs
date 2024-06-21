@@ -33,7 +33,7 @@ namespace EduPrime.Infrastructure.Security
 
             List<Claim> claims = new()
             {
-                new Claim(JwtRegisteredClaimNames.Sub, userDTO.Id.ToString()),
+                new Claim("id", userDTO.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, userDTO.Email),
                 new Claim(JwtRegisteredClaimNames.Name, userDTO.Name),
                 new Claim("surname", userDTO.Surname),

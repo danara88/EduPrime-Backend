@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Employees.Commands;
 using EduPrime.Application.Employees.Queries;
@@ -61,10 +60,7 @@ namespace EduPrime.Api.Controllers
         /// End point that creates an employee
         /// </summary>
         /// <param name="createEmployeeDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/create-employee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -91,10 +87,7 @@ namespace EduPrime.Api.Controllers
         /// End point that uploads a RFC document to an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/upload-employee-rfc")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -117,10 +110,7 @@ namespace EduPrime.Api.Controllers
         /// End point that uploads a picture for an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/upload-employee-picture")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -169,10 +159,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates an employee
         /// </summary>
         /// <param name="updateEmployeeDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/employees/update-employee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -196,10 +183,7 @@ namespace EduPrime.Api.Controllers
         /// End point that deletes an employee
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpDelete("~/api/v1/employees/delete-employee/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
