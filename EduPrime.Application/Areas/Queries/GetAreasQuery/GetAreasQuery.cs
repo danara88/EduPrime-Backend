@@ -1,4 +1,7 @@
-﻿using EduPrime.Core.DTOs.Area;
+﻿using EduPrime.Application.Common.Attributes;
+using EduPrime.Core.DTOs.Area;
+using EduPrime.Core.Permissions.Consts;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Areas.Queries
@@ -6,5 +9,6 @@ namespace EduPrime.Application.Areas.Queries
     /// <summary>
     /// Get area query
     /// </summary>
-    public record GetAreasQuery() : IRequest<List<AreaDTO>> {}
+    [Authorize(Permissions = PermissionsConsts.GetAreasPermission)]
+    public record GetAreasQuery() : IRequest<ErrorOr<List<AreaDTO>>> {}
 }

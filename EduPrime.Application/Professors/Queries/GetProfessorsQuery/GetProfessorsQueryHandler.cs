@@ -2,13 +2,14 @@
 using MediatR;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Professor;
+using ErrorOr;
 
 namespace EduPrime.Application.Professors.Queries
 {
     /// <summary>
     /// Get professors query handler
     /// </summary>
-    public class GetProfessorsQueryHandler : IRequestHandler<GetProfessorsQuery, List<ProfessorDTO>>
+    public class GetProfessorsQueryHandler : IRequestHandler<GetProfessorsQuery, ErrorOr<List<ProfessorDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,7 +20,7 @@ namespace EduPrime.Application.Professors.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<ProfessorDTO>> Handle(GetProfessorsQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<ProfessorDTO>>> Handle(GetProfessorsQuery request, CancellationToken cancellationToken)
         {
             var professors = await _unitOfWork.ProfessorRepository.GetProfessorsWithEmployeeAsync();
             var professorsDTO = _mapper.Map<List<ProfessorDTO>>(professors);

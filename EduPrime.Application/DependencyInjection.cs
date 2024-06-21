@@ -26,6 +26,9 @@ namespace EduPrime.Application
                 options.RegisterServicesFromAssemblyContaining(
                     typeof(DependencyInjection));
 
+                // Add generic behavior for authorizations
+                options.AddOpenBehavior(typeof(AuthorizationBehavior<,>));
+
                 // Add generic behavior for validation
                 options.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });

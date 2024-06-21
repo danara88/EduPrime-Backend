@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.Student;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Students.Queries
@@ -8,7 +9,7 @@ namespace EduPrime.Application.Students.Queries
     /// <summary>
     /// Get students query handler
     /// </summary>
-    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, List<StudentDTO>>
+    public class GetStudentsQueryHandler : IRequestHandler<GetStudentsQuery, ErrorOr<List<StudentDTO>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -19,14 +20,14 @@ namespace EduPrime.Application.Students.Queries
             _mapper = mapper;
         }
 
-        public async Task<List<StudentDTO>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<List<StudentDTO>>> Handle(GetStudentsQuery request, CancellationToken cancellationToken)
         {
             var students = (await _unitOfWork.StudentRepository.GetStudentsWithAssignmentsAsync())
             .Skip((request.paginationDTO.CurrentPage - 1) * request.paginationDTO.QuantityPerPage)
             .Take(request.paginationDTO.QuantityPerPage)
                 .ToList();
             var studentsDTO = _mapper.Map<List<StudentDTO>>(students);
-            
+
             return studentsDTO;
         }
     }

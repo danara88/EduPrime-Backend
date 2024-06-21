@@ -45,6 +45,8 @@ namespace EduPrime.Infrastructure.Repository
         {
             return await _entity
                 .Include(u => u.Role)
+                .ThenInclude(r => r.PermissionsRoles)
+                .ThenInclude(pr => pr.Permission)
                 .FirstOrDefaultAsync(u => u.Email == email);
         }
 

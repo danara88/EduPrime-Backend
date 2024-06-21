@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 using MediatR;
+using AutoMapper;
 using EduPrime.Application.Common.Interfaces;
 using EduPrime.Core.DTOs.User;
 using EduPrime.Core.Exceptions;
@@ -15,12 +16,18 @@ namespace EduPrime.Application.Users.Commands
         private readonly IUnitOfWork _unitOfWork;
         private readonly IPasswordService _passwordService;
         private readonly IJwtFactory _jwtFactory;
+        private readonly IMapper _mapper;
 
-        public LoginCommandHandler(IUnitOfWork unitOfWork, IPasswordService passwordService, IJwtFactory jwtFactory)
+        public LoginCommandHandler(
+            IUnitOfWork unitOfWork,
+            IPasswordService passwordService,
+            IJwtFactory jwtFactory,
+            IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _passwordService = passwordService;
             _jwtFactory = jwtFactory;
+            _mapper = mapper;
         }
 
         public async Task<ErrorOr<AuthTokenDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
@@ -46,12 +53,14 @@ namespace EduPrime.Application.Users.Commands
 
             user.LastLogin = DateTime.UtcNow;
 
+            var userDTO = _mapper.Map<UserDTO>(user);
+
             try
             {
                 await _unitOfWork.SaveChangesAsync();
                 AuthTokenDTO authTokenDTO = new()
                 {
-                    AccessToken = _jwtFactory.GenerateJwtToken(user)
+                    AccessToken = _jwtFactory.GenerateJwtToken(userDTO)
                 };
                 return authTokenDTO;
             }

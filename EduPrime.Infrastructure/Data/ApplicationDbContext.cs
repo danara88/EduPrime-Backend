@@ -1,7 +1,7 @@
-﻿using EduPrime.Core.Entities;
-using EduPrime.Infrastructure.Data.Seeding;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using EduPrime.Core.Entities;
+using EduPrime.Infrastructure.Data.Seeding;
 
 namespace EduPrime.Infrastructure.Data
 {
@@ -18,6 +18,8 @@ namespace EduPrime.Infrastructure.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<StudentSubject> StudentsSubjects { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<PermissionRole> PermissionsRoles { get; set; }
         public DbSet<User> Users { get; set; }
 
         public ApplicationDbContext(DbContextOptions options): base(options) {}

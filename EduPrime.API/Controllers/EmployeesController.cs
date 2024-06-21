@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Employees.Commands;
 using EduPrime.Application.Employees.Queries;
@@ -30,9 +29,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetEmployeesQuery();
             var getEmployeesResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<EmployeeDTO>>(getEmployeesResult);
 
-            return Ok(response);
+            Func<List<EmployeeDTO>, IActionResult> response = (employeesDTO) =>
+                Ok(new ApiResponse<List<EmployeeDTO>>(employeesDTO));
+
+            return getEmployeesResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -49,7 +53,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetEmployeeByIdQuery(id);
             var getEmployeeByIdResult = await _mediator.Send(query);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return getEmployeeByIdResult.Match(
                 response,
@@ -61,10 +66,7 @@ namespace EduPrime.Api.Controllers
         /// End point that creates an employee
         /// </summary>
         /// <param name="createEmployeeDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/create-employee")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -91,10 +93,7 @@ namespace EduPrime.Api.Controllers
         /// End point that uploads a RFC document to an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/upload-employee-rfc")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,7 +104,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadRFCDocumentCommand(uploadEmployeeFileDTO);
             var uploadRFCDocumentResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return uploadRFCDocumentResult.Match(
                 response,
@@ -117,10 +117,7 @@ namespace EduPrime.Api.Controllers
         /// End point that uploads a picture for an employee
         /// </summary>
         /// <param name="uploadEmployeeFileDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/employees/upload-employee-picture")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -131,7 +128,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadEmployeePictureCommand(uploadEmployeeFileDTO);
             var uploadEmployeePictureResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return uploadEmployeePictureResult.Match(
                 response,
@@ -169,10 +167,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates an employee
         /// </summary>
         /// <param name="updateEmployeeDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/employees/update-employee")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -184,7 +179,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateEmployeeCommand(updateEmployeeDTO);
             var updateEmployeeResult = await _mediator.Send(command);
 
-            Func<EmployeeDTO, IActionResult> response = (employeeDTO) => Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
+            Func<EmployeeDTO, IActionResult> response = (employeeDTO) =>
+                Ok(new ApiResponse<EmployeeDTO>(employeeDTO));
 
             return updateEmployeeResult.Match(
                 response,
@@ -196,10 +192,7 @@ namespace EduPrime.Api.Controllers
         /// End point that deletes an employee
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpDelete("~/api/v1/employees/delete-employee/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -211,7 +204,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteEmployeeCommand(id);
             var deleteEmployeeResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteEmployeeResult.Match(
                 response,

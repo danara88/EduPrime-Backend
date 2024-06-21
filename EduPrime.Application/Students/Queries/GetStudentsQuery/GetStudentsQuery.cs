@@ -1,5 +1,8 @@
-﻿using EduPrime.Core.DTOs.Shared;
+﻿using EduPrime.Application.Common.Attributes;
+using EduPrime.Core.DTOs.Shared;
 using EduPrime.Core.DTOs.Student;
+using EduPrime.Core.Permissions.Consts;
+using ErrorOr;
 using MediatR;
 
 namespace EduPrime.Application.Students.Queries
@@ -8,5 +11,6 @@ namespace EduPrime.Application.Students.Queries
     /// Get students query
     /// </summary>
     /// <param name="paginationDTO"></param>
-    public record GetStudentsQuery(PaginationDTO paginationDTO) : IRequest<List<StudentDTO>> { }
+    [Authorize(Permissions = PermissionsConsts.GetStudentsPermission)]
+    public record GetStudentsQuery(PaginationDTO paginationDTO) : IRequest<ErrorOr<List<StudentDTO>>> { }
 }

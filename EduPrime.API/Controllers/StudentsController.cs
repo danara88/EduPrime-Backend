@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using EduPrime.Api.Attributes;
 using EduPrime.Api.Response;
 using EduPrime.Application.Students.Commands;
 using EduPrime.Application.Students.Queries;
@@ -31,9 +30,14 @@ namespace EduPrime.Api.Controllers
         {
             var query = new GetStudentsQuery(paginationDTO);
             var getStudentsResult = await _mediator.Send(query);
-            var response = new ApiResponse<List<StudentDTO>>(getStudentsResult);
 
-            return Ok(response);
+            Func<List<StudentDTO>, IActionResult> response =
+                (studentsDTO) => Ok(new ApiResponse<List<StudentDTO>>(studentsDTO));
+
+            return getStudentsResult.Match(
+                response,
+                Problem
+            );
         }
 
         /// <summary>
@@ -50,7 +54,8 @@ namespace EduPrime.Api.Controllers
             var query = new GetStudentByIdQuery(id);
             var getStudentResult = await _mediator.Send(query);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return getStudentResult.Match(
                 response,
@@ -62,10 +67,7 @@ namespace EduPrime.Api.Controllers
         /// End point that creates a subject
         /// </summary>
         /// <param name="createStudentDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/students/create-student")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -92,10 +94,7 @@ namespace EduPrime.Api.Controllers
         /// End point that assigns subjects to a student
         /// </summary>
         /// <param name="assignSubjectsDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/students/assign-subjects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -107,7 +106,8 @@ namespace EduPrime.Api.Controllers
             var command = new AssignSubjectsCommand(assignSubjectsDTO);
             var assignSubjectsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return assignSubjectsResult.Match(
                 response,
@@ -119,10 +119,7 @@ namespace EduPrime.Api.Controllers
         /// End point that uploads a picture for a student
         /// </summary>
         /// <param name="uploadStudentFileDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPost("~/api/v1/students/upload-student-picture")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -133,7 +130,8 @@ namespace EduPrime.Api.Controllers
             var command = new UploadStudentPictureCommand(uploadStudentFileDTO);
             var uploadStudentPictureResult = await _mediator.Send(command);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return uploadStudentPictureResult.Match(
                 response,
@@ -145,10 +143,7 @@ namespace EduPrime.Api.Controllers
         /// End point that unassigns subjects from a student
         /// </summary>
         /// <param name="unassignSubjectsDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/students/unassign-subjects")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -160,7 +155,8 @@ namespace EduPrime.Api.Controllers
             var command = new UnassignSubjectsCommand(unassignSubjectsDTO);
             var unassignSubjectsResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return unassignSubjectsResult.Match(
                 response,
@@ -172,10 +168,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates student assignment notes
         /// </summary>
         /// <param name="updateStudentAssignmentDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/students/update-student-assignment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -187,7 +180,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateStudentAssignmentCommand(updateStudentAssignmentDTO);
             var updateStudentAssignmentResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return updateStudentAssignmentResult.Match(
                 response,
@@ -199,10 +193,7 @@ namespace EduPrime.Api.Controllers
         /// End point that updates a student
         /// </summary>
         /// <param name="updateStudentDTO"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpPut("~/api/v1/students/update-student")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -214,7 +205,8 @@ namespace EduPrime.Api.Controllers
             var command = new UpdateStudentCommand(updateStudentDTO);
             var updateStudentResult = await _mediator.Send(command);
 
-            Func<StudentDTO, IActionResult> response = (studentDTO) => Ok(new ApiResponse<StudentDTO>(studentDTO));
+            Func<StudentDTO, IActionResult> response = (studentDTO) =>
+                Ok(new ApiResponse<StudentDTO>(studentDTO));
 
             return updateStudentResult.Match(
                 response,
@@ -226,10 +218,7 @@ namespace EduPrime.Api.Controllers
         /// End point that deletes a student by id
         /// </summary>
         /// <param name="id"></param>
-        [AuthorizeRoles(
-           nameof(RoleTypeEnum.Primary),
-           nameof(RoleTypeEnum.Admin),
-           nameof(RoleTypeEnum.Standard))]
+        [Authorize]
         [HttpDelete("~/api/v1/students/delete-student/{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -240,7 +229,8 @@ namespace EduPrime.Api.Controllers
             var command = new DeleteStudentCommand(id);
             var deleteStudentResult = await _mediator.Send(command);
 
-            Func<string, IActionResult> response = (message) => Ok(new ApiMessageResponse(message));
+            Func<string, IActionResult> response = (message) =>
+                Ok(new ApiMessageResponse(message));
 
             return deleteStudentResult.Match(
                 response,
