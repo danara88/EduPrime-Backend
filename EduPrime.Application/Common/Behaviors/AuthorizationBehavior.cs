@@ -45,7 +45,7 @@ public class AuthorizationBehavior<TRequest, TResponse>
 
         if (requiredPermissions.Except(currentUser.Permissions).Count() > 0)
         {
-            return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action.");
+            return (dynamic)Error.Forbidden(description: "User is forbidden from taking this action.");
         }
 
         /*
@@ -58,7 +58,7 @@ public class AuthorizationBehavior<TRequest, TResponse>
 
         // if (requiredRoles.Except(currentUser.Roles).Count() > 0)
         // {
-        //     return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action.");
+        //     return (dynamic)Error.Forbidden(description: "User is forbidden from taking this action.");
         // }
 
         return await next();

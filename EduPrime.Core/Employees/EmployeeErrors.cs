@@ -7,7 +7,7 @@ namespace EduPrime.Core.Employees;
 /// </summary>
 public static class EmployeeErrors
 {
-    public static readonly  Error EmployeeIsNotAssignedToProfessorArea =
+    public static readonly Error EmployeeIsNotAssignedToProfessorArea =
         Error.Validation(
             "Employee.EmployeeIsNotAssignedToProfessorArea",
             "You cannot assign a professor resource since not any area where assigned to the employee.");

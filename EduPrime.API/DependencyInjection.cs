@@ -1,16 +1,13 @@
-using EduPrime.Api.Services;
-using EduPrime.Application;
-using EduPrime.Infrastructure;
-using EduPrime.Infrastructure.Data;
-using EduPrime.Infrastructure.Filters;
-using EduPrime.Application.Users.Interfaces;
-using EduPrime.Core.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using EduPrime.Api.Services;
+using EduPrime.Infrastructure.Data;
+using EduPrime.Infrastructure.Filters;
+using EduPrime.Application.Users.Interfaces;
 
 namespace EduPrime.Api;
 
@@ -26,6 +23,7 @@ public static class DependecyInjection
         services.ConfigureSwagger();
         services.ConfigureDbContext(configuration);
         services.ConfigureAuthentication(configuration);
+        services.ConfigureCors();
 
         services.AddEndpointsApiExplorer();
         services.AddProblemDetails();

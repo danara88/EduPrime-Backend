@@ -5,7 +5,6 @@ using EduPrime.Api.Response;
 using EduPrime.Application.Areas.Commands;
 using EduPrime.Application.Areas.Queries;
 using EduPrime.Core.DTOs.Area;
-using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {

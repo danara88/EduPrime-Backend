@@ -23,13 +23,13 @@ namespace EduPrime.Api.Controllers
                 return Problem();
             }
 
-            // If all the errors are of type Validation
-            if (errors.All(error => error.Type == ErrorType.Validation))
+            // If all the errors are of type Validation and errors are more than 1
+            if (errors.Count > 1 && errors.All(error => error.Type == ErrorType.Validation))
             {
                 return ValidationProblem(errors);
             }
 
-            // Call Problem method to map the correct error type
+            // Call Problem method to map the correct error type when we have just 1 error
             return Problem(errors[0]);
         }
 
@@ -46,6 +46,7 @@ namespace EduPrime.Api.Controllers
                 ErrorType.NotFound => StatusCodes.Status404NotFound,
                 ErrorType.Validation => StatusCodes.Status400BadRequest,
                 ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
+                ErrorType.Forbidden => StatusCodes.Status403Forbidden,
                 _ => StatusCodes.Status500InternalServerError
             };
 

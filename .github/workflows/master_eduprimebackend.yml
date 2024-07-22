@@ -25,6 +25,9 @@ jobs:
       - name: Build with dotnet
         run: dotnet build EduPrime.API --configuration Release
 
+      - name: Run tests
+        run: dotnet test
+
       - name: dotnet publish
         run: dotnet publish EduPrime.API -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
