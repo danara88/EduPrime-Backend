@@ -5,7 +5,6 @@ using EduPrime.Api.Response;
 using EduPrime.Application.Employees.Commands;
 using EduPrime.Application.Employees.Queries;
 using EduPrime.Core.DTOs.Employee;
-using EduPrime.Core.Enums;
 
 namespace EduPrime.Api.Controllers
 {

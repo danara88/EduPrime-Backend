@@ -8,7 +8,7 @@ namespace EduPrime.Core.Areas;
 public static class AreaErrors
 {
     public static Error AreaWithNameAlreadyExists(string name) {
-        return Error.Validation(
+        return Error.Conflict(
             "Area.AreaWithNameAlreadyExists",
             $"The area with name {name} already exists.");
     }
